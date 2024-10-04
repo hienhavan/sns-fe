@@ -26,9 +26,6 @@ importers:
       formik:
         specifier: ^2.4.6
         version: 2.4.6(react@18.3.1)
-      json-server:
-        specifier: 1.0.0-beta.3
-        version: 1.0.0-beta.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -87,6 +84,9 @@ importers:
       globals:
         specifier: ^15.9.0
         version: 15.10.0
+      json-server:
+        specifier: 1.0.0-beta.3
+        version: 1.0.0-beta.3
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
