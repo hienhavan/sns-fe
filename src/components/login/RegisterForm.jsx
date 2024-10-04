@@ -1,11 +1,10 @@
-// import registrationService from "../../services/registration"; // Thay đổi service cho đăng ký
 import Footer from '../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { object, string, ref } from 'yup';
-import { useState } from 'react';
+import { useFormik } from 'formik';
+import registrationService from '../../services/registration';
 
 export default function Register() {
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const registrationSchema = object({
@@ -18,26 +17,23 @@ export default function Register() {
       .required('Vui lòng xác nhận mật khẩu'),
   });
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      email: e.target[0].value,
-      password: e.target[1].value,
-    };
-
-    try {
-      await registrationSchema.validate(formData, { abortEarly: false });
-
-      // await registrationService.registration(formData);
-      navigate('/login');
-    } catch (validationErrors) {
-      const errorMessages = validationErrors.inner.reduce((acc, error) => {
-        return { ...acc, [error.path]: error.message };
-      }, {});
-      setErrors(errorMessages);
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: registrationSchema,
+    onSubmit: async (values) => {
+      try {
+        await registrationService.registration(values);
+        alert('Registration successful!');
+        navigate('/login');
+      } catch (error) {
+        alert('Registration failed, please try again.');
+      }
+    },
+  });
 
   return (
     <>
@@ -53,49 +49,70 @@ export default function Register() {
           </div>
 
           <form
-            onSubmit={(e) => handleRegister(e)}
+            onSubmit={formik.handleSubmit}
             className="bg-white p-8 shadow-lg rounded-lg w-full max-w-md"
           >
             <input
               type="text"
+              name="email"
               placeholder="Email"
               className={`w-full mb-4 p-3 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
+                formik.errors.email && formik.touched.email
+                  ? 'border-red-500'
+                  : 'border-gray-300'
               } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+            {formik.errors.email && formik.touched.email && (
+              <p className="text-red-500 text-sm mb-2">{formik.errors.email}</p>
             )}
 
             <input
               type="password"
+              name="password"
               placeholder="Mật khẩu"
               className={`w-full mb-4 p-3 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
+                formik.errors.password && formik.touched.password
+                  ? 'border-red-500'
+                  : 'border-gray-300'
               } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mb-2">{errors.password}</p>
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-red-500 text-sm mb-2">
+                {formik.errors.password}
+              </p>
             )}
 
             <input
               type="password"
+              name="confirmPassword"
               placeholder="Xác nhận mật khẩu"
               className={`w-full mb-4 p-3 border ${
-                errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                formik.errors.confirmPassword && formik.touched.confirmPassword
+                  ? 'border-red-500'
+                  : 'border-gray-300'
               } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mb-2">
-                {errors.confirmPassword}
-              </p>
-            )}
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword && (
+                <p className="text-red-500 text-sm mb-2">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
 
             <button
               type="submit"
               className="w-full bg-customGray text-white py-3 rounded-lg font-semibold hover:bg-blue-500 transition duration-300"
             >
-              Sigup
+              Signup
             </button>
 
             <p className="block mt-4 text-black text-center">

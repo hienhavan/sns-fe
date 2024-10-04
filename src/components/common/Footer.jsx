@@ -34,7 +34,7 @@ function Footer() {
           </section>
           <div className="text-center text-sm text-gray-700">
             © 2024 Social:{' '}
-            <a className="text-gray-800" href="https://mdbootstrap.com/">
+            <a className="text-gray-800" href="#">
               Social.com
             </a>
           </div>

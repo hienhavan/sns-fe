@@ -1,13 +1,12 @@
-// import loginService from "../../services/login";
+import loginService from '../../services/login';
 import Footer from '../common/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { object, string } from 'yup';
-import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useFormik } from 'formik';
 
 export default function Login() {
-  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const loginSchema = object({
@@ -17,31 +16,19 @@ export default function Login() {
       .required('Vui lòng nhập mật khẩu'),
   });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      email: e.target[0].value,
-      password: e.target[1].value,
-    };
-
-    try {
-      await loginSchema.validate(formData, { abortEarly: false });
-
-      // await loginService.login(formData);
-
-      navigate('/');
-    } catch (validationErrors) {
-      if (validationErrors.inner) {
-        const errorMessages = validationErrors.inner.reduce((acc, error) => {
-          return { ...acc, [error.path]: error.message };
-        }, {});
-        setErrors(errorMessages);
-      } else {
+  const formik = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      try {
+        await loginService.login(values);
+        alert('Login successful!');
+        navigate('/');
+      } catch (error) {
         alert('Login failed, please check your credentials.');
       }
-    }
-  };
+    },
+  });
 
   return (
     <>
@@ -57,29 +44,43 @@ export default function Login() {
           </div>
 
           <form
-            onSubmit={(e) => handleLogin(e)}
+            onSubmit={formik.handleSubmit}
             className="bg-white p-8 shadow-lg rounded-lg w-full max-w-md"
           >
             <input
               type="text"
+              name="email"
               placeholder="Email"
               className={`w-full mb-4 p-3 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
+                formik.errors.email && formik.touched.email
+                  ? 'border-red-500'
+                  : 'border-gray-300'
               } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+            {formik.errors.email && formik.touched.email && (
+              <p className="text-red-500 text-sm mb-2">{formik.errors.email}</p>
             )}
 
             <input
               type="password"
+              name="password"
               placeholder="Password"
               className={`w-full mb-4 p-3 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
+                formik.errors.password && formik.touched.password
+                  ? 'border-red-500'
+                  : 'border-gray-300'
               } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mb-2">{errors.password}</p>
+            {formik.errors.password && formik.touched.password && (
+              <p className="text-red-500 text-sm mb-2">
+                {formik.errors.password}
+              </p>
             )}
 
             <button
@@ -110,7 +111,7 @@ export default function Login() {
             </div>
             <div className="w-full">
               <a
-                href="#!" // Cập nhật link đăng nhập Google ở đây
+                href="#!"
                 role="button"
                 className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-500 transition duration-300 text-center block"
               >
