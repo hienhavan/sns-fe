@@ -14,8 +14,9 @@ function Footer() {
     'Tải thông tin người liên hệ lên & người không phải người dùng',
     'Meta đã xác minh',
   ];
+
   return (
-    <footer className=" mx-auto px-4  bg-blue-100 flex justify-center ">
+    <footer className="mx-auto flex justify-center bg-blue-100 px-4">
       <div className="my-5">
         <div className="container">
           <section className="mb-4">
@@ -23,7 +24,7 @@ function Footer() {
               return (
                 <a
                   key={i}
-                  className="btn btn-link btn-floating btn-lg text-gray-800 m-1 text-sm"
+                  className="btn btn-link btn-floating btn-lg m-1 text-sm text-gray-800"
                   href="#!"
                   role="button"
                 >
