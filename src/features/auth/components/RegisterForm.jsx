@@ -1,8 +1,8 @@
-import Footer from '../../components/Footer';
+import Footer from '../../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { object, string, ref } from 'yup';
-import authService from './services/auth';
+import authService from '../services/auth';
 
 export default function Register() {
   const navigate = useNavigate();
