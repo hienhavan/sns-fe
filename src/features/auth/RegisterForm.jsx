@@ -1,8 +1,8 @@
-import Footer from '../common/Footer';
+import Footer from '../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { object, string, ref } from 'yup';
 import { useFormik } from 'formik';
-import registrationService from '../../services/registration';
+import { object, string, ref } from 'yup';
+import authService from './services/auth';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -26,10 +26,11 @@ export default function Register() {
     validationSchema: registrationSchema,
     onSubmit: async (values) => {
       try {
-        await registrationService.registration(values);
+        await authService.registration(values);
         alert('Registration successful!');
         navigate('/login');
       } catch (error) {
+        console.log(error);
         alert('Registration failed, please try again.');
       }
     },
@@ -37,26 +38,26 @@ export default function Register() {
 
   return (
     <>
-      <div className="flex items-center justify-center h-screen bg-blue-100">
-        <div className="flex flex-col lg:flex-row items-center space-x-6 w-8/12">
-          <div className="mb-8 lg:mb-0 text-center lg:text-left">
-            <h1 className="text-4xl lg:text-5xl font-bold text-customGray">
+      <div className="flex h-screen items-center justify-center bg-blue-100">
+        <div className="flex w-8/12 flex-col items-center space-x-6 lg:flex-row">
+          <div className="mb-8 text-center lg:mb-0 lg:text-left">
+            <h1 className="text-4xl font-bold text-customGray lg:text-5xl">
               Social media
             </h1>
-            <p className="mt-4 text-lg lg:text-xl font-medium text-gray-700">
+            <p className="mt-4 text-lg font-medium text-gray-700 lg:text-xl">
               Connect with friends and the world around you on Social.
             </p>
           </div>
 
           <form
             onSubmit={formik.handleSubmit}
-            className="bg-white p-8 shadow-lg rounded-lg w-full max-w-md"
+            className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg"
           >
             <input
               type="text"
               name="email"
               placeholder="Email"
-              className={`w-full mb-4 p-3 border ${
+              className={`mb-4 w-full border p-3 ${
                 formik.errors.email && formik.touched.email
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -66,14 +67,14 @@ export default function Register() {
               onBlur={formik.handleBlur}
             />
             {formik.errors.email && formik.touched.email && (
-              <p className="text-red-500 text-sm mb-2">{formik.errors.email}</p>
+              <p className="mb-2 text-sm text-red-500">{formik.errors.email}</p>
             )}
 
             <input
               type="password"
               name="password"
               placeholder="Mật khẩu"
-              className={`w-full mb-4 p-3 border ${
+              className={`mb-4 w-full border p-3 ${
                 formik.errors.password && formik.touched.password
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -83,7 +84,7 @@ export default function Register() {
               onBlur={formik.handleBlur}
             />
             {formik.errors.password && formik.touched.password && (
-              <p className="text-red-500 text-sm mb-2">
+              <p className="mb-2 text-sm text-red-500">
                 {formik.errors.password}
               </p>
             )}
@@ -92,7 +93,7 @@ export default function Register() {
               type="password"
               name="confirmPassword"
               placeholder="Xác nhận mật khẩu"
-              className={`w-full mb-4 p-3 border ${
+              className={`mb-4 w-full border p-3 ${
                 formik.errors.confirmPassword && formik.touched.confirmPassword
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -103,19 +104,19 @@ export default function Register() {
             />
             {formik.errors.confirmPassword &&
               formik.touched.confirmPassword && (
-                <p className="text-red-500 text-sm mb-2">
+                <p className="mb-2 text-sm text-red-500">
                   {formik.errors.confirmPassword}
                 </p>
               )}
 
             <button
               type="submit"
-              className="w-full bg-customGray text-white py-3 rounded-lg font-semibold hover:bg-blue-500 transition duration-300"
+              className="w-full rounded-lg bg-customGray py-3 font-semibold text-white transition duration-300 hover:bg-blue-500"
             >
               Signup
             </button>
 
-            <p className="block mt-4 text-black text-center">
+            <p className="mt-4 block text-center text-black">
               Already have an account?{' '}
               <Link to={'/login'} className="text-blue-500">
                 Login

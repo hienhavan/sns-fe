@@ -1,13 +1,20 @@
 import './App.css';
-import { Outlet, Route, Routes } from 'react-router-dom';
-import LoginForm from './components/login/LoginForm';
-import RegisterForm from './components/login/RegisterForm';
-import Home from './components/home/Home';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
-import { BrowserRouter } from 'react-router-dom';
+import { Outlet, Route, Routes, BrowserRouter } from 'react-router-dom';
+import LoginForm from './features/auth/LoginForm';
+import RegisterForm from './features/auth/RegisterForm';
+import Home from './features/home/Home';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
-function App() {
+const Layout = () => (
+  <>
+    <Header />
+    <Outlet />
+    <Footer />
+  </>
+);
+
+const App = () => {
   return (
     <>
       <BrowserRouter>
@@ -21,15 +28,6 @@ function App() {
       </BrowserRouter>
     </>
   );
-}
-
-const Layout = () => (
-  <>
-    <Header />
-    <Outlet />
-    <Footer />
-  </>
-
-);
+};
 
 export default App;
