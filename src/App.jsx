@@ -15,6 +15,8 @@ function App() {
         </Route>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+        <Route path={'/login'} element={<LoginForm />}></Route>
+        <Route path={'/register'} element={<RegisterForm />}></Route>
       </Routes>
     </>
   );
@@ -25,7 +27,6 @@ const Layout = () => (
     <Header />
     <Outlet />
     <Footer />
-  </>
 );
 
 export default App;
