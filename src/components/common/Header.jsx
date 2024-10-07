@@ -4,6 +4,7 @@ import {
   faPencilAlt,
   faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header className="relative fix top-0 left-0 z-50 w-full">
@@ -42,31 +43,31 @@ const Header = () => {
             <div className="user-setting text-center absolute right-14 top-[60px] w-40 bg-white shadow-lg  rounded-lg hidden group-hover:block z-10 items-center">
               <ul className="log-out ">
                 <li className="py-1 hover:bg-gray-200 rounded-lg w-[100%]">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-gray-600 flex items-center h-8 pl-5"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> View
                     Profile
-                  </a>
+                  </Link>
                 </li>
                 <li className="py-1 hover:bg-gray-200 rounded-lg pl-5">
-                  <a
-                    href="setting.html"
+                  <Link
+                    to="#"
                     className="text-gray-600 flex items-center h-8"
                   >
                     <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit
                     Profile
-                  </a>
+                  </Link>
                 </li>
                 <li className="py-1 hover:bg-gray-200 rounded-lg pl-5">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-gray-600 flex items-center h-8"
                   >
                     <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
                     out
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
