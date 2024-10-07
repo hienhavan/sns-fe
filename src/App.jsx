@@ -19,12 +19,6 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
         </Routes>
       </BrowserRouter>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-        </Route>
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/register" element={<RegisterForm />} />
-      </Routes>
     </>
   );
 }
@@ -35,6 +29,7 @@ const Layout = () => (
     <Outlet />
     <Footer />
   </>
+
 );
 
 export default App;
