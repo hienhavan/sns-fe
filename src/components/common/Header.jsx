@@ -9,7 +9,7 @@ const Header = () => {
     <header className="relative fix top-0 left-0 z-50 w-full">
       <div className="bg-[#34465d] h-[66px] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)] flex items-center fixed">
         <div className="logo relative z-10 w-[10%] mr-9 ">
-          <a title="" href="newsfeed.html">
+          <a title="" href="#">
             <img src="/public/logo_img.png" alt="logo" />
           </a>
         </div>
@@ -32,7 +32,7 @@ const Header = () => {
               Jack Carter
             </h5>
             <img
-              src="/public/avatar.jpg"
+              src=""
               alt=""
               className="rounded-full w-[50px] h-[50px] border-2 border-white border-opacity-80"
               style={{ transform: 'scale(0.8)' }}
@@ -43,7 +43,7 @@ const Header = () => {
               <ul className="log-out ">
                 <li className="py-1 hover:bg-gray-200 rounded-lg w-[100%]">
                   <a
-                    href="about.html"
+                    href="#"
                     className="text-gray-600 flex items-center h-8 pl-5"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> View
@@ -61,7 +61,7 @@ const Header = () => {
                 </li>
                 <li className="py-1 hover:bg-gray-200 rounded-lg pl-5">
                   <a
-                    href="logout.html"
+                    href="#"
                     className="text-gray-600 flex items-center h-8"
                   >
                     <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
