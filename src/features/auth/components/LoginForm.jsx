@@ -6,7 +6,7 @@ import { object, string } from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useDispatch } from 'react-redux';
-
+import { loginSuccess } from '../store/authSlice'; // Nhập hành động loginSuccess
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,19 +17,29 @@ export default function Login() {
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
       .required('Vui lòng nhập mật khẩu'),
-  })
+  });
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        dispatch(login(values));
-        // alert('Login successful!');
+        // Gọi dịch vụ đăng nhập, sẽ trả về một token
+        const token = await login(values);
+
+        // Dispatch hành động loginSuccess với dữ liệu người dùng hoặc token
+        dispatch(loginSuccess(token));
+
+        // Tùy chọn lưu token vào local storage
+        localStorage.setItem('token', token);
+
+        // Chuyển hướng đến trang chính hoặc trang khác
         navigate('/');
       } catch (error) {
         console.log(error);
-        alert('Login failed, please check your credentials.');
+        alert(
+          'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
+        );
       }
     },
   });
@@ -40,10 +50,10 @@ export default function Login() {
         <div className="flex w-8/12 flex-col items-center space-x-6 lg:flex-row">
           <div className="mb-8 text-center lg:mb-0 lg:text-left">
             <h1 className="text-4xl font-bold text-customGray lg:text-5xl">
-              Social media
+              Mạng xã hội
             </h1>
             <p className="mt-4 text-lg font-medium text-gray-700 lg:text-xl">
-              Connect with friends and the world around you on Social.
+              Kết nối với bạn bè và thế giới xung quanh bạn trên Social.
             </p>
           </div>
 
@@ -55,11 +65,11 @@ export default function Login() {
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
-
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.email && formik.touched.email
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -71,12 +81,12 @@ export default function Login() {
             <input
               type="password"
               name="password"
-              placeholder="Password"
-              className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
-
+              placeholder="Mật khẩu"
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.password && formik.touched.password
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -91,11 +101,11 @@ export default function Login() {
               type="submit"
               className="w-full rounded-lg bg-customGray py-3 font-semibold text-white transition duration-300 hover:bg-blue-500"
             >
-              Log In
+              Đăng Nhập
             </button>
 
             <a href="#" className="mt-4 block text-center text-blue-600">
-              Forgot Password?
+              Quên Mật Khẩu?
             </a>
 
             <hr className="my-6 border-gray-200" />
@@ -104,12 +114,12 @@ export default function Login() {
               to={'/register'}
               className="block w-full rounded-lg bg-green-600 py-3 text-center font-semibold text-white transition duration-300 hover:bg-green-500"
             >
-              Create New Account
+              Tạo Tài Khoản Mới
             </Link>
             <div className="my-6 flex items-center justify-center">
               <hr className="w-10 border-gray-300" />
               <p className="mx-4 text-center text-xs text-gray-700">
-                Or Sign In with
+                Hoặc Đăng Nhập bằng
               </p>
               <hr className="w-10 border-gray-300" />
             </div>
@@ -120,7 +130,7 @@ export default function Login() {
                 className="block w-full rounded-lg bg-blue-600 py-3 text-center font-semibold text-white transition duration-300 hover:bg-blue-500"
               >
                 <FontAwesomeIcon icon={faGoogle} className="mr-2" />
-                Login with Google
+                Đăng Nhập bằng Google
               </a>
             </div>
           </form>
