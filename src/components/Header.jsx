@@ -5,6 +5,7 @@ import {
   faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const Header = () => {
   return (
     <header className="fix relative left-0 top-0 z-50 w-full">
@@ -20,10 +21,10 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Search People, Pages, Groups etc"
-                className="w-[80%] border-collapse rounded-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
+                className="w-[80%] border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
               />
-              <button className="absolute right-2 top-2 border-none bg-transparent text-gray-400">
-                <i className="ti-search"></i>
+              <button className="border-collapse rounded-r-[30px] bg-[#49586e] pl-3 pr-3 text-white hover:bg-slate-500">
+                <FontAwesomeIcon icon={faSearch} className="mr-2" />{' '}
               </button>
             </form>
           </div>

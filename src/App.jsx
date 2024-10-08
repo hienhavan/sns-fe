@@ -5,7 +5,8 @@ import RegisterForm from './features/auth/components/RegisterForm';
 import Home from './features/home/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
+import UpdateProfile from './features/user/components/UpdateProfile';
+import UserProfile from './features/user/components/Profile';
 const Layout = () => (
   <>
     <Header />
@@ -21,6 +22,8 @@ const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="me" element={<UserProfile />} />
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
