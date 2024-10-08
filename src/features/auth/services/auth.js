@@ -1,34 +1,34 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const login = createAsyncThunk(
+export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
       // TODO: un-comment these when api is done
-      // const response = await axios.post('/api/v1/login', {
-      //   email,
-      //   password,
-      // });
-      // window.localStorage.setItem('sns-user', JSON.stringify(response.data));
-      // return response.data;
+      const response = await axios.post('/apihost/api/v1/login', {
+        email,
+        password,
+      });
+      window.localStorage.setItem('sns-user', JSON.stringify(response.data));
+      return response.data;
     } catch (error) {
       console.error('Error during login:', error);
     }
   },
 );
 
-const register = createAsyncThunk(
+export const register = createAsyncThunk(
   'auth/register',
   async ({ email, password }, { rejectWithValue }) => {
     try {
       // TODO: un-comment these when api is done
-      // const response = await axios.post('/api/v1/register', {
-      //   email,
-      //   password,
-      // });
-      // window.localStorage.setItem('sns-user', JSON.stringify(response.data));
-      // return response.data;
+      const response = await axios.post('/api/v1/register', {
+        email,
+        password,
+      });
+      window.localStorage.setItem('sns-user', JSON.stringify(response.data));
+      return response.data;
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -48,7 +48,4 @@ const register = createAsyncThunk(
 //   }
 // };
 
-export default {
-  login,
-  register,
-};
+export default { login, register };

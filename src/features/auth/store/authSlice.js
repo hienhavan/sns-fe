@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { login, register } from '../services/auth'
 
 const initialState = {
-  user: window.localStorage.getItem('sns_user'),
+  auth: window.localStorage.getItem('sns_user'),
   isLoading: false,
 };
 
@@ -11,7 +12,7 @@ const authSlice = createSlice({
   reducers: {
     handleSignOut: (state) => {
       window.localStorage.removeItem('sns_user');
-      state.user = {};
+      state.auth = {};
     },
   },
 });

@@ -1,28 +1,31 @@
-import authService from '../services/auth';
+import { login } from '../services/auth';
 import Footer from '../../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useDispatch } from 'react-redux';
+
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginSchema = object({
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
       .required('Vui lòng nhập mật khẩu'),
-  });
+  })
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        await authService.login(values);
-        alert('Login successful!');
+        dispatch(login(values));
+        // alert('Login successful!');
         navigate('/');
       } catch (error) {
         console.log(error);
@@ -52,11 +55,11 @@ export default function Login() {
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.email && formik.touched.email
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -69,11 +72,11 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="Password"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.password && formik.touched.password
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -112,7 +115,7 @@ export default function Login() {
             </div>
             <div className="w-full">
               <a
-                href="#!"
+                href="http://localhost:8080/v1/auth/google"
                 role="button"
                 className="block w-full rounded-lg bg-blue-600 py-3 text-center font-semibold text-white transition duration-300 hover:bg-blue-500"
               >

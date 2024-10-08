@@ -59,6 +59,9 @@ importers:
       slick-carousel:
         specifier: ^1.8.1
         version: 1.8.1(jquery@3.7.1)
+      sns-frontend:
+        specifier: 'file:'
+        version: file:(@fortawesome/fontawesome-svg-core@6.6.0)(@types/react@18.3.10)(jquery@3.7.1)(redux@5.0.1)
       yup:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1945,6 +1948,9 @@ packages:
     resolution: {integrity: sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==}
     peerDependencies:
       jquery: '>=1.8.0'
+
+  'sns-frontend@file:':
+    resolution: {directory: '', type: directory}
 
   sort-on@6.1.0:
     resolution: {integrity: sha512-WTECP0nYNWO1n2g5bpsV0yZN9cBmZsF8ThHFbOqVN0HBFRoaQZLLEMvMmJlKHNPYQeVngeI5+jJzIfFqOIo1OA==}
@@ -4033,6 +4039,31 @@ snapshots:
   slick-carousel@1.8.1(jquery@3.7.1):
     dependencies:
       jquery: 3.7.1
+
+  sns-frontend@file:(@fortawesome/fontawesome-svg-core@6.6.0)(@types/react@18.3.10)(jquery@3.7.1)(redux@5.0.1):
+    dependencies:
+      '@fortawesome/free-brands-svg-icons': 6.6.0
+      '@fortawesome/free-regular-svg-icons': 6.6.0
+      '@fortawesome/free-solid-svg-icons': 6.6.0
+      '@fortawesome/react-fontawesome': 0.2.2(@fortawesome/fontawesome-svg-core@6.6.0)(react@18.3.1)
+      '@reduxjs/toolkit': 2.2.7(react-redux@9.1.2(@types/react@18.3.10)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+      axios: 1.7.7
+      formik: 2.4.6(react@18.3.1)
+      react: 18.3.1
+      react-datepicker: 7.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-redux: 9.1.2(@types/react@18.3.10)(react@18.3.1)(redux@5.0.1)
+      react-router-dom: 6.26.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-slick: 0.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-toastify: 10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      slick-carousel: 1.8.1(jquery@3.7.1)
+      yup: 1.4.0
+    transitivePeerDependencies:
+      - '@fortawesome/fontawesome-svg-core'
+      - '@types/react'
+      - debug
+      - jquery
+      - redux
 
   sort-on@6.1.0:
     dependencies:
