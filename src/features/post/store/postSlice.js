@@ -1,15 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  posts: [],
+  isAuthenticated: false, // trạng thái xác thực
+  user: null, // thông tin người dùng
 };
 
-const postSlice = createSlice({
-  name: 'post',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    // TODO: post reducers go here
+    loginSuccess: (state, action) => {
+      state.isAuthenticated = true;
+      state.user = action.payload; 
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+    },
   },
 });
 
-export default postSlice.reducer;
+export const { loginSuccess, logout } = authSlice.actions;
+export default authSlice.reducer;
