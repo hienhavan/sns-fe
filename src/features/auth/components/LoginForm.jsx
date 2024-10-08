@@ -1,5 +1,5 @@
-import authService from './services/auth';
-import Footer from '../../components/Footer';
+import authService from '../services/auth';
+import Footer from '../../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';

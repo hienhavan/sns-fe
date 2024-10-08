@@ -1,12 +1,14 @@
 import './App.css';
 import { Outlet, Route, Routes, BrowserRouter } from 'react-router-dom';
-import LoginForm from './features/auth/LoginForm';
-import RegisterForm from './features/auth/RegisterForm';
+import LoginForm from './features/auth/components/LoginForm';
+import RegisterForm from './features/auth/components/RegisterForm';
 import Home from './features/home/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Post from "./features/post/components/Post";
 import PostForm from "./features/post/components/PostForm.jsx";
+import UpdateProfile from './features/user/components/UpdateProfile';
+import UserProfile from './features/user/components/Profile';
 
 const Layout = () => (
   <>
@@ -25,6 +27,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<Post/>} />
             <Route path="/posts/create" element={<PostForm/>} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
+            <Route path="me" element={<UserProfile />} />
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

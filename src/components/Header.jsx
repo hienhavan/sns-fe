@@ -4,69 +4,65 @@ import {
   faPencilAlt,
   faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const Header = () => {
   return (
-    <header className="relative fix top-0 left-0 z-50 w-full">
-      <div className="bg-[#34465d] h-[66px] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)] flex items-center fixed">
-        <div className="logo relative z-10 w-[10%] mr-9 ">
-          <a title="" href="#">
+    <header className="fix relative left-0 top-0 z-50 w-full">
+      <div className="fixed flex h-[66px] items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)]">
+        <div className="logo relative z-10 mr-9 w-[10%]">
+          <Link title="" to="#">
             <img src="/public/logo_img.png" alt="logo" />
-          </a>
+          </Link>
         </div>
-        <div className="flex items-center w-[150vh]">
-          <div className="top-search relative w-full ">
+        <div className="flex w-[150vh] items-center">
+          <div className="top-search relative w-full">
             <form method="post" className="flex">
               <input
                 type="text"
                 placeholder="Search People, Pages, Groups etc"
-                className="border-collapse border-gray-400 placeholder-gray-400 text-[15px] p-[9px_18px] w-[80%] rounded-[30px] bg-[#49586e] focus:outline-none focus:border-transparent text-white"
+                className="w-[80%] border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
               />
-              <button className="absolute right-2 top-2 bg-transparent border-none text-gray-400">
-                <i className="ti-search"></i>
+              <button className="border-collapse rounded-r-[30px] bg-[#49586e] pl-3 pr-3 text-white hover:bg-slate-500">
+                <FontAwesomeIcon icon={faSearch} className="mr-2" />{' '}
               </button>
             </form>
           </div>
 
-          <div className="user-img relative cursor-pointer leading-[65px] flex w-[20%] justify-center items-center group">
-            <h5 className="text-white inline-block text-[14px] font-medium mr-2">
+          <div className="user-img group relative flex w-[20%] cursor-pointer items-center justify-center leading-[65px]">
+            <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
               Jack Carter
             </h5>
             <img
               src=""
               alt=""
-              className="rounded-full w-[50px] h-[50px] border-2 border-white border-opacity-80"
+              className="h-[50px] w-[50px] rounded-full border-2 border-white border-opacity-80"
               style={{ transform: 'scale(0.8)' }}
             />
             <span className="status f-online absolute bottom-2 right-1"></span>
 
-            <div className="user-setting text-center absolute right-14 top-[60px] w-40 bg-white shadow-lg  rounded-lg hidden group-hover:block z-10 items-center">
-              <ul className="log-out ">
-                <li className="py-1 hover:bg-gray-200 rounded-lg w-[100%]">
-                  <a
-                    href="#"
-                    className="text-gray-600 flex items-center h-8 pl-5"
+            <div className="user-setting absolute right-14 top-[60px] z-10 hidden w-40 items-center rounded-lg bg-white text-center shadow-lg group-hover:block">
+              <ul className="log-out">
+                <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
+                  <Link
+                    to="#"
+                    className="flex h-8 items-center pl-5 text-gray-600"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> View
                     Profile
-                  </a>
+                  </Link>
                 </li>
-                <li className="py-1 hover:bg-gray-200 rounded-lg pl-5">
-                  <a
-                    href="setting.html"
-                    className="text-gray-600 flex items-center h-8"
-                  >
+                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+                  <Link to="#" className="flex h-8 items-center text-gray-600">
                     <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit
                     Profile
-                  </a>
+                  </Link>
                 </li>
-                <li className="py-1 hover:bg-gray-200 rounded-lg pl-5">
-                  <a
-                    href="#"
-                    className="text-gray-600 flex items-center h-8"
-                  >
+                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+                  <Link to="#" className="flex h-8 items-center text-gray-600">
                     <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
                     out
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
