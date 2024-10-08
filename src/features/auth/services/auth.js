@@ -23,10 +23,11 @@ export const register = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       // TODO: un-comment these when api is done
-      const response = await axios.post('/api/v1/register', {
+      const response = await axios.post('/apihost/api/v1/register', {
         email,
         password,
       });
+      alert('Registration successful!');
       window.localStorage.setItem('sns-user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {

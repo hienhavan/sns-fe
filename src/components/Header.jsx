@@ -1,4 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/auth/store/authSlice'
 import {
   faUser,
   faPencilAlt,
@@ -6,7 +8,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <header className="fix relative left-0 top-0 z-50 w-full">
       <div className="fixed flex h-[66px] items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)]">
@@ -62,7 +70,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link to="#" className="flex h-8 items-center text-gray-600">
+                  <Link to="/login" className="flex h-8 items-center text-gray-600" onClick={handleLogout} >
                     <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
                     out
                   </Link>
