@@ -11,7 +11,7 @@ const Header = () => {
     <header className="fix relative left-0 top-0 z-50 w-full">
       <div className="fixed flex h-[66px] items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)]">
         <div className="logo relative z-10 mr-9 w-[10%]">
-          <Link title="" to="#">
+          <Link title="" to="/">
             <img src="/public/logo_img.png" alt="logo" />
           </Link>
         </div>
@@ -45,7 +45,7 @@ const Header = () => {
               <ul className="log-out">
                 <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
                   <Link
-                    to="#"
+                    to="/login"
                     className="flex h-8 items-center pl-5 text-gray-600"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> View
@@ -53,7 +53,10 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link to="#" className="flex h-8 items-center text-gray-600">
+                  <Link
+                    to="/update-profile"
+                    className="flex h-8 items-center text-gray-600"
+                  >
                     <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit
                     Profile
                   </Link>

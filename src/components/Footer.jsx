@@ -16,7 +16,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="mx-auto mt-5 flex justify-center bg-blue-100 px-4">
+    <footer className="mx-auto flex justify-center bg-blue-100 px-4 pt-5">
       <div className="my-5">
         <div className="container">
           <section className="mb-4">
