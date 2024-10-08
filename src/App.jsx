@@ -5,6 +5,7 @@ import RegisterForm from './features/auth/components/RegisterForm';
 import Home from './features/home/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Dashboard from './features/admin/components/Dashboard';
 
 const Layout = () => (
   <>
@@ -24,6 +25,7 @@ const App = () => {
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/admin" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </>
