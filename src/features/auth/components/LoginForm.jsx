@@ -6,7 +6,7 @@ import { object, string } from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../store/authSlice'; // Nhập hành động loginSuccess
+import { loginSuccess } from '../store/authSlice';
 
 export default function Login() {
   const navigate = useNavigate();

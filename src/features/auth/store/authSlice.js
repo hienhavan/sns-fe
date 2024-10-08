@@ -1,20 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, register } from '../services/auth'
 
 const initialState = {
-  auth: window.localStorage.getItem('sns_user'),
-  isLoading: false,
+  isAuthenticated: false, // trạng thái xác thực
+  user: null, // thông tin người dùng
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    handleSignOut: (state) => {
-      window.localStorage.removeItem('sns_user');
-      state.auth = {};
+    loginSuccess: (state, action) => {
+      state.isAuthenticated = true;
+      state.user = action.payload; 
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
     },
   },
 });
 
+export const { loginSuccess, logout } = authSlice.actions;
 export default authSlice.reducer;
