@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import userService from '../services/user';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AiOutlineCamera } from 'react-icons/ai';
 
 const { updateUser, getUser } = userService;
 
@@ -21,6 +22,7 @@ const validationSchema = Yup.object({
 
 const UpdateProfile = () => {
   const [user, setUser] = React.useState({
+    profile_picture: '',
     firstname: '',
     lastname: '',
     email: '',
@@ -78,6 +80,18 @@ const UpdateProfile = () => {
         >
           {({ isSubmitting }) => (
             <Form className="c-form space-y-4">
+              <div className="relative">
+                <img
+                  src={'../../../../public/login_img.jpg'}
+                  className="h-32 w-32 rounded-full"
+                  alt="profile_picture"
+                  name="profile_picture"
+                />
+                <label className="absolute bottom-[0.25rem] right-[47.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
+                  <input className="hidden" type="file" accept="image/*" />
+                  <AiOutlineCamera className="size-5" />
+                </label>
+              </div>
               <div className="flex space-x-2.5">
                 <div>
                   <label className="mb-1 block">First Name</label>
@@ -162,7 +176,7 @@ const UpdateProfile = () => {
               </div>
 
               <div>
-                <label className="mb-1 block">About your profile</label>
+                <label className="mb-1 block">Hobby</label>
                 <Field
                   name="biography"
                   as="textarea"

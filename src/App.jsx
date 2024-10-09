@@ -22,7 +22,14 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
             {/* Bảo vệ các route sau bằng PrivateRoute */}
             <Route
               path="/update-profile"
