@@ -26,8 +26,7 @@ const UserDetails = ({ currentUser }) => {
 
         <div className="flex w-40 flex-col px-2">
           <Link to={`/profile/${currentUser?.username}`}>
-            <h2 className="font-semibold">{`${currentUser?.firstName} ${currentUser?.lastName}`}</h2>
-            <h2> @{currentUser?.username} </h2>
+            <h2 className="font-semibold">{`${currentUser?.name}`}</h2>
           </Link>
         </div>
       </div>

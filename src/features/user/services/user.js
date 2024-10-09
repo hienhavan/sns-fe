@@ -92,4 +92,3 @@ const getFollowing = createAsyncThunk("user/following",
 
 
 export default {updateUser, getUser, unFollowUser, followUser, getFollowing};
-export default { updateUser, getUser };
