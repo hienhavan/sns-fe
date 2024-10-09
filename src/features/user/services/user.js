@@ -56,7 +56,7 @@ const unFollowUser = createAsyncThunk("user/unfollow", async ({ followUserId, to
     }
 });
 
-const followUser = createAsyncThunk("user/follow", 
+const followUser = createAsyncThunk("user/follow",
     async ({ followUserId, token }, { rejectWithValue }) => {
         try {
             const { status, data } = await axios.post(`/api/v1/me/following/${followUserId}`,
@@ -70,8 +70,8 @@ const followUser = createAsyncThunk("user/follow",
             }
         } catch (error) {
             return rejectWithValue(error.response.data.errors[0]);
-    }
-});
+        }
+    });
 
 const getFollowing = createAsyncThunk("user/following",
     async ({ userId, token }, { rejectWithValue }) => {
@@ -91,5 +91,4 @@ const getFollowing = createAsyncThunk("user/following",
     });
 
 
-export default {updateUser, getUser, unFollowUser, followUser, getFollowing};
-export default { updateUser, getUser };
+export default { updateUser, getUser, unFollowUser, followUser, getFollowing };
