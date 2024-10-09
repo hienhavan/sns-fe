@@ -13,8 +13,7 @@ export default function Register() {
 
 
   const registrationSchema = object({
-    firstname: string().required('Vui lòng nhập họ'),
-    lastname: string().required('Vui lòng nhập tên'),
+    username: string().required('Vui lòng nhập tên'),
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
@@ -30,8 +29,7 @@ export default function Register() {
 
   const formik = useFormik({
     initialValues: {
-      firstname: '',
-      lastname: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -71,13 +69,12 @@ export default function Register() {
               <div className="mr-[10px] w-full">
                 <input
                   type="text"
-                  name="firstname"
-                  placeholder="Họ"
-                  className={`mb-1 w-full border p-3 ${
-                    formik.errors.firstname && formik.touched.firstname
+                  name="username"
+                  placeholder="Tên"
+                  className={`mb-1 w-full border p-3 ${formik.errors.firstname && formik.touched.firstname
                       ? 'border-red-500'
                       : 'border-gray-300'
-                  } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   value={formik.values.firstname}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -89,26 +86,7 @@ export default function Register() {
                 )}
               </div>
 
-              <div className="w-full">
-                <input
-                  type="text"
-                  name="lastname"
-                  placeholder="Tên"
-                  className={`mb-1 w-full border p-3 ${
-                    formik.errors.lastname && formik.touched.lastname
-                      ? 'border-red-500'
-                      : 'border-gray-300'
-                  } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                  value={formik.values.lastname}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.errors.lastname && formik.touched.lastname && (
-                  <p className="mb-2 text-sm text-red-500">
-                    {formik.errors.lastname}
-                  </p>
-                )}
-              </div>
+
             </div>
 
             <input
@@ -167,11 +145,10 @@ export default function Register() {
             <input
               type="date"
               name="birthday"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.birthday && formik.touched.birthday
+              className={`mb-4 w-full border p-3 ${formik.errors.birthday && formik.touched.birthday
                   ? 'border-red-500'
                   : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.birthday}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -186,11 +163,10 @@ export default function Register() {
               type="text"
               name="phone"
               placeholder="Số điện thoại"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.phone && formik.touched.phone
+              className={`mb-4 w-full border p-3 ${formik.errors.phone && formik.touched.phone
                   ? 'border-red-500'
                   : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
