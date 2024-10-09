@@ -5,18 +5,28 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      // TODO: un-comment these when api is done
       const response = await axios.post('/apihost/api/v1/login', {
         email,
         password,
       });
+
+      // Kiểm tra nếu mã trạng thái không phải là 200 (hoặc bất kỳ mã nào cho thành công)
+      if (response.status !== 200) {
+        alert('Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.');
+        return rejectWithValue('Đăng nhập thất bại');
+      }
+
+      // Lưu thông tin người dùng vào localStorage nếu đăng nhập thành công
       window.localStorage.setItem('sns-user', JSON.stringify(response.data));
       return response.data;
+      
     } catch (error) {
       console.error('Error during login:', error);
+      return rejectWithValue(error.response?.data || 'Có lỗi xảy ra khi đăng nhập');
     }
   },
 );
+
 
 export const register = createAsyncThunk(
   'auth/register',
