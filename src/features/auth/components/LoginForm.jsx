@@ -16,7 +16,7 @@ export default function Login() {
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-      .max(32, 'Mật khẩu tối đã 32 ký tự')
+      .max(32, 'Mật khẩu tối đa 32 ký tự')
       .required('Vui lòng nhập mật khẩu'),
   });
 
@@ -25,18 +25,24 @@ export default function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        // // Gọi dịch vụ đăng nhập, sẽ trả về một token
-        const token = await login(values);
+        // Gọi dịch vụ đăng nhập, sẽ trả về một token
+        const userData = await login(values);
 
-        // Dispatch hành động loginSuccess với dữ liệu người dùng hoặc token
-        dispatch(login(values));
-        dispatch(loginSuccess(token))
+        // Kiểm tra xem thông tin người dùng có hợp lệ hay không
+        if (userData && userData.token) {
+          // Dispatch hành động loginSuccess với dữ liệu người dùng hoặc token
+          dispatch(loginSuccess(userData));
 
-        // Tùy chọn lưu token vào local storage
-        localStorage.setItem('token', token);
+          // Tùy chọn lưu token vào local storage
+          localStorage.setItem('token', userData.token);
 
-        // Chuyển hướng đến trang chính hoặc trang khác
-        navigate('/');
+          // Chuyển hướng đến trang chính hoặc trang khác
+          navigate('/');
+        } else {
+          alert(
+            'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
+          );
+        }
       } catch (error) {
         console.log(error);
         alert(
@@ -67,10 +73,11 @@ export default function Login() {
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.email && formik.touched.email
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -83,10 +90,11 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="Mật khẩu"
-              className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.password && formik.touched.password
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
