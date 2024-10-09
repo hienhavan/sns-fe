@@ -25,11 +25,12 @@ export default function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        // Gọi dịch vụ đăng nhập, sẽ trả về một token
+        // // Gọi dịch vụ đăng nhập, sẽ trả về một token
         const token = await login(values);
 
         // Dispatch hành động loginSuccess với dữ liệu người dùng hoặc token
-        dispatch(loginSuccess(token));
+        dispatch(login(values));
+        dispatch(loginSuccess(token))
 
         // Tùy chọn lưu token vào local storage
         localStorage.setItem('token', token);
@@ -66,11 +67,10 @@ export default function Login() {
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.email && formik.touched.email
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -83,11 +83,10 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="Mật khẩu"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.password && formik.touched.password
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

@@ -30,13 +30,13 @@ const App = () => {
                 </PrivateRoute>
               }
             />
+            <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             {/* Bảo vệ các route sau bằng PrivateRoute */}
             <Route
               path="/update-profile"
               element={
-                <PrivateRoute>
-                  <UpdateProfile />
-                </PrivateRoute>
+
+                <UpdateProfile />
               }
             />
             <Route
