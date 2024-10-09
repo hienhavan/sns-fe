@@ -9,7 +9,8 @@ import ListFreind from './ListFriend';
 const Profile = () => {
   const { getUser } = userService;
   const [user, setUser] = useState({
-    username: '',
+
+    name: '',
     email: '',
     profile_picture: '',
     biography: '',
@@ -51,8 +52,10 @@ const Profile = () => {
             <h2 className="font-semibold">
               {' '}
               {user.username} Hcheng dev
+            <h2 className="font-semibold"> {user.name} Hcheng dev</h2>
+            <h2 className="font-semibold text-blue-600">
+              {user.email}email@gmail.com
             </h2>
-            <h2 className="font-semibold text-blue-600">email@gmail.com</h2>
             <Link
               to="/update-profile"
               className="text-x my-3 cursor-pointer rounded-lg border bg-slate-200 p-1 text-center font-semibold text-slate-600 hover:bg-slate-100"

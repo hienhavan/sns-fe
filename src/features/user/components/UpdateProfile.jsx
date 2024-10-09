@@ -8,12 +8,14 @@ import { AiOutlineCamera } from 'react-icons/ai';
 const { updateUser, getUser } = userService;
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
+
+  name: Yup.string().required('Name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
   gender: Yup.string().required('Gender is required'),
   birthday: Yup.date().required('Birthday is required'),
-  biography: Yup.string()
-    .max(500, 'Biography must be at most 500 characters'),
+  biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
   phone: Yup.string()
     .matches(/^0[0-9]{9}$/, 'Số điện thoại phải có 10 chữ số')
