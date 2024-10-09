@@ -9,6 +9,7 @@ import ListFreind from './ListFriend';
 const Profile = () => {
   const { getUser } = userService;
   const [user, setUser] = useState({
+
     name: '',
     email: '',
     profile_picture: '',
@@ -48,6 +49,9 @@ const Profile = () => {
             </label>
           </div>
           <div className="mt-2 flex flex-col">
+            <h2 className="font-semibold">
+              {' '}
+              {user.username} Hcheng dev
             <h2 className="font-semibold"> {user.name} Hcheng dev</h2>
             <h2 className="font-semibold text-blue-600">
               {user.email}email@gmail.com
@@ -71,7 +75,7 @@ const Profile = () => {
             <span className="pl-1 text-slate-600">10 following</span>
           </h3>
           <h3 className="cursor-pointer text-base sm:text-xl">
-            {}
+            { }
             <span className="pl-1 text-slate-600">10 followers</span>
           </h3>
         </div>

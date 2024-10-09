@@ -8,6 +8,7 @@ import { AiOutlineCamera } from 'react-icons/ai';
 const { updateUser, getUser } = userService;
 
 const validationSchema = Yup.object({
+
   name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Invalid email address')
@@ -16,6 +17,9 @@ const validationSchema = Yup.object({
   birthday: Yup.date().required('Birthday is required'),
   biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
+  phone: Yup.string()
+    .matches(/^0[0-9]{9}$/, 'Số điện thoại phải có 10 chữ số')
+    .required('Vui lòng nhập số điện thoại'),
 });
 
 const getUserFromLocalStorage = () => {
@@ -32,11 +36,11 @@ const UpdateProfile = () => {
   const [user, setUser] = React.useState({
     profile_picture: '',
     name: '',
-    email: '',
     gender: '',
     birthday: '',
     biography: '',
     address: '',
+    phone: ''
   });
   const navigate = useNavigate();
   const storedUser = getUserFromLocalStorage();
@@ -113,22 +117,22 @@ const UpdateProfile = () => {
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
                 <ErrorMessage
-                  name="address"
+                  name="name"
                   component="div"
                   className="text-red-600"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block">Email Address</label>
+                <label className="mb-1 block">Phone Number</label>
                 <Field
-                  name="email"
-                  type="email"
-                  placeholder="Email Address"
+                  name="phone"
+                  type="number"
+                  placeholder="Your phone number"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
                 <ErrorMessage
-                  name="email"
+                  name="phone"
                   component="div"
                   className="text-red-600"
                 />
@@ -137,7 +141,7 @@ const UpdateProfile = () => {
               <div>
                 <label className="mb-1 block">Gender</label>
                 <div className="flex space-x-4">
-                  {['Male', 'Female'].map((gender, index) => (
+                  {['Male', 'Female', 'Custom'].map((gender, index) => (
                     <div key={index} className="flex items-center">
                       <Field
                         type="radio"

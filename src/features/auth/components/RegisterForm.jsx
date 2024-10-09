@@ -21,14 +21,13 @@ export default function Register() {
       .required('Vui lòng xác nhận mật khẩu'),
     birthday: date().required('Vui lòng nhập ngày sinh').nullable(),
     phone: string()
-      .matches(/^[0-9]{10}$/, 'Số điện thoại phải có 10 chữ số')
+      .matches(/^[0-9]{9}$/, 'Số điện thoại phải có 10 chữ số')
       .required('Vui lòng nhập số điện thoại'),
   });
 
   const formik = useFormik({
     initialValues: {
-      firstname: '',
-      lastname: '',
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -140,11 +139,10 @@ export default function Register() {
             <input
               type="date"
               name="birthday"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.birthday && formik.touched.birthday
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.birthday && formik.touched.birthday
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.birthday}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -156,14 +154,13 @@ export default function Register() {
             )}
 
             <input
-              type="text"
+              type="number`"
               name="phone"
               placeholder="Số điện thoại"
-              className={`mb-4 w-full border p-3 ${
-                formik.errors.phone && formik.touched.phone
-                  ? 'border-red-500'
-                  : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${formik.errors.phone && formik.touched.phone
+                ? 'border-red-500'
+                : 'border-gray-300'
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
