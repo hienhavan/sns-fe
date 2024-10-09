@@ -22,6 +22,14 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
             <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             {/* Bảo vệ các route sau bằng PrivateRoute */}
             <Route

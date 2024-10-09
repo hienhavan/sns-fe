@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../../../src/components/NavBar';
 import PostList from '../../../src/features/post/components/PostList';
+import ListFreind from '../user/components/ListFriend';
 
 export default function Home() {
   // TODO: is this needed?
@@ -12,7 +13,9 @@ export default function Home() {
       <div className="space-between flex flex-col sm:ml-5">
         <PostList />
       </div>
-      <div className="w-[20%]"></div>
+      <div className="w-[20%]">
+        <ListFreind />
+      </div>
     </div>
   );
 }

@@ -16,6 +16,7 @@ export default function Login() {
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+      .max(32, 'Mật khẩu tối đã 32 ký tự')
       .required('Vui lòng nhập mật khẩu'),
   });
 
@@ -51,10 +52,10 @@ export default function Login() {
         <div className="flex w-8/12 flex-col items-center space-x-6 lg:flex-row">
           <div className="mb-8 text-center lg:mb-0 lg:text-left">
             <h1 className="text-4xl font-bold text-customGray lg:text-5xl">
-              Mạng xã hội
+              Social media
             </h1>
             <p className="mt-4 text-lg font-medium text-gray-700 lg:text-xl">
-              Kết nối với bạn bè và thế giới xung quanh bạn trên Social.
+              Connect with friends and the world around you on Social.
             </p>
           </div>
 
@@ -100,11 +101,11 @@ export default function Login() {
               type="submit"
               className="w-full rounded-lg bg-customGray py-3 font-semibold text-white transition duration-300 hover:bg-blue-500"
             >
-              Đăng Nhập
+              Login
             </button>
 
             <a href="#" className="mt-4 block text-center text-blue-600">
-              Quên Mật Khẩu?
+              Forgot password?
             </a>
 
             <hr className="my-6 border-gray-200" />
@@ -113,12 +114,12 @@ export default function Login() {
               to={'/register'}
               className="block w-full rounded-lg bg-green-600 py-3 text-center font-semibold text-white transition duration-300 hover:bg-green-500"
             >
-              Tạo Tài Khoản Mới
+              Create a new account
             </Link>
             <div className="my-6 flex items-center justify-center">
               <hr className="w-10 border-gray-300" />
               <p className="mx-4 text-center text-xs text-gray-700">
-                Hoặc Đăng Nhập bằng
+                Or Log in with
               </p>
               <hr className="w-10 border-gray-300" />
             </div>

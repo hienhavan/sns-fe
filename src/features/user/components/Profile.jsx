@@ -4,6 +4,7 @@ import userService from '../services/user';
 import { useEffect, useState } from 'react';
 import NavBar from '../../../../src/components/NavBar';
 import { Link } from 'react-router-dom';
+import ListFreind from './ListFriend';
 
 const Profile = () => {
   const { getUser } = userService;
@@ -39,10 +40,11 @@ const Profile = () => {
             <img
               src={'../../../../public/login_img.jpg'}
               className="h-32 w-32 rounded-full"
-              alt="avatar"
+              alt="profile_picture"
+              name="profile_picture"
             />
             <label className="absolute bottom-[0.25rem] right-[0.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
-              <input className="hidden" type="file" />
+              <input className="hidden" type="file" accept="image/*" />
               <AiOutlineCamera className="size-5" />
             </label>
           </div>
@@ -77,7 +79,9 @@ const Profile = () => {
         </div>
         <UserPost />
       </div>
-      <div className="w-[20%]"></div>
+      <div className="w-[20%]">
+        <ListFreind />
+      </div>
     </div>
   );
 };

@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
 
 const getTokenFromLocalStorage = () => {
     const user = window.localStorage.getItem('sns-user');
@@ -38,5 +40,56 @@ const getUser = async (id) => {
         throw error;
     }
 };
+const unFollowUser = createAsyncThunk("user/unfollow", async ({ followUserId, token }, { rejectWithValue }) => {
+    try {
+        const { status, data } = await axios.delete(`/api/v1/me/following/${followUserId}`,
+            {},
+            {
+                headers: { authorization: token }
+            });
 
+        if (status === 200) {
+            return data;
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data.errors[0]);
+    }
+});
+
+const followUser = createAsyncThunk("user/follow", 
+    async ({ followUserId, token }, { rejectWithValue }) => {
+        try {
+            const { status, data } = await axios.post(`/api/v1/me/following/${followUserId}`,
+                {},
+                {
+                    headers: { authorization: token }
+                });
+
+            if (status === 200) {
+                return data;
+            }
+        } catch (error) {
+            return rejectWithValue(error.response.data.errors[0]);
+    }
+});
+
+const getFollowing = createAsyncThunk("user/following",
+    async ({ userId, token }, { rejectWithValue }) => {
+        try {
+            const { status, data } = await axios.get(`/api/v1/me/${userId}/following`,
+
+                {
+                    headers: { authorization: token }
+                });
+
+            if (status === 200) {
+                return data;
+            }
+        } catch (error) {
+            return rejectWithValue(error.response.data.errors[0]);
+        }
+    });
+
+
+export default {updateUser, getUser, unFollowUser, followUser, getFollowing};
 export default { updateUser, getUser };
