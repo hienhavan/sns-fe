@@ -8,15 +8,13 @@ import { AiOutlineCamera } from 'react-icons/ai';
 const { updateUser, getUser } = userService;
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
+  name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
   gender: Yup.string().required('Gender is required'),
   birthday: Yup.date().required('Birthday is required'),
-  biography: Yup.string()
-    .max(500, 'Biography must be at most 500 characters'),
+  biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
 });
 
@@ -33,15 +31,13 @@ const getUserFromLocalStorage = () => {
 const UpdateProfile = () => {
   const [user, setUser] = React.useState({
     profile_picture: '',
-    firstname: '',
-    lastname: '',
+    name: '',
     email: '',
     gender: '',
     birthday: '',
     biography: '',
     address: '',
   });
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
@@ -107,36 +103,20 @@ const UpdateProfile = () => {
                   <AiOutlineCamera className="size-5" />
                 </label>
               </div>
-              <div className="flex space-x-2.5">
-                <div>
-                  <label className="mb-1 block">First Name</label>
-                  <Field
-                    name="firstName"
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
-                  />
-                  <ErrorMessage
-                    name="firstName"
-                    component="div"
-                    className="text-red-600"
-                  />
-                </div>
 
-                <div>
-                  <label className="mb-1 block">Last Name</label>
-                  <Field
-                    name="lastName"
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
-                  />
-                  <ErrorMessage
-                    name="lastName"
-                    component="div"
-                    className="text-red-600"
-                  />
-                </div>
+              <div>
+                <label className="mb-1 block">Name</label>
+                <Field
+                  name="name"
+                  type="text"
+                  placeholder="Your name"
+                  className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
+                />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
