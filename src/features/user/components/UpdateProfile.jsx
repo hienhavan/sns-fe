@@ -1,52 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import userService from '../services/user';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const { updateUser, getUser } = userService;
 
 const validationSchema = Yup.object({
-  firstname: Yup.string().required('First name is required'),
-  lastname: Yup.string().required('Last name is required'),
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
   gender: Yup.string().required('Gender is required'),
   birthday: Yup.date().required('Birthday is required'),
-  biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
+  biography: Yup.string()
+    .max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
 });
 
+const getUserFromLocalStorage = () => {
+  try {
+    const user = window.localStorage.getItem('sns-user');
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error('Failed to parse user from localStorage:', error);
+    return null;
+  }
+};
+
 const UpdateProfile = () => {
-  const [user, setUser] = React.useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    gender: '',
-    birthday: '',
-    biography: '',
-    address: '',
-  });
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const storedUser = getUserFromLocalStorage();
+  const id = storedUser ? storedUser.id : null;
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await getUser(1);
-        setUser(response);
-      } catch (err) {
-        console.error('Error fetching user:', err);
+      if (id) {
+        try {
+          const response = await getUser(id);
+          setUser(response);
+        } catch (err) {
+          console.error('Error fetching user:', err);
+        }
       }
     };
     fetchData();
-  }, []);
-
-  const navigate = useNavigate();
+  }, [id]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log('Submitting form with values:', values);
     try {
-      await updateUser(values);
+      await updateUser(id, values);
       alert('Profile updated successfully');
       navigate('/me');
     } catch (error) {
@@ -82,13 +88,13 @@ const UpdateProfile = () => {
                 <div>
                   <label className="mb-1 block">First Name</label>
                   <Field
-                    name="firstname"
+                    name="firstName"
                     type="text"
                     placeholder="First Name"
                     className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                   />
                   <ErrorMessage
-                    name="firstname"
+                    name="firstName"
                     component="div"
                     className="text-red-600"
                   />
@@ -97,13 +103,13 @@ const UpdateProfile = () => {
                 <div>
                   <label className="mb-1 block">Last Name</label>
                   <Field
-                    name="lastname"
+                    name="lastName"
                     type="text"
                     placeholder="Last Name"
                     className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                   />
                   <ErrorMessage
-                    name="lastname"
+                    name="lastName"
                     component="div"
                     className="text-red-600"
                   />
@@ -128,7 +134,7 @@ const UpdateProfile = () => {
               <div>
                 <label className="mb-1 block">Gender</label>
                 <div className="flex space-x-4">
-                  {['Male', 'Female', 'Custom'].map((gender, index) => (
+                  {['Male', 'Female'].map((gender, index) => (
                     <div key={index} className="flex items-center">
                       <Field
                         type="radio"
@@ -203,6 +209,7 @@ const UpdateProfile = () => {
                 <button
                   className="rounded-full bg-gray-300 px-4 py-2 text-gray-700 transition duration-300 hover:bg-gray-400"
                   type="button"
+                  onClick={() => navigate('/me')}
                 >
                   Cancel
                 </button>
