@@ -32,7 +32,7 @@ export default function Login() {
         dispatch(loginSuccess(token))
 
         // Tùy chọn lưu token vào local storage
-        // localStorage.setItem('token', token);
+        localStorage.setItem('token', token);
 
         // Chuyển hướng đến trang chính hoặc trang khác
         navigate('/');
