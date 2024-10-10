@@ -42,9 +42,9 @@ const App = () => {
             <Route
               path="/me"
               element={
-                <PrivateRoute>
+
                   <UserProfile />
-                </PrivateRoute>
+
               }
             />
           </Route>

@@ -49,7 +49,7 @@ const Profile = () => {
             </label>
           </div>
           <div className="mt-2 flex flex-col">
-            <h2 className="font-semibold">
+            <h2 className="font-semibold"></h2>
               {' '}
               {user.username} Hcheng dev
             <h2 className="font-semibold"> {user.name} Hcheng dev</h2>
