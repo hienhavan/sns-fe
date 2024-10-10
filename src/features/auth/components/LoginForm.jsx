@@ -28,18 +28,12 @@ export default function Login() {
       try {
         dispatch(login(values));
         navigate("/");
-        console.log(values);
-        try {
-          dispatch(login(values));
-          navigate("/");
-        } catch (error) {
-          // console.log('formik login failed ', error);
-          alert(
-            'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
-          );
-        }
-      },
-    });
+      } catch (error) {
+        console.log(error);
+
+      }
+    },
+  });
 
   return (
     <>

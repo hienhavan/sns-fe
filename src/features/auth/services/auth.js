@@ -10,13 +10,14 @@ export const login = createAsyncThunk(
         password,
       });
       if (response.status === 200) {
-        console.log(email, password + 'aaaaaaaaaaaaaa');
-        console.log('longin thunk: ', response.data);
         window.localStorage.setItem('sns_user', JSON.stringify(response.data));
         return response.data;
       }
     } catch (error) {
       console.error('Thunk login:', error);
+      alert(
+        'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
+      );
     }
   },
 );
