@@ -91,5 +91,23 @@ const getFollowing = createAsyncThunk("user/following",
         }
     });
 
+    const updatePassWord = createAsyncThunk("user/update-password",
+        async ({ userId, oldPassword, newPassword, token }, { rejectWithValue }) => {
+            try {
+                const { status, data } = await axios.put(`/api/v1/me/${userId}/password`, {
+                    oldPassword,
+                    newPassword
+                },
+                    {
+                        headers: { authorization: token }
+                    });
 
-export default { updateUser, getUser, unFollowUser, followUser, getFollowing };
+                if (status === 200) {
+                    return data;
+                }
+            } catch (error) {
+                return rejectWithValue(error.response.data.errors[0]);
+            }
+        });
+
+export default { updateUser, getUser, unFollowUser, followUser, getFollowing, updatePassWord };
