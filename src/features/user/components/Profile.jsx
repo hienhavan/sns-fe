@@ -60,7 +60,7 @@ const Profile = () => {
                   ? `/apihost/image/${user.profilePicture}`
                   : ''
               }
-              className="h-32 w-32 rounded-full"
+              className="h-32 w-32 rounded-full object-cover"
               alt="profile_picture"
             />
             <label className="absolute bottom-[0.25rem] right-[0.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
@@ -90,7 +90,7 @@ const Profile = () => {
             <span className="pl-1 text-slate-600">10 following</span>
           </h3>
           <h3 className="cursor-pointer text-base sm:text-xl">
-            {}
+            { }
             <span className="pl-1 text-slate-600">10 followers</span>
           </h3>
         </div>

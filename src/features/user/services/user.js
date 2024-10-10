@@ -30,7 +30,7 @@ const updateUser = async (id, user) => {
 const getUser = async (id) => {
     const token = getTokenFromLocalStorage();
     try {
-        const response = await axios.get(`/apihost/api/v1/${id}`, {
+        const response = await axios.get(`/apihost/api/v1/me/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
