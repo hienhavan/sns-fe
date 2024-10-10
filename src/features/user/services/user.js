@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
 const getTokenFromLocalStorage = () => {
-    const user = window.localStorage.getItem('sns-user');
+    const user = window.localStorage.getItem('sns_user');
     if (user) {
         const parsedUser = JSON.parse(user);
         return parsedUser.token;
@@ -16,7 +16,8 @@ const updateUser = async (id, user) => {
     try {
         const response = await axios.put(`/apihost/api/v1/usersUpdate/${id}`, user, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
             }
         });
         return response.data;

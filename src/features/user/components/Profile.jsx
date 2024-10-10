@@ -50,8 +50,8 @@ const Profile = () => {
           </div>
           <div className="mt-2 flex flex-col">
             <h2 className="font-semibold"></h2>
-              {' '}
-              {user.username} Hcheng dev
+            {' '}
+            {user.username} Hcheng dev
             <h2 className="font-semibold"> {user.name} Hcheng dev</h2>
             <h2 className="font-semibold text-blue-600">
               {user.email}email@gmail.com

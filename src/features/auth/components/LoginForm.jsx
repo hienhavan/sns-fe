@@ -29,9 +29,8 @@ export default function Login() {
         dispatch(login(values));
         navigate("/");
       } catch (error) {
-        alert(
-          'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
-        );
+        console.log(error);
+
       }
     },
   });
@@ -60,7 +59,7 @@ export default function Login() {
               className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
                 ? 'border-red-500'
                 : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -76,7 +75,7 @@ export default function Login() {
               className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
                 ? 'border-red-500'
                 : 'border-gray-300'
-              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

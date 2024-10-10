@@ -8,23 +8,20 @@ import { AiOutlineCamera } from 'react-icons/ai';
 const { updateUser, getUser } = userService;
 
 const validationSchema = Yup.object({
-
   name: Yup.string().required('Name is required'),
-  email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+  phone: Yup.string()
+    .trim()
+    .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số')
+    .required('Vui lòng nhập số điện thoại'),
   gender: Yup.string().required('Gender is required'),
   birthday: Yup.date().required('Birthday is required'),
   biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
-  phone: Yup.string()
-    .matches(/^0[0-9]{9}$/, 'Số điện thoại phải có 10 chữ số')
-    .required('Vui lòng nhập số điện thoại'),
 });
 
 const getUserFromLocalStorage = () => {
   try {
-    const user = window.localStorage.getItem('sns-user');
+    const user = window.localStorage.getItem('sns_user');
     return user ? JSON.parse(user) : null;
   } catch (error) {
     console.error('Failed to parse user from localStorage:', error);
@@ -33,8 +30,8 @@ const getUserFromLocalStorage = () => {
 };
 
 const UpdateProfile = () => {
-  const [user, setUser] = React.useState({
-    profile_picture: '',
+  const [user, setUser] = useState({
+    profilePicture: '',
     name: '',
     gender: '',
     birthday: '',
@@ -51,7 +48,15 @@ const UpdateProfile = () => {
       if (id) {
         try {
           const response = await getUser(id);
-          setUser(response);
+          setUser({
+            profilePicture: response.profilePicture || '',
+            name: response.name || '',
+            gender: response.gender || '',
+            birthday: response.birthday || '',
+            biography: response.biography || '',
+            address: response.address || '',
+            phone: response.phone || ''
+          });
         } catch (err) {
           console.error('Error fetching user:', err);
         }
@@ -61,9 +66,22 @@ const UpdateProfile = () => {
   }, [id]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('Submitting form with values:', values);
+    const formData = new FormData();
+    const fileInput = document.querySelector('input[type="file"]');
+
+    // Thêm tất cả các trường vào formData
+    formData.append('name', values.name);
+    formData.append('phone', values.phone);
+    formData.append('gender', values.gender);
+    formData.append('birthday', values.birthday);
+    formData.append('biography', values.biography);
+    formData.append('address', values.address);
+    if (fileInput.files[0]) {
+      formData.append('profilePicture', fileInput.files[0]);
+    }
+
     try {
-      await updateUser(id, values);
+      await updateUser(id, formData);
       alert('Profile updated successfully');
       navigate('/me');
     } catch (error) {
@@ -89,7 +107,15 @@ const UpdateProfile = () => {
       <div className="stg-form-area">
         <Formik
           enableReinitialize
-          initialValues={user}
+          initialValues={{
+            profilePicture: user.profilePicture || '',
+            name: user.name || '',
+            phone: user.phone || '',
+            gender: user.gender || '',
+            birthday: user.birthday || '',
+            biography: user.biography || '',
+            address: user.address || '',
+          }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -97,13 +123,25 @@ const UpdateProfile = () => {
             <Form className="c-form space-y-4">
               <div className="relative">
                 <img
-                  src={'../../../../public/login_img.jpg'}
+                  src={user.profilePicture ? `/apihost/image/${user.profilePicture}` : ''}
                   className="h-32 w-32 rounded-full"
                   alt="profile_picture"
-                  name="profile_picture"
                 />
                 <label className="absolute bottom-[0.25rem] right-[47.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
-                  <input className="hidden" type="file" accept="image/*" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files[0];
+                      if (file) {
+                        setUser((prevState) => ({
+                          ...prevState,
+                          profilePicture: URL.createObjectURL(file),
+                        }));
+                      }
+                    }}
+                    className="hidden"
+                  />
                   <AiOutlineCamera className="size-5" />
                 </label>
               </div>
@@ -116,26 +154,18 @@ const UpdateProfile = () => {
                   placeholder="Your name"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="name" component="div" className="text-red-600" />
               </div>
 
               <div>
                 <label className="mb-1 block">Phone Number</label>
                 <Field
                   name="phone"
-                  type="number"
+                  type="text"
                   placeholder="Your phone number"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage
-                  name="phone"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="phone" component="div" className="text-red-600" />
               </div>
 
               <div>
@@ -143,21 +173,12 @@ const UpdateProfile = () => {
                 <div className="flex space-x-4">
                   {['Male', 'Female', 'Custom'].map((gender, index) => (
                     <div key={index} className="flex items-center">
-                      <Field
-                        type="radio"
-                        name="gender"
-                        value={gender}
-                        className="mr-2"
-                      />
+                      <Field type="radio" name="gender" value={gender} className="mr-2" />
                       <label>{gender}</label>
                     </div>
                   ))}
                 </div>
-                <ErrorMessage
-                  name="gender"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="gender" component="div" className="text-red-600" />
               </div>
 
               <div>
@@ -167,11 +188,7 @@ const UpdateProfile = () => {
                   type="date"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage
-                  name="birthday"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="birthday" component="div" className="text-red-600" />
               </div>
 
               <div>
@@ -183,11 +200,7 @@ const UpdateProfile = () => {
                   placeholder="Write something about yourself"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage
-                  name="biography"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="biography" component="div" className="text-red-600" />
               </div>
 
               <div>
@@ -198,11 +211,7 @@ const UpdateProfile = () => {
                   placeholder="Your address"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage
-                  name="address"
-                  component="div"
-                  className="text-red-600"
-                />
+                <ErrorMessage name="address" component="div" className="text-red-600" />
               </div>
 
               <div className="float-right flex space-x-4 pt-4">
