@@ -1,6 +1,6 @@
 // postSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllPosts as fetchPosts } from '../services/post.js';
+import { getAllPosts as fetchPosts } from '../services/post';
 
 export const getAllPosts = createAsyncThunk(
   'post/getAllPosts',
@@ -14,7 +14,6 @@ export const getAllPosts = createAsyncThunk(
     }
   }
 );
-
 
 const initialState = {
   isLoading: false,

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../store/postSlice';
 import Post from './Post';
+import PostForm from './PostForm.jsx';
 
 const PostList = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,16 @@ const PostList = () => {
 
   return (
     <div>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      <div>
+        <PostForm/>
+      </div>
+      <div>
+        {posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </div>
     </div>
+
   );
 };
 
