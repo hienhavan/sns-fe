@@ -6,7 +6,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import UpdateProfile from './features/user/components/UpdateProfile';
 import UserProfile from './features/user/components/Profile';
-import PrivateRoute from './components/PrivateRoute';
 
 const Layout = () => (
   <>
@@ -25,12 +24,9 @@ const App = () => {
             <Route
               path="/"
               element={
-                <PrivateRoute>
                   <Home />
-                </PrivateRoute>
               }
             />
-            <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             {/* Bảo vệ các route sau bằng PrivateRoute */}
             <Route
               path="/update-profile"
@@ -42,7 +38,6 @@ const App = () => {
             <Route
               path="/me"
               element={
-
                   <UserProfile />
 
               }
