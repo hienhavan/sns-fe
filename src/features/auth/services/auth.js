@@ -14,14 +14,11 @@ export const login = createAsyncThunk(
         return response.data;
       }
     } catch (error) {
-      console.error('Thunk login:', error);
-      alert(
-        'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
-      );
+      // console.log(error.message);
+      return rejectWithValue('wrong usename or password!');
     }
   },
 );
-
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -33,13 +30,13 @@ export const register = createAsyncThunk(
         password,
         name,
         birthday,
-        phone
+        phone,
       });
       alert('Registration successful!');
       window.localStorage.setItem('sns_user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
-      console.error('Error during login:', error);
+      return rejectWithValue('bad credentials!');
     }
   },
 );
