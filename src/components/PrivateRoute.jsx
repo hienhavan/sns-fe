@@ -2,15 +2,13 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useSelector((state) => {
-    console.log('state ', state.auth)
+  const auth = useSelector((state) => {
     return state.auth
   }); // kiểm tra trạng thái đăng nhập từ Redux store
 
-  console.log('private route ', isAuthenticated)
-  console.log()
+  console.log('private route auth ', auth)
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return auth.isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

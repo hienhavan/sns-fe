@@ -7,10 +7,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../store/authSlice';
+import { useEffect } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate])
 
   const loginSchema = object({
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
@@ -24,10 +32,9 @@ export default function Login() {
     initialValues: { email: '', password: '' },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log(values);
       try {
         dispatch(login(values));
-        navigate("/");
+        // console.log('navigate to /')
       } catch (error) {
         console.log(error);
 

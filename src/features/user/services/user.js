@@ -14,7 +14,7 @@ const getTokenFromLocalStorage = () => {
 const updateUser = async (id, user) => {
     const token = getTokenFromLocalStorage();
     try {
-        const response = await axios.put(`/apihost/api/v1/usersUpdate/${id}`, user, {
+        const response = await axios.put(`/apihost/api/v1/${id}`, user, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
@@ -30,7 +30,7 @@ const updateUser = async (id, user) => {
 const getUser = async (id) => {
     const token = getTokenFromLocalStorage();
     try {
-        const response = await axios.get(`/apihost/api/v1/user/${id}`, {
+        const response = await axios.get(`/apihost/api/v1/me/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

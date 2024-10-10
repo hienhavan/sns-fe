@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
-import { logout } from '../features/auth/store/authSlice'
+import { logout } from '../features/auth/store/authSlice';
+import userService from '../../src/features/user/services/user';
+import { useEffect, useState } from 'react';
+
 import {
   faUser,
   faPencilAlt,
@@ -10,8 +13,39 @@ import { Link } from 'react-router-dom';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
+  const getUserFromLocalStorage = () => {
+    try {
+      const user = window.localStorage.getItem('sns_user');
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.error('Failed to parse user from localStorage:', error);
+      return null;
+    }
+  };
   const dispatch = useDispatch();
-
+  const storedUser = getUserFromLocalStorage();
+  const id = storedUser ? storedUser.id : null;
+  const { getUser } = userService;
+  const [user, setUser] = useState({
+    name: '',
+    profile_picture: '',
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        try {
+          const response = await getUser(id);
+          setUser({
+            profilePicture: response.profilePicture || '',
+            name: response.name || '',
+          });
+        } catch (err) {
+          console.error('Error fetching user:', err);
+        }
+      }
+    };
+    fetchData();
+  }, []);
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -39,12 +73,17 @@ const Header = () => {
 
           <div className="user-img group relative flex w-[20%] cursor-pointer items-center justify-center leading-[65px]">
             <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
-              Jack Carter
+              {user.name}
             </h5>
+
             <img
-              src=""
-              alt=""
-              className="h-[50px] w-[50px] rounded-full border-2 border-white border-opacity-80"
+              src={
+                user.profilePicture
+                  ? `/apihost/image/${user.profilePicture}`
+                  : ''
+              }
+              className="h-[50px] w-[50px] rounded-full border-2 border-white border-opacity-80 object-cover"
+              alt="Ảnh đại diện"
               style={{ transform: 'scale(0.8)' }}
             />
             <span className="status f-online absolute bottom-2 right-1"></span>
@@ -53,7 +92,7 @@ const Header = () => {
               <ul className="log-out">
                 <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
                   <Link
-                    to="/login"
+                    to="/me"
                     className="flex h-8 items-center pl-5 text-gray-600"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> View
@@ -70,7 +109,11 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link to="/login" className="flex h-8 items-center text-gray-600" onClick={handleLogout} >
+                  <Link
+                    to="/login"
+                    className="flex h-8 items-center text-gray-600"
+                    onClick={handleLogout}
+                  >
                     <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
                     out
                   </Link>

@@ -6,6 +6,7 @@ const getUserFromLocalStorage = () => {
   return user;
 }
 
+
 const initialState = {
   user: getUserFromLocalStorage(),
   isAuthenticated: getUserFromLocalStorage() ? true : false,
@@ -37,7 +38,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
-        console.log('state on login successful', action)
+        console.log('state on login successful', action);
       })
       .addCase(login.rejected, (state) => {
         state.isAuthenticated = false;

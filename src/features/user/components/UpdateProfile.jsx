@@ -134,29 +134,37 @@ const UpdateProfile = () => {
         >
           {({ isSubmitting }) => (
             <Form className="c-form space-y-4">
-              <div className="relative">
-                <label className="absolute bottom-[0.25rem] right-[47.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
-                  {/* Kiểm tra nếu có ảnh xem trước tạm thời thì hiển thị */}
-                  {previewImage ? (
-                    <img
-                      src={previewImage}
-                      className="h-32 w-32 rounded-full"
-                      alt="Xem trước tạm thời"
-                    />
-                  ) : (
-                    // Nếu không có ảnh xem trước, hiển thị ảnh đã tải lên
-                    <img
-                      src={
-                        user.profilePicture
-                          ? `/apihost/image/${user.profilePicture}`
-                          : ''
-                      }
-                      className="h-32 w-32 rounded-full"
-                      alt="Ảnh đại diện đã tải lên"
-                    />
-                  )}
+              <div className="flex items-center">
+                {previewImage ? (
+                  <img
+                    src={previewImage}
+                    className="h-32 w-32 rounded-full object-cover"
+                    alt="Xem trước tạm thời"
+                  />
+                ) : (
+                  // Nếu không có ảnh xem trước, hiển thị ảnh đã tải lên
+                  <img
+                    src={
+                      user.profilePicture
+                        ? `/apihost/image/${user.profilePicture}`
+                        : ''
+                    }
+                    className="h-32 w-32 rounded-full object-cover"
+                    alt="Ảnh đại diện đã tải lên"
+                  />
+                )}
 
+                <button
+                  type="button"
+                  className="my-3 ml-4 h-[30px] cursor-pointer rounded-lg border bg-slate-200 p-1 text-center text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                  onClick={() => {
+                    // Kích hoạt chọn file khi click vào button
+                    document.getElementById('uploadImage').click();
+                  }}
+                >
+                  {/* Input file ẩn */}
                   <input
+                    id="uploadImage" // Đặt id để tham chiếu từ button
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
@@ -172,11 +180,9 @@ const UpdateProfile = () => {
                     }}
                     className="hidden"
                   />
-
-                  {/* Hiển thị ảnh đại diện đã được tải lên nếu có */}
-
-                  <AiOutlineCamera className="size-5" />
-                </label>
+                  {/* Nút với chữ */}
+                  Thay đổi ảnh
+                </button>
               </div>
 
               <div>
