@@ -14,7 +14,9 @@ const validationSchema = Yup.object({
     .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số')
     .required('Vui lòng nhập số điện thoại'),
   gender: Yup.string().required('Gender is required'),
-  birthday: Yup.date().required('Birthday is required'),
+  birthday: Yup.date()
+    .required('Birthday is required')
+    .max(new Date(), 'Ngày sinh không được lớn hơn ngày hiện tại'),
   biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
 });
@@ -40,17 +42,6 @@ const UpdateProfile = () => {
     phone: '',
   });
   const [previewImage, setPreviewImage] = useState(null);
-  const [profilePicture, setProfilePicture] = useState('');
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result); // Lưu URL tạm thời của ảnh
-      };
-      reader.readAsDataURL(file); // Đọc file dưới dạng URL Data
-    }
-  };
 
   const navigate = useNavigate();
   const storedUser = getUserFromLocalStorage();
