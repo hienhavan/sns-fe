@@ -37,8 +37,21 @@ const UpdateProfile = () => {
     birthday: '',
     biography: '',
     address: '',
-    phone: ''
+    phone: '',
   });
+  const [previewImage, setPreviewImage] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result); // Lưu URL tạm thời của ảnh
+      };
+      reader.readAsDataURL(file); // Đọc file dưới dạng URL Data
+    }
+  };
+
   const navigate = useNavigate();
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
@@ -55,7 +68,7 @@ const UpdateProfile = () => {
             birthday: response.birthday || '',
             biography: response.biography || '',
             address: response.address || '',
-            phone: response.phone || ''
+            phone: response.phone || '',
           });
         } catch (err) {
           console.error('Error fetching user:', err);
@@ -122,26 +135,46 @@ const UpdateProfile = () => {
           {({ isSubmitting }) => (
             <Form className="c-form space-y-4">
               <div className="relative">
-                <img
-                  src={user.profilePicture ? `/apihost/image/${user.profilePicture}` : ''}
-                  className="h-32 w-32 rounded-full"
-                  alt="profile_picture"
-                />
                 <label className="absolute bottom-[0.25rem] right-[47.25rem] h-8 w-8 cursor-pointer rounded-full border-2 border-white bg-slate-200 fill-blue-600 stroke-0 p-1 text-2xl hover:bg-slate-300">
+                  {/* Kiểm tra nếu có ảnh xem trước tạm thời thì hiển thị */}
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      className="h-32 w-32 rounded-full"
+                      alt="Xem trước tạm thời"
+                    />
+                  ) : (
+                    // Nếu không có ảnh xem trước, hiển thị ảnh đã tải lên
+                    <img
+                      src={
+                        user.profilePicture
+                          ? `/apihost/image/${user.profilePicture}`
+                          : ''
+                      }
+                      className="h-32 w-32 rounded-full"
+                      alt="Ảnh đại diện đã tải lên"
+                    />
+                  )}
+
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
                       const file = event.currentTarget.files[0];
                       if (file) {
-                        setUser((prevState) => ({
-                          ...prevState,
-                          profilePicture: URL.createObjectURL(file),
-                        }));
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          // Cập nhật URL xem trước tạm thời
+                          setPreviewImage(reader.result);
+                        };
+                        reader.readAsDataURL(file); // Đọc file để tạo URL
                       }
                     }}
                     className="hidden"
                   />
+
+                  {/* Hiển thị ảnh đại diện đã được tải lên nếu có */}
+
                   <AiOutlineCamera className="size-5" />
                 </label>
               </div>
@@ -154,7 +187,11 @@ const UpdateProfile = () => {
                   placeholder="Your name"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage name="name" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
@@ -165,7 +202,11 @@ const UpdateProfile = () => {
                   placeholder="Your phone number"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage name="phone" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="phone"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
@@ -173,12 +214,21 @@ const UpdateProfile = () => {
                 <div className="flex space-x-4">
                   {['Male', 'Female', 'Custom'].map((gender, index) => (
                     <div key={index} className="flex items-center">
-                      <Field type="radio" name="gender" value={gender} className="mr-2" />
+                      <Field
+                        type="radio"
+                        name="gender"
+                        value={gender}
+                        className="mr-2"
+                      />
                       <label>{gender}</label>
                     </div>
                   ))}
                 </div>
-                <ErrorMessage name="gender" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="gender"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
@@ -188,7 +238,11 @@ const UpdateProfile = () => {
                   type="date"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage name="birthday" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="birthday"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
@@ -200,7 +254,11 @@ const UpdateProfile = () => {
                   placeholder="Write something about yourself"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage name="biography" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="biography"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div>
@@ -211,7 +269,11 @@ const UpdateProfile = () => {
                   placeholder="Your address"
                   className="w-full rounded-md border border-gray-300 bg-slate-200 p-2 focus:border-transparent focus:outline-none"
                 />
-                <ErrorMessage name="address" component="div" className="text-red-600" />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="text-red-600"
+                />
               </div>
 
               <div className="float-right flex space-x-4 pt-4">
