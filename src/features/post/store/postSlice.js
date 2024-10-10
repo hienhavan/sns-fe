@@ -1,15 +1,25 @@
+// postSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  posts: [],
+  success: null,
+  error: null,
 };
 
 const postSlice = createSlice({
-  name: 'post',
+  name: 'posts',
   initialState,
   reducers: {
-    // TODO: post reducers go here
+    createPost: (state, action) => {
+      // Logic để thêm bài viết vào state
+    },
+    clearMessages: (state) => {
+      state.success = null;
+      state.error = null;
+    },
+    // Các reducers khác
   },
 });
 
+export const { createPost, clearMessages } = postSlice.actions;
 export default postSlice.reducer;
