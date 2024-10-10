@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
 const getTokenFromLocalStorage = () => {
-    const user = window.localStorage.getItem('sns-user');
+    const user = window.localStorage.getItem('sns_user');
     if (user) {
         const parsedUser = JSON.parse(user);
         return parsedUser.token;

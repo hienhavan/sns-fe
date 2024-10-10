@@ -9,20 +9,14 @@ export const login = createAsyncThunk(
         email,
         password,
       });
-
-      // Kiểm tra nếu mã trạng thái không phải là 200 (hoặc bất kỳ mã nào cho thành công)
-      if (response.status !== 200) {
-        alert('Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.');
-        return rejectWithValue('Đăng nhập thất bại');
+      if (response.status === 200) {
+        console.log(email, password + 'aaaaaaaaaaaaaa');
+        console.log('longin thunk: ', response.data);
+        window.localStorage.setItem('sns_user', JSON.stringify(response.data));
+        return response.data;
       }
-
-      // Lưu thông tin người dùng vào localStorage nếu đăng nhập thành công
-      window.localStorage.setItem('sns-user', JSON.stringify(response.data));
-      return response.data;
-      
     } catch (error) {
-      console.error('Error during login:', error);
-      return rejectWithValue(error.response?.data || 'Có lỗi xảy ra khi đăng nhập');
+      console.error('Thunk login:', error);
     }
   },
 );
@@ -30,33 +24,23 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   'auth/register',
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, name, birthday, phone }, { rejectWithValue }) => {
     try {
       // TODO: un-comment these when api is done
       const response = await axios.post('/apihost/api/v1/register', {
         email,
         password,
+        name,
+        birthday,
+        phone
       });
       alert('Registration successful!');
-      window.localStorage.setItem('sns-user', JSON.stringify(response.data));
+      window.localStorage.setItem('sns_user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       console.error('Error during login:', error);
     }
   },
 );
-
-// const register = async ({ email, password }) => {
-//   try {
-//       const response = await axios.post('/api/v1/register', {
-//           email,
-//           password
-//       });
-//       return response.data;
-//   } catch (error) {
-//       console.error('Error during login:', error);
-//       throw error;
-//   }
-// };
 
 export default { login, register };

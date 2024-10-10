@@ -21,7 +21,7 @@ export default function Register() {
       .required('Vui lòng xác nhận mật khẩu'),
     birthday: date().required('Vui lòng nhập ngày sinh').nullable(),
     phone: string()
-      .matches(/^[0-9]{9}$/, 'Số điện thoại phải có 10 chữ số')
+      .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số')
       .required('Vui lòng nhập số điện thoại'),
   });
 
