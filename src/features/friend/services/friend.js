@@ -27,4 +27,21 @@ const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithVa
     }
 });
 
-export default { getFollowing }
+const getWaiting = createAsyncThunk("user/waiting", async (_, { rejectWithValue }) => {
+    const token = getTokenFromLocalStorage();
+    try {
+        const { status, data } = await axios.get(`http://localhost:3000/user`, {
+            headers: { authorization: token }
+        });
+
+        if (status === 200) {
+            console.log(data);
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response?.data?.errors[0] || 'Unknown error');
+    }
+});
+
+export default { getFollowing, getWaiting }
