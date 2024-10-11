@@ -16,7 +16,7 @@ export const login = createAsyncThunk(
     } catch (error) {
       console.error('Thunk login:', error);
       alert(
-        'Đăng nhập thất bại, vui lòng kiểm tra thông tin xác thực của bạn.',
+        'Login failed, please check your credentials.',
       );
     }
   },
@@ -35,11 +35,16 @@ export const register = createAsyncThunk(
         birthday,
         phone
       });
-      alert('Registration successful!');
-      window.localStorage.setItem('sns_user', JSON.stringify(response.data));
-      return response.data;
+      if (response.status === 200) {
+        alert('Registration successful!');
+        window.localStorage.setItem('sns_user', JSON.stringify(response.data));
+        return response.data;
+      }
     } catch (error) {
       console.error('Error during login:', error);
+      alert(
+        'Existing accounts.',
+      );
     }
   },
 );

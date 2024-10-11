@@ -8,6 +8,7 @@ import {
   faUser,
   faPencilAlt,
   faPowerOff,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -71,7 +72,7 @@ const Header = () => {
             </form>
           </div>
 
-          <div className="user-img group relative flex w-[20%] cursor-pointer items-center justify-center leading-[65px]">
+          <div className="user-img group relative flex h-16 w-[20%] cursor-pointer items-center justify-center leading-[65px]">
             <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
               {user.name}
             </h5>
@@ -88,7 +89,7 @@ const Header = () => {
             />
             <span className="status f-online absolute bottom-2 right-1"></span>
 
-            <div className="user-setting absolute right-14 top-[60px] z-10 hidden w-40 items-center rounded-lg bg-white text-center shadow-lg group-hover:block">
+            <div className="user-setting absolute right-14 top-[65px] z-10 hidden w-48 items-center rounded-lg bg-white text-center shadow-lg group-hover:block">
               <ul className="log-out">
                 <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
                   <Link
@@ -106,6 +107,15 @@ const Header = () => {
                   >
                     <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit
                     Profile
+                  </Link>
+                </li>
+                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+                  <Link
+                    to="/update-password"
+                    className="flex h-8 items-center text-gray-600"
+                  >
+                    <FontAwesomeIcon icon={faCog} className="mr-2" />
+                    Update Password
                   </Link>
                 </li>
                 <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">

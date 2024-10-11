@@ -7,9 +7,11 @@ export default {
         customGray: '#45546a',
         backgroundImage: {
           'login-img': "url('/public/login_bg.jpg')",
+
         }
       },
     },
   },
   plugins: [],
+
 };

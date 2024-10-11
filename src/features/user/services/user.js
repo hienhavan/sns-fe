@@ -11,10 +11,10 @@ const getTokenFromLocalStorage = () => {
     return null;
 };
 
-const updateUser = async (id, user) => {
+const updateUser = async (user) => {
     const token = getTokenFromLocalStorage();
     try {
-        const response = await axios.put(`/apihost/api/v1/${id}`, user, {
+        const response = await axios.put(`/apihost/api/v1/me`, user, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
@@ -27,10 +27,10 @@ const updateUser = async (id, user) => {
     }
 };
 
-const getUser = async (id) => {
+const getUser = async () => {
     const token = getTokenFromLocalStorage();
     try {
-        const response = await axios.get(`/apihost/api/v1/me/${id}`, {
+        const response = await axios.get(`/apihost/api/v1/me`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -43,14 +43,14 @@ const getUser = async (id) => {
 };
 const unFollowUser = createAsyncThunk("user/unfollow", async ({ followUserId, token }, { rejectWithValue }) => {
     try {
-        const { status, data } = await axios.delete(`/api/v1/me/following/${followUserId}`,
+        const response = await axios.delete(`/api/v1/me/following/${followUserId}`,
             {},
             {
                 headers: { authorization: token }
             });
 
-        if (status === 200) {
-            return data;
+        if (response.status === 200) {
+            return response.data;
         }
     } catch (error) {
         return rejectWithValue(error.response.data.errors[0]);
@@ -74,22 +74,51 @@ const followUser = createAsyncThunk("user/follow",
         }
     });
 
-const getFollowing = createAsyncThunk("user/following",
-    async ({ userId, token }, { rejectWithValue }) => {
-        try {
-            const { status, data } = await axios.get(`/api/v1/me/${userId}/following`,
+const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithValue }) => {
+    const token = getTokenFromLocalStorage();
+    try {
+        const { status, data } = await axios.get(`http://localhost:3000/users`, {
+            headers: { authorization: token }
+        });
 
-                {
-                    headers: { authorization: token }
-                });
-
-            if (status === 200) {
-                return data;
-            }
-        } catch (error) {
-            return rejectWithValue(error.response.data.errors[0]);
+        if (status === 200) {
+            console.log(data);
+            return data;
         }
-    });
+    } catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response?.data?.errors[0] || 'Unknown error');
+    }
+});
 
 
-export default { updateUser, getUser, unFollowUser, followUser, getFollowing };
+const updatePassWord = createAsyncThunk("user/update-password", async ({ currentPassword, newPassword }, { rejectWithValue }) => {
+    const token = getTokenFromLocalStorage();
+
+    if (!token) {
+        alert('No authentication token found');
+        return rejectWithValue('No authentication token');
+    }
+    try {
+        const response = await axios.put(`/apihost/api/v1/me/password`, {
+            currentPassword,
+            newPassword
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 200) {
+            alert('Passwords updated successfully:', response.data);
+            return response.data;
+        }
+    } catch (error) {
+        alert('Incorrect old password');
+        return rejectWithValue(error.response?.data.errors[0] || 'Update failed');
+    }
+});
+
+
+export default { updateUser, getUser, unFollowUser, followUser, getFollowing, updatePassWord };
+

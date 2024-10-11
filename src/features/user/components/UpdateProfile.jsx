@@ -19,15 +19,7 @@ const validationSchema = Yup.object({
   address: Yup.string().required('Address is required'),
 });
 
-const getUserFromLocalStorage = () => {
-  try {
-    const user = window.localStorage.getItem('sns_user');
-    return user ? JSON.parse(user) : null;
-  } catch (error) {
-    console.error('Failed to parse user from localStorage:', error);
-    return null;
-  }
-};
+
 
 const UpdateProfile = () => {
   const [user, setUser] = useState({
@@ -46,43 +38,39 @@ const UpdateProfile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result); // Lưu URL tạm thời của ảnh
+        setPreviewImage(reader.result);
       };
-      reader.readAsDataURL(file); // Đọc file dưới dạng URL Data
+      reader.readAsDataURL(file);
     }
   };
 
   const navigate = useNavigate();
-  const storedUser = getUserFromLocalStorage();
-  const id = storedUser ? storedUser.id : null;
+  ;
 
   useEffect(() => {
     const fetchData = async () => {
-      if (id) {
-        try {
-          const response = await getUser(id);
-          setUser({
-            profilePicture: response.profilePicture || '',
-            name: response.name || '',
-            gender: response.gender || '',
-            birthday: response.birthday || '',
-            biography: response.biography || '',
-            address: response.address || '',
-            phone: response.phone || '',
-          });
-        } catch (err) {
-          console.error('Error fetching user:', err);
-        }
+      try {
+        const response = await getUser();
+        setUser({
+          profilePicture: response.profilePicture || '',
+          name: response.name || '',
+          gender: response.gender || '',
+          birthday: response.birthday || '',
+          biography: response.biography || '',
+          address: response.address || '',
+          phone: response.phone || '',
+        });
+      } catch (err) {
+        console.error('Error fetching user:', err);
       }
+
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
     const fileInput = document.querySelector('input[type="file"]');
-
-    // Thêm tất cả các trường vào formData
     formData.append('name', values.name);
     formData.append('phone', values.phone);
     formData.append('gender', values.gender);
@@ -94,7 +82,7 @@ const UpdateProfile = () => {
     }
 
     try {
-      await updateUser(id, formData);
+      await updateUser(formData);
       alert('Profile updated successfully');
       navigate('/me');
     } catch (error) {
@@ -142,7 +130,6 @@ const UpdateProfile = () => {
                     alt="Xem trước tạm thời"
                   />
                 ) : (
-                  // Nếu không có ảnh xem trước, hiển thị ảnh đã tải lên
                   <img
                     src={
                       user.profilePicture
