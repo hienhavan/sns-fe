@@ -6,8 +6,8 @@ import postRducer from '../features/user/store/userSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    users: userReducer,
-    posts: postRducer,
+    user: userReducer,
+    post: postRducer,
   },
 });
 
