@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPosts } from '../store/postSlice';
+import { getAllPosts } from '../services/post';
 import Post from './Post';
 
 const UserPost = () => {
@@ -13,8 +13,8 @@ const UserPost = () => {
   const user = JSON.parse(localStorage.getItem('sns-user'));
   const userId = user ? user.id : null; // Lấy userId từ thông tin người dùng
 
-  console.log("User ID:", userId);
-  console.log("Posts in UserPost component:", posts);
+  console.log('User ID:', userId);
+  console.log('Posts in UserPost component:', posts);
 
   useEffect(() => {
     dispatch(getAllPosts());
