@@ -6,19 +6,18 @@ import { object, string } from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess } from '../store/authSlice';
 import { useEffect } from 'react';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/')
+      navigate('/');
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated]);
 
   const loginSchema = object({
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
@@ -34,10 +33,8 @@ export default function Login() {
     onSubmit: async (values) => {
       try {
         dispatch(login(values));
-        // console.log('navigate to /')
       } catch (error) {
-        console.log(error);
-
+        console.log('LOGIN ERROR : ', error);
       }
     },
   });
@@ -54,7 +51,6 @@ export default function Login() {
               Connect with friends and the world around you on Social.
             </p>
           </div>
-
           <form
             onSubmit={formik.handleSubmit}
             className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg"
@@ -63,10 +59,11 @@ export default function Login() {
               type="text"
               name="email"
               placeholder="Email"
-              className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.email && formik.touched.email
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -79,10 +76,11 @@ export default function Login() {
               type="password"
               name="password"
               placeholder="Mật khẩu"
-              className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
-                ? 'border-red-500'
-                : 'border-gray-300'
-                } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.password && formik.touched.password
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

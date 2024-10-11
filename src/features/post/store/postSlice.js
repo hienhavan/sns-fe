@@ -1,25 +1,48 @@
-// postSlice.js
 import { createSlice } from '@reduxjs/toolkit';
+import { getAllPosts, createPost } from '../services/post';
 
 const initialState = {
-  success: null,
-  error: null,
+  isLoading: false,
+  error: '',
+  posts: [],
 };
 
 const postSlice = createSlice({
-  name: 'posts',
+  name: 'post',
   initialState,
   reducers: {
-    createPost: (state, action) => {
-      // Logic để thêm bài viết vào state
+    clearMessage: (state) => {
+      state.error = '';
     },
-    clearMessages: (state) => {
-      state.success = null;
-      state.error = null;
-    },
-    // Các reducers khác
+  },
+  extraReducers: (builder) => {
+    builder
+      // fetch all post
+      .addCase(getAllPosts.pending, (state) => {
+        state.isLoading = true;
+        state.error = '';
+      })
+      .addCase(getAllPosts.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.posts = payload;
+      })
+      .addCase(getAllPosts.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      // create post
+      .addCase(createPost.pending, () => {
+        (state) => (state.isLoading = true);
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts.push(action.payload);
+      })
+      .addCase(createPost.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 
-export const { createPost, clearMessages } = postSlice.actions;
+export const { clearMessage } = postSlice.actions;
 export default postSlice.reducer;

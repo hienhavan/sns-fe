@@ -8,6 +8,8 @@ import UpdateProfile from './features/user/components/UpdateProfile';
 import UserProfile from './features/user/components/Profile';
 import UpdatePassword from './features/user/components/UpdatePassWord';
 import AllListFriend from './features/friend/components/AllListFriend';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = () => (
   <>
@@ -20,6 +22,7 @@ const Layout = () => (
 const App = () => {
   return (
     <>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -27,6 +30,7 @@ const App = () => {
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/me" element={<UserProfile />} />
             <Route path="/list-freind" element={<AllListFriend />} />
+
             <Route path="/update-password" element={<UpdatePassword />} />
           </Route>
           <Route path="/login" element={<LoginForm />} />

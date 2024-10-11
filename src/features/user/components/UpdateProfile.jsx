@@ -14,7 +14,9 @@ const validationSchema = Yup.object({
     .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số')
     .required('Vui lòng nhập số điện thoại'),
   gender: Yup.string().required('Gender is required'),
-  birthday: Yup.date().required('Birthday is required'),
+  birthday: Yup.date()
+    .required('Birthday is required')
+    .max(new Date(), 'Ngày sinh không được lớn hơn ngày hiện tại'),
   biography: Yup.string().max(500, 'Biography must be at most 500 characters'),
   address: Yup.string().required('Address is required'),
 });
@@ -43,6 +45,7 @@ const UpdateProfile = () => {
       reader.readAsDataURL(file);
     }
   };
+
 
   const navigate = useNavigate();
   ;

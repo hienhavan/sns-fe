@@ -122,3 +122,4 @@ const updatePassWord = createAsyncThunk("user/update-password", async ({ current
 
 export default { updateUser, getUser, unFollowUser, followUser, getFollowing, updatePassWord };
 
+

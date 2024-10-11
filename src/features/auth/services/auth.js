@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -14,14 +15,11 @@ export const login = createAsyncThunk(
         return response.data;
       }
     } catch (error) {
-      console.error('Thunk login:', error);
-      alert(
-        'Login failed, please check your credentials.',
-      );
+      // console.log(error.message);
+      return rejectWithValue('wrong usename or password!');
     }
   },
 );
-
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -33,18 +31,16 @@ export const register = createAsyncThunk(
         password,
         name,
         birthday,
-        phone
+        phone,
       });
-      if (response.status === 200) {
-        alert('Registration successful!');
-        window.localStorage.setItem('sns_user', JSON.stringify(response.data));
-        return response.data;
-      }
+      toast.success('Registration successful', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+
+      return response.data;
     } catch (error) {
-      console.error('Error during login:', error);
-      alert(
-        'Existing accounts.',
-      );
+      return rejectWithValue('bad credentials!');
     }
   },
 );
