@@ -1,55 +1,48 @@
-// postSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllPosts as fetchPosts } from '../services/post';
-
-export const getAllPosts = createAsyncThunk(
-  'post/getAllPosts',
-  async (_, { rejectWithValue }) => {
-    try {
-      const posts = await fetchPosts();
-      console.log("Fetched posts:", posts); // Thêm dòng này để kiểm tra giá trị
-      return posts;
-    } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : error.message);
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { getAllPosts, createPost } from '../services/post';
 
 const initialState = {
   isLoading: false,
   error: '',
-  posts: []
+  posts: [],
 };
 
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    clearMessages: (state) => {
-      state.error = '';  // Clear any error messages
+    clearMessage: (state) => {
+      state.error = '';
     },
-    createPost: (state) => {
-      state.error = '';  // Clear any error messages
-    }
   },
   extraReducers: (builder) => {
     builder
+      // fetch all post
       .addCase(getAllPosts.pending, (state) => {
         state.isLoading = true;
         state.error = '';
       })
       .addCase(getAllPosts.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.posts = payload; // Cập nhật đúng trường posts
+        state.posts = payload;
       })
       .addCase(getAllPosts.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+      })
+      // create post
+      .addCase(createPost.pending, () => {
+        (state) => (state.isLoading = true);
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts.push(action.payload);
+      })
+      .addCase(createPost.rejected, (state) => {
+        state.isLoading = false;
       });
-  }
-
+  },
 });
 
-
-export const { clearMessages, createPost } = postSlice.actions;
+export const { clearMessage } = postSlice.actions;
 export default postSlice.reducer;
