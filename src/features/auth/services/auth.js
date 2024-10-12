@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -32,10 +33,13 @@ export const register = createAsyncThunk(
         birthday,
         phone,
       });
-      alert('Registration successful!');
-      window.localStorage.setItem('sns_user', JSON.stringify(response.data));
+      toast.success('Registration successful', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
       return response.data;
     } catch (error) {
+      // console.log('Register error:  ', error);
       return rejectWithValue('bad credentials!');
     }
   },

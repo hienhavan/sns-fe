@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -35,16 +33,14 @@ export default function Login() {
     onSubmit: async (values) => {
       try {
         dispatch(login(values));
-        // console.log('navigate to /')
       } catch (error) {
-        console.log('HI HELLO ERROR : ', error);
+        console.log('LOGIN ERROR : ', error);
       }
     },
   });
 
   return (
     <>
-      <ToastContainer />
       <div className="flex h-screen items-center justify-center bg-blue-100">
         <div className="flex w-8/12 flex-col items-center space-x-6 lg:flex-row">
           <div className="mb-8 text-center lg:mb-0 lg:text-left">

@@ -1,19 +1,5 @@
-// postSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllPosts as fetchPosts } from '../services/post';
-
-export const getAllPosts = createAsyncThunk(
-  'post/getAllPosts',
-  async (_, { rejectWithValue }) => {
-    try {
-      const posts = await fetchPosts();
-      console.log("Fetched posts:", posts); // Thêm dòng này để kiểm tra giá trị
-      return posts;
-    } catch (error) {
-      return rejectWithValue(error.response ? error.response.data : error.message);
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { getAllPosts, createPost, deletePost, updatePost } from '../services/post';
 
 const initialState = {
   isLoading: false,
@@ -25,11 +11,8 @@ const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    clearMessages: (state) => {
-      state.error = '';  // Clear any error messages
-    },
-    createPost: (state) => {
-      state.error = '';  // Clear any error messages
+    clearMessage: (state) => {
+      state.error = '';
     }
   },
   extraReducers: (builder) => {
@@ -40,16 +23,52 @@ const postSlice = createSlice({
       })
       .addCase(getAllPosts.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.posts = payload; // Cập nhật đúng trường posts
+        state.posts = payload;
       })
       .addCase(getAllPosts.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
+      })
+      // create post
+      .addCase(createPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts.push(action.payload);
+      })
+      .addCase(createPost.rejected, (state) => {
+        state.isLoading = false;
+      })
+      // delete post
+      .addCase(deletePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = state.posts.filter(post => post.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      // update post
+      .addCase(updatePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.posts.findIndex(post => post.id === action.payload.id);
+        if (index !== -1) {
+          state.posts[index] = action.payload;
+        }
+      })
+      .addCase(updatePost.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
   }
-
 });
 
-
-export const { clearMessages, createPost } = postSlice.actions;
+export const { clearMessage } = postSlice.actions;
 export default postSlice.reducer;

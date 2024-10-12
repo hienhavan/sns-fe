@@ -1,60 +1,118 @@
-// services.js
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../../utils/axiosClient';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const getTokenFromLocalStorage = () => {
-  const user = window.localStorage.getItem('sns-user');
-  if (user) {
-    const parsedUser = JSON.parse(user);
-    return parsedUser.token;
-  }
-  return null;
-};
+export const getAllPosts = createAsyncThunk(
+  'post/getAllPosts',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
 
-export const getAllPosts = async () => {
-  const token = getTokenFromLocalStorage();
-  try {
-    const response = await axios.get(`/apihost/api/v1/posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log("API response:", response.data); // Kiểm tra dữ liệu từ API
-    return response.data;  // Trả về trực tiếp mảng bài đăng
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
-  }
-};
+      const response = await axios.get('/apihost/api/v1/posts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message,
+      );
+    }
+  },
+);
 
-export const createPost = async ({ content, userId, visibility, file }) => {
-  const token = getTokenFromLocalStorage();
+export const createPost = createAsyncThunk(
+  'post/create',
+  async ({ content, userId, visibility, file }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append('content', content);
+      formData.append('userId', userId);
+      formData.append('visibility', visibility);
+      if (file) {
+        formData.append('file', file);
+      }
 
-  // Tạo FormData để upload file và các trường khác
-  const formData = new FormData();
-  formData.append('content', content);
-  formData.append('userId', userId);
-  formData.append('visibility', visibility);
+      const token = localStorage.getItem('token');
 
-  // Nếu có file, thêm file vào formData
-  if (file) {
-    formData.append('file', file);
-  }
+      const response = await axios.post('/apihost/api/v1/posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  try {
-    const response = await axios.post('http://localhost:8081/api/v1/posts', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data', // Đảm bảo đúng kiểu dữ liệu khi có file
-      },
-    });
-    console.log('API response:', response.data); // Kiểm tra dữ liệu từ API
-    return response.data;
-  } catch (error) {
-    console.error('Error creating post:', error);
-    throw error;
-  }
-};
+      if (response.status === 201) {
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message,
+      );
+    }
+  },
+);
 
+export const updatePost = createAsyncThunk(
+  'post/update',
+  async ({ postId, content, visibility, file }, { rejectWithValue }) => {
+    try {
+      if (!content || !visibility) {
+        return rejectWithValue('Nội dung và tính năng hiển thị không được để trống.');
+      }
 
+      const formData = new FormData();
+      formData.append('content', content);
+      formData.append('visibility', visibility);
+      if (file) {
+        formData.append('file', file);
+      }
 
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return rejectWithValue('Bạn cần đăng nhập để thực hiện hành động này.');
+      }
 
+      const response = await axios.put(`/apihost/api/v1/posts/${postId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error updating post:', error);
+      // Nếu không có response từ server
+      if (error.response) {
+        return rejectWithValue(
+          error.response.data.message || 'Đã xảy ra lỗi không xác định.'
+        );
+      }
+      return rejectWithValue('Đã xảy ra lỗi không xác định.');
+    }
+  },
+);
+
+export const deletePost = createAsyncThunk(
+  'post/delete',
+  async (postId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      await axios.delete(`/apihost/api/v1/posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return postId;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(
+        error.response ? error.response.data : error.message,
+      );
+    }
+  },
+);

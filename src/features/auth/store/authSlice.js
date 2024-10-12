@@ -33,12 +33,16 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload;
+        toast.success('logged in!', {
+          position: 'top-center',
+          autoClose: 3000,
+        });
       })
       .addCase(login.rejected, (state, action) => {
         state.isAuthenticated = false;
         toast.error(action.payload, {
           position: 'top-center',
-          autoClose: 1000,
+          autoClose: 3000,
         });
       })
 
@@ -46,13 +50,13 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, () => {
         toast.success('successfully signed up', {
           position: 'top-center',
-          autoClose: 1000,
+          autoClose: 3000,
         });
       })
       .addCase(register.rejected, (_, action) => {
         toast.error(action.payload, {
           position: 'top-center',
-          autoClose: 1000,
+          autoClose: 3000,
         });
       });
   },
