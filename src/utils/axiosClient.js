@@ -4,12 +4,15 @@ import { toast } from 'react-toastify';
 const axios = Axios.create();
 
 axios.interceptors.request.use(
-  (config) => {
-    const user = window.localStorage.getItem('sns-user');
-    const parsedUser = user ? JSON.parse(user) : null;
+  function (config) {
+    const { token } = JSON.parse(window.localStorage.getItem('sns_user'));
 
-    if (parsedUser && parsedUser.token) {
-      config.headers['Authorization'] = `Bearer ${parsedUser.token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    } else {
+      toast.warn('not logged in!', { position: 'top-center', autoClose: 3000 });
+      return;
     }
   },
   (error) => {
@@ -24,12 +27,17 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (res) => res,
   (error) => {
-    console.log(error)
-    return Promise.reject(error)
-  }
+    const data = error.response.data;
+
+    if (data?.message && typeof data?.message === 'string') {
+      toast.error(data.message);
+    } else if (data?.status && typeof data?.status === 'string') {
+      toast.error(data.status + ` - Status code: ${data.code}`);
+    }
+
+    return Promise.reject(data);
+  },
 );
-
-
 export const getUserFromLocalStorage = () => {
   try {
     const user = window.localStorage.getItem('sns_user');
@@ -39,7 +47,5 @@ export const getUserFromLocalStorage = () => {
     return null;
   }
 };
-
-
 
 export default axios;

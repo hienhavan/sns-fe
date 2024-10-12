@@ -1,6 +1,13 @@
-const Comment = () => {
-  // NOTE: a place holder
-  return <div>Comment</div>;
+// src/components/Comments.jsx
+import CommentList from './CommentList';
+
+const Comments = ({ postId }) => {
+  return (
+    <div>
+      <h2>Comments</h2>
+      <CommentList postId={postId} />
+    </div>
+  );
 };
 
-export default Comment;
+export default Comments;

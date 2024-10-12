@@ -12,27 +12,29 @@ const PostList = () => {
     dispatch(getAllPosts());
   }, []);
 
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
 
   if (error) {
     return <p>Error loading posts: {error}</p>;
   }
+
   return (
     <div>
       <div>
         <PostForm />
       </div>
-      {isLoading ? (
-        <p>Loading...</p>
+
+      {posts.length === 0 ? (
+        <p>No posts available</p>
       ) : (
         <div>
-          {posts.length === 0 ? (
-            <p>No posts available</p>
-          ) : (
-            posts.map((post) => <Post key={post.id} post={post} />)
-          )}
+          {posts.map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
+
         </div>
       )}
     </div>

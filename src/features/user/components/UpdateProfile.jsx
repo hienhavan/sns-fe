@@ -86,8 +86,6 @@ const UpdateProfile = () => {
 
     try {
       await updateUser(formData);
-      alert('Profile updated successfully');
-      navigate('/me');
     } catch (error) {
       console.error('Error updating profile:', error);
     } finally {
@@ -148,13 +146,12 @@ const UpdateProfile = () => {
                   type="button"
                   className="my-3 ml-4 h-[30px] cursor-pointer rounded-lg border bg-slate-200 p-1 text-center text-xs font-semibold text-slate-600 hover:bg-slate-100"
                   onClick={() => {
-                    // Kích hoạt chọn file khi click vào button
                     document.getElementById('uploadImage').click();
                   }}
                 >
                   {/* Input file ẩn */}
                   <input
-                    id="uploadImage" // Đặt id để tham chiếu từ button
+                    id="uploadImage"
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
@@ -162,15 +159,13 @@ const UpdateProfile = () => {
                       if (file) {
                         const reader = new FileReader();
                         reader.onloadend = () => {
-                          // Cập nhật URL xem trước tạm thời
                           setPreviewImage(reader.result);
                         };
-                        reader.readAsDataURL(file); // Đọc file để tạo URL
+                        reader.readAsDataURL(file);
                       }
                     }}
                     className="hidden"
                   />
-                  {/* Nút với chữ */}
                   Thay đổi ảnh
                 </button>
               </div>

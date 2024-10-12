@@ -102,29 +102,13 @@ const followUser = createAsyncThunk("user/follow", async ({ followUserId, token 
     }
 });
 
-const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithValue }) => {
-    const token = getTokenFromLocalStorage();
-    try {
-        const { status, data } = await axios.get(`http://localhost:3000/users`, {
-            headers: { authorization: token }
-        });
-
-        if (status === 200) {
-            return data;
-        }
-    } catch (error) {
-        console.log(error);
-        toast.error(error.response?.data?.errors[0] || 'Unknown error');
-        return rejectWithValue(error.response?.data?.errors[0] || 'Unknown error');
-    }
-});
-
 const updatePassWord = createAsyncThunk("user/update-password", async ({ currentPassword, newPassword }, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     if (!token) {
         toast.error('No authentication token found');
         return rejectWithValue('No authentication token');
     }
+
     try {
         const response = await axios.put(`/apihost/api/v1/me/password`, {
             currentPassword,
@@ -139,10 +123,13 @@ const updatePassWord = createAsyncThunk("user/update-password", async ({ current
             toast.success('Passwords updated successfully');
             return response.data;
         }
+
     } catch (error) {
-        toast.error(error.response?.data.errors[0] || 'Incorrect old password');
+        toast.error('Incorrect password');
         return rejectWithValue(error.response?.data.errors[0] || 'Update failed');
     }
 });
 
-export default { updateUser, getUser, getUsers, unFollowUser, followUser, getFollowing, updatePassWord };
+
+
+export default { updateUser, getUser, getUsers, unFollowUser, followUser, updatePassWord };
