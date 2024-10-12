@@ -10,11 +10,12 @@ const PostList = () => {
 
   useEffect(() => {
     dispatch(getAllPosts());
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
 
   if (error) {
     return <p>Error loading posts: {error}</p>;
@@ -33,6 +34,7 @@ const PostList = () => {
           {posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}
+
         </div>
       )}
     </div>

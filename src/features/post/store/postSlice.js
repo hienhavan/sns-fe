@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllPosts, createPost, deletePost, updatePost } from '../services/post';
 
+
 const initialState = {
   isLoading: false,
   error: '',
-  posts: []
+  posts: [],
 };
 
 const postSlice = createSlice({
@@ -17,6 +18,7 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // fetch all post
       .addCase(getAllPosts.pending, (state) => {
         state.isLoading = true;
         state.error = '';
@@ -32,6 +34,7 @@ const postSlice = createSlice({
       // create post
       .addCase(createPost.pending, (state) => {
         state.isLoading = true;
+
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.isLoading = false;

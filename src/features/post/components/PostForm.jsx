@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../services/post';
 import { BsFillImageFill } from 'react-icons/bs';
 
+
 const PostForm = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -86,6 +87,7 @@ const PostForm = () => {
             </select>
 
             <label className="m-2 flex items-center">
+
               <input
                 className="hidden"
                 type="file"
