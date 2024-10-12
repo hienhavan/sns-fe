@@ -10,20 +10,7 @@ export default function Home() {
         <NavBar />
       </div>
       <div className="flex flex-col overflow-hidden h-[100vh] mx-5 border-solid border-l-zinc-400 bg-[#fff] px-[20px] py-[5px] w-[50%]">
-        <div
-          className="flex-1 overflow-y-auto hide-scrollbar"
-          style={{
-            scrollbarWidth: 'none', // Ẩn thanh cuộn trong Firefox
-            msOverflowStyle: 'none', // Ẩn thanh cuộn trong Internet Explorer và Edge
-          }}
-        >
-          <style>
-            {`
-              .hide-scrollbar::-webkit-scrollbar {
-                display: none; // Ẩn thanh cuộn trong Chrome, Safari và Edge
-              }
-            `}
-          </style>
+        <div className="flex-1 overflow-y-auto hide-scrollbar">
           <PostList />
         </div>
       </div>

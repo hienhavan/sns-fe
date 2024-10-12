@@ -13,7 +13,7 @@ const getTokenFromLocalStorage = () => {
 const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     try {
-        const { status, data } = await axios.get(`http://localhost:3000/users`, {
+        const { status, data } = await axios.get(`/apihost/api/v1/me/following`, {
             headers: { authorization: token }
         });
 
@@ -30,7 +30,7 @@ const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithVa
 const getWaiting = createAsyncThunk("user/waiting", async (_, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     try {
-        const { status, data } = await axios.get(`http://localhost:3000/user`, {
+        const { status, data } = await axios.get(`/apihost/api/v1/me/followers`, {
             headers: { authorization: token }
         });
 

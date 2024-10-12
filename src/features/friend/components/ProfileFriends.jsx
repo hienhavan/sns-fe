@@ -4,18 +4,9 @@ import UserPost from '../../post/components/UserPost';
 import userService from '../../user/services/user';
 import { Link } from 'react-router-dom';
 import ListFreind from './ListFriend';
+import { getUserFromLocalStorage } from '../../../utils/axiosClient';
 
 const Profile = () => {
-    const getUserFromLocalStorage = () => {
-        try {
-            const user = window.localStorage.getItem('sns_user');
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error('Failed to parse user from localStorage:', error);
-            return null;
-        }
-    };
-
     const storedUser = getUserFromLocalStorage();
     const id = storedUser ? storedUser.id : null;
     const { getUser } = userService;
@@ -56,16 +47,16 @@ const Profile = () => {
                 <div
                     className="flex-1 overflow-y-auto mx-auto flex flex-col items-center gap-8 hide-scrollbar"
                     style={{
-                        scrollbarWidth: 'none', // Ẩn thanh cuộn trong Firefox
-                        msOverflowStyle: 'none', // Ẩn thanh cuộn trong IE và Edge
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
                     }}
                 >
                     <style>
                         {`
-              .hide-scrollbar::-webkit-scrollbar {
-                display: none; // Ẩn thanh cuộn trong Chrome, Safari và Edge
-              }
-            `}
+                            .hide-scrollbar::-webkit-scrollbar {
+                                display: none;
+                            }
+                        `}
                     </style>
                     <div className="flex items-center">
                         <img
