@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllPosts, createPost } from '../services/post';
+import { getAllPosts, createPost, deletePost, updatePost } from '../services/post';
+
 
 const initialState = {
   isLoading: false,
@@ -13,7 +14,7 @@ const postSlice = createSlice({
   reducers: {
     clearMessage: (state) => {
       state.error = '';
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -31,8 +32,9 @@ const postSlice = createSlice({
         state.error = payload;
       })
       // create post
-      .addCase(createPost.pending, () => {
-        (state) => (state.isLoading = true);
+      .addCase(createPost.pending, (state) => {
+        state.isLoading = true;
+
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -40,8 +42,35 @@ const postSlice = createSlice({
       })
       .addCase(createPost.rejected, (state) => {
         state.isLoading = false;
+      })
+      // delete post
+      .addCase(deletePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = state.posts.filter(post => post.id !== action.payload);
+      })
+      .addCase(deletePost.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      // update post
+      .addCase(updatePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.posts.findIndex(post => post.id === action.payload.id);
+        if (index !== -1) {
+          state.posts[index] = action.payload;
+        }
+      })
+      .addCase(updatePost.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
       });
-  },
+  }
 });
 
 export const { clearMessage } = postSlice.actions;

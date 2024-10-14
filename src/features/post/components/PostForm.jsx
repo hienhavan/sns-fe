@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../services/post';
 import { BsFillImageFill } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -12,10 +12,12 @@ const PostForm = () => {
   const [error, setError] = useState(null);
   const { isLoading } = useSelector((state) => state.post);
 
+  const [visibility, setVisibility] = useState('PUBLIC');
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setPostImage(file); // Cập nhật file khi người dùng chọn ảnh
+      setPostImage(file);
     }
   };
 
@@ -27,22 +29,24 @@ const PostForm = () => {
 
     setError(null);
 
-    dispatch(
-      createPost({
+    try {
+      await dispatch(createPost({
         content,
         userId: user.id,
-        visibility: 'PUBLIC',
-        file: postImage, // Hình ảnh đính kèm
-      }),
-    );
+        visibility,
+        file: postImage,
+      }));
 
-    setContent('');
-    setPostImage(null);
+      setContent('');
+      setPostImage(null);
+      setVisibility('PUBLIC');
+    } catch {
+      setError('Có lỗi xảy ra khi đăng bài. Vui lòng thử lại.');
+    }
   };
 
   return (
     <div className="modal-class">
-      {/* Sử dụng className để gán style */}
       <div className="flex py-3">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
@@ -69,9 +73,21 @@ const PostForm = () => {
             )}
           </div>
           {error && <p className="text-red-500">{error}</p>}
-          {/* Hiển thị lỗi nếu có */}
-          <div className="flex justify-between">
-            <label className="m-2 flex">
+
+          <div className="flex items-center justify-between my-3">
+            <select
+              id="visibility"
+              value={visibility}
+              onChange={(e) => setVisibility(e.target.value)}
+              className="rounded-md border border-gray-300 p-2"
+            >
+              <option value="PUBLIC">Công khai</option>
+              <option value="PRIVATE">Riêng tư</option>
+              <option value="FRIENDS">Bạn bè</option>
+            </select>
+
+            <label className="m-2 flex items-center">
+
               <input
                 className="hidden"
                 type="file"
@@ -80,8 +96,9 @@ const PostForm = () => {
               />
               <BsFillImageFill className="mt-1 cursor-pointer text-2xl text-blue-700" />
             </label>
+          </div>
 
-            {/* Chỉ hiển thị nút "Đăng" nếu có nội dung */}
+          <div className="flex justify-between">
             {content && (
               <button
                 className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"

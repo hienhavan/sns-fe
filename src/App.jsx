@@ -9,6 +9,7 @@ import UserProfile from './features/user/components/Profile';
 import UpdatePassword from './features/user/components/UpdatePassword';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Comments from './features/comment/components/Comment';
 
 const Layout = () => (
   <>
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="/me" element={<UserProfile />} />
 
             <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="/posts/:postId/comments" element={<Comments/>}/>
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

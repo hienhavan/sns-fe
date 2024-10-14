@@ -6,12 +6,10 @@ import Post from './Post';
 const UserPost = () => {
   const dispatch = useDispatch();
 
-  // Lấy các bài viết từ Redux state
   const { posts, isLoading, error } = useSelector((state) => state.user);
 
-  // Lấy thông tin người dùng từ localStorage
   const user = JSON.parse(localStorage.getItem('sns-user'));
-  const userId = user ? user.id : null; // Lấy userId từ thông tin người dùng
+  const userId = user ? user.id : null;
 
   console.log('User ID:', userId);
   console.log('Posts in UserPost component:', posts);
@@ -28,7 +26,6 @@ const UserPost = () => {
     return <p>Error loading posts: {error}</p>;
   }
 
-  // Lọc bài viết theo ID người dùng
   const userPosts = posts.filter((post) => post.userId === userId);
 
   if (userPosts.length === 0) {
