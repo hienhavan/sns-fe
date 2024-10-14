@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import UpdateProfile from './features/user/components/UpdateProfile';
 import UserProfile from './features/user/components/Profile';
 import UpdatePassword from './features/user/components/UpdatePassword';
+import Comments from './features/comment/components/Comment';
 
 const Layout = () => (
   <>
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/me" element={<UserProfile />} />
 
             <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="/posts/:postId/comments" element={<Comments/>}/>
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
