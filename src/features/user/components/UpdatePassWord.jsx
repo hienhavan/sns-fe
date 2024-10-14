@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as Yup from 'yup';
 import { ref } from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -29,10 +28,9 @@ const UpdatePassword = () => {
     const handleSubmit = async (values) => {
         const { password, newPassword } = values;
         try {
-            await dispatch(updatePassWord({ currentPassword: password, newPassword }));
-            navigate('/me');
+            await dispatch(updatePassWord({ currentPassword: password, newPassword }));;
         } catch (error) {
-            // console.error('Error updating password:', error);
+            console.log(error);
         }
     };
 

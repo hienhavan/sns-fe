@@ -4,18 +4,9 @@ import UserPost from '../../post/components/UserPost';
 import userService from '../services/user';
 import { Link } from 'react-router-dom';
 import ListFreind from '../../friend/components/ListFriend';
+import { getUserFromLocalStorage } from '../../../utils/axiosClient';
 
 const Profile = () => {
-  const getUserFromLocalStorage = () => {
-    try {
-      const user = window.localStorage.getItem('sns_user');
-      return user ? JSON.parse(user) : null;
-    } catch (error) {
-      console.error('Failed to parse user from localStorage:', error);
-      return null;
-    }
-  };
-
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
   const { getUser } = userService;
@@ -46,28 +37,16 @@ const Profile = () => {
 
   return (
     <div className="flex justify-center pt-[100px] space-between">
-      <div className="w-[20%]">
+      <div className="w-[15%]">
         <NavBar />
       </div>
-      <div className="flex flex-col h-[820px] mx-5 overflow-hidden">
+      <div className="flex flex-col overflow-hidden h-[100vh] mx-5 border-solid border-l-zinc-400 bg-[#fff] px-[20px] py-[5px] w-[50%]">
         <header className="m-4 hidden w-full justify-between sm:flex">
           <h1 className="text-xl">Profile</h1>
         </header>
         <div
-          className="flex-1 overflow-y-auto mx-auto flex flex-col items-center gap-8 hide-scrollbar"
-          style={{
-            scrollbarWidth: 'none', // Ẩn thanh cuộn trong Firefox
-            msOverflowStyle: 'none', // Ẩn thanh cuộn trong IE và Edge
-          }}
-        >
-          <style>
-            {`
-              .hide-scrollbar::-webkit-scrollbar {
-                display: none; // Ẩn thanh cuộn trong Chrome, Safari và Edge
-              }
-            `}
-          </style>
-          <div className="flex items-center">
+          className="flex-1 overflow-y-auto mx-auto flex flex-col items-center gap-8  hide-scrollbar"
+        > <div className="flex items-center">
             <img
               src={user.profilePicture ? `/apihost/image/${user.profilePicture}` : ''}
               className="h-32 w-32 rounded-full object-cover"

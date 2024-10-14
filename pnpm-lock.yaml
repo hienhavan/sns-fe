@@ -4075,6 +4075,7 @@ snapshots:
       react-slick: 0.30.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-toastify: 10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       slick-carousel: 1.8.1(jquery@3.7.1)
+      tailwind-scrollbar-hide: 1.1.7
       yup: 1.4.0
     transitivePeerDependencies:
       - '@fortawesome/fontawesome-svg-core'
