@@ -6,13 +6,7 @@ export const getAllPosts = createAsyncThunk(
   'post/getAllPosts',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-
-      const response = await axios.get('/apihost/api/v1/posts', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get('/apihost/api/v1/posts');
       return response.data;
     } catch (error) {
       return rejectWithValue(
