@@ -30,6 +30,7 @@ const getWaiting = createAsyncThunk("user/waiting", async (_, { rejectWithValue 
     const token = getTokenFromLocalStorage();
     try {
         const { status, data } = await axios.get(`/apihost/api/v1/me/followers`, {
+
             headers: { authorization: token }
         });
 
