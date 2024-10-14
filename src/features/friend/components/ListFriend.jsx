@@ -3,28 +3,26 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaUserPlus } from 'react-icons/fa'; // Import icon người dùng với dấu cộng
+import { FaUserPlus } from 'react-icons/fa';
 
 const ListFriend = () => {
   const dispatch = useDispatch();
   const { getFollowing, getWaiting, acceptFriendRequest, rejectFriendRequest } = friendService;
   const [suggestionList, setSuggestionList] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
-  const [showModal, setShowModal] = useState(false); // State để quản lý hiển thị modal
-  const [hasSeenRequests, setHasSeenRequests] = useState(false); // State để theo dõi đã xem yêu cầu
+  const [showModal, setShowModal] = useState(false);
+  const [hasSeenRequests, setHasSeenRequests] = useState(() => {
+    // Lấy giá trị từ localStorage khi khởi tạo
+    const saved = localStorage.getItem('hasSeenRequests');
+    return saved === 'true'; // Chuyển đổi giá trị về boolean
+  });
 
   useEffect(() => {
     const fetchFollowing = async () => {
       try {
         const response = await dispatch(getFollowing());
-        if (response && response.payload) {
-          setSuggestionList(response.payload);
-        } else {
-          console.error('Dữ liệu không hợp lệ:', response);
-          setSuggestionList([]);
-        }
-      } catch (err) {
-        console.error('Lỗi khi lấy dữ liệu người theo dõi:', err);
+        setSuggestionList(response?.payload || []);
+      } catch {
         setSuggestionList([]);
       }
     };
@@ -36,14 +34,8 @@ const ListFriend = () => {
     const fetchWaitingRequests = async () => {
       try {
         const response = await dispatch(getWaiting());
-        if (response && response.payload) {
-          setFriendRequests(response.payload);
-        } else {
-          console.error('Dữ liệu không hợp lệ:', response);
-          setFriendRequests([]);
-        }
-      } catch (err) {
-        console.error('Lỗi khi lấy dữ liệu yêu cầu kết bạn:', err);
+        setFriendRequests(response?.payload || []);
+      } catch {
         setFriendRequests([]);
       }
     };
@@ -57,8 +49,7 @@ const ListFriend = () => {
         await dispatch(acceptFriendRequest(userId));
         setFriendRequests(friendRequests.filter(user => user.id !== userId));
         toast.success('Đã xác nhận yêu cầu kết bạn thành công!');
-      } catch (err) {
-        console.error('Lỗi khi xác nhận yêu cầu kết bạn:', err);
+      } catch {
         toast.error('Có lỗi xảy ra, vui lòng thử lại.');
       }
     }
@@ -70,8 +61,7 @@ const ListFriend = () => {
         await dispatch(rejectFriendRequest(userId));
         setFriendRequests(friendRequests.filter(user => user.id !== userId));
         toast.success('Đã từ chối yêu cầu kết bạn thành công!');
-      } catch (err) {
-        console.error('Lỗi khi hủy yêu cầu kết bạn:', err);
+      } catch {
         toast.error('Có lỗi xảy ra, vui lòng thử lại.');
       }
     }
@@ -79,7 +69,10 @@ const ListFriend = () => {
 
   const toggleModal = () => {
     setShowModal(prev => !prev);
-    setHasSeenRequests(true); // Đánh dấu là đã xem yêu cầu
+    if (!showModal) {
+      setHasSeenRequests(true); // Ẩn số lượng khi mở modal
+      localStorage.setItem('hasSeenRequests', 'true'); // Lưu trạng thái vào localStorage
+    }
   };
 
   return (
@@ -108,16 +101,16 @@ const ListFriend = () => {
       <div className="flex-1">
         <h1 className="text-center text-xl font-bold mb-4 flex items-center justify-center">
           Người muốn kết bạn
-          {friendRequests.length > 0 && !hasSeenRequests && ( // Chỉ hiển thị chấm đỏ nếu chưa xem
-            <div className="relative ml-2">
-              <div className="border-2 border-blue-600 rounded-full p-1 flex items-center justify-center" onClick={toggleModal}>
-                <FaUserPlus className="text-blue-600 text-xl" />
+          <div className="relative ml-2" onClick={toggleModal}>
+            <div className="border-2 border-blue-600 rounded-full p-1 flex items-center justify-center">
+              <FaUserPlus className="text-blue-600 text-xl" />
+              {!hasSeenRequests && friendRequests.length > 0 && (
                 <span className="mt-[4px] ml-[11px] absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-3 h-3 flex items-center justify-center text-xs">
                   {friendRequests.length}
                 </span>
-              </div>
+              )}
             </div>
-          )}
+          </div>
         </h1>
         <ul>
           {friendRequests.slice(0, 3).map((user) => (
