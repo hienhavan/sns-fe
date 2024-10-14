@@ -28,8 +28,7 @@ const UpdatePassword = () => {
     const handleSubmit = async (values) => {
         const { password, newPassword } = values;
         try {
-            dispatch(updatePassWord({ currentPassword: password, newPassword }));;
-
+            await dispatch(updatePassWord({ currentPassword: password, newPassword }));;
         } catch (error) {
             console.log(error);
         }
