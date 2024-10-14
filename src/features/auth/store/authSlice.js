@@ -1,11 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { login, register } from '../services/auth';
-import { toast } from 'react-toastify';
+import {createSlice} from '@reduxjs/toolkit';
+import {login, register} from '../services/auth';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const getUserFromLocalStorage = () => {
-  const user = window.localStorage.getItem('sns_user');
-  return user;
+  return window.localStorage.getItem('sns_user') ? JSON.parse(window.localStorage.getItem('sns_user')) : null;
 };
 
 const initialState = {
