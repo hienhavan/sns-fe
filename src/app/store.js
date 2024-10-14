@@ -1,14 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { thunk } from 'redux-thunk';
 import authReducer from '../features/auth/store/authSlice';
-import userReducer from '../features/post/store/postSlice';
-import postRducer from '../features/user/store/userSlice';
+import postReducer from '../features/post/store/postSlice';
+import userReducer from '../features/user/store/userSlice';
+import commentReducer from '../features/comment/store/commentSlice'; // Đảm bảo rằng import đúng
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
-    post: postRducer,
+    post: postReducer,
+    comment: commentReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunk),
 });
+
 
 export default store;

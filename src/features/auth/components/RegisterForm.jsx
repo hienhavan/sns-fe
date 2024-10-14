@@ -1,13 +1,17 @@
 import Footer from '../../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { object, string, ref } from 'yup';
+import { object, string, ref, date } from 'yup';
 import authService from '../services/auth';
+import { register } from '../services/auth';
+import { useDispatch } from 'react-redux';
 
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const registrationSchema = object({
+    name: string().required('Vui lòng nhập tên'),
     email: string().email('Email không hợp lệ').required('Vui lòng nhập email'),
     password: string()
       .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
@@ -15,19 +19,28 @@ export default function Register() {
     confirmPassword: string()
       .oneOf([ref('password'), null], 'Mật khẩu xác nhận không khớp')
       .required('Vui lòng xác nhận mật khẩu'),
+    birthday: date()
+      .required('Vui lòng nhập ngày sinh')
+      .nullable()
+      .max(new Date(), 'Ngày sinh không được lớn hơn ngày hiện tại'),
+    phone: string()
+      .matches(/^0\d{9}$/, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số')
+      .required('Vui lòng nhập số điện thoại'),
   });
 
   const formik = useFormik({
     initialValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
+      birthday: '',
+      phone: '',
     },
     validationSchema: registrationSchema,
     onSubmit: async (values) => {
       try {
-        await authService.registration(values);
-        alert('Registration successful!');
+        dispatch(register(values));
         navigate('/login');
       } catch (error) {
         console.log(error);
@@ -55,6 +68,23 @@ export default function Register() {
           >
             <input
               type="text"
+              name="name"
+              placeholder="Name"
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.name && formik.touched.name
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.name && formik.touched.name && (
+              <p className="mb-2 text-sm text-red-500">{formik.errors.name}</p>
+            )}
+
+            <input
+              type="email"
               name="email"
               placeholder="Email"
               className={`mb-4 w-full border p-3 ${
@@ -108,6 +138,41 @@ export default function Register() {
                   {formik.errors.confirmPassword}
                 </p>
               )}
+
+            <input
+              type="date"
+              name="birthday"
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.birthday && formik.touched.birthday
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.birthday}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.birthday && formik.touched.birthday && (
+              <p className="mb-2 text-sm text-red-500">
+                {formik.errors.birthday}
+              </p>
+            )}
+
+            <input
+              type="number`"
+              name="phone"
+              placeholder="Số điện thoại"
+              className={`mb-4 w-full border p-3 ${
+                formik.errors.phone && formik.touched.phone
+                  ? 'border-red-500'
+                  : 'border-gray-300'
+              } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.phone && formik.touched.phone && (
+              <p className="mb-2 text-sm text-red-500">{formik.errors.phone}</p>
+            )}
 
             <button
               type="submit"

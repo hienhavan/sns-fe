@@ -1,54 +1,48 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const login = createAsyncThunk(
+export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      // TODO: un-comment these when api is done
-      // const response = await axios.post('/api/v1/login', {
-      //   email,
-      //   password,
-      // });
-      // window.localStorage.setItem('sns-user', JSON.stringify(response.data));
-      // return response.data;
+      const response = await axios.post('/apihost/api/v1/login', {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        window.localStorage.setItem('sns_user', JSON.stringify(response.data));
+        return response.data;
+      }
     } catch (error) {
-      console.error('Error during login:', error);
+      // console.log(error.message);
+      return rejectWithValue('wrong usename or password!');
     }
   },
 );
 
-const register = createAsyncThunk(
+export const register = createAsyncThunk(
   'auth/register',
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, name, birthday, phone }, { rejectWithValue }) => {
     try {
       // TODO: un-comment these when api is done
-      // const response = await axios.post('/api/v1/register', {
-      //   email,
-      //   password,
-      // });
-      // window.localStorage.setItem('sns-user', JSON.stringify(response.data));
-      // return response.data;
+      const response = await axios.post('/apihost/api/v1/register', {
+        email,
+        password,
+        name,
+        birthday,
+        phone,
+      });
+      toast.success('Registration successful', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+      return response.data;
     } catch (error) {
-      console.error('Error during login:', error);
+      // console.log('Register error:  ', error);
+      return rejectWithValue('bad credentials!');
     }
   },
 );
 
-// const register = async ({ email, password }) => {
-//   try {
-//       const response = await axios.post('/api/v1/register', {
-//           email,
-//           password
-//       });
-//       return response.data;
-//   } catch (error) {
-//       console.error('Error during login:', error);
-//       throw error;
-//   }
-// };
-
-export default {
-  login,
-  register,
-};
+export default { login, register };
