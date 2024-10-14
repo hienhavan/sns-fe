@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import UpdateProfile from './features/user/components/UpdateProfile';
 import UserProfile from './features/user/components/Profile';
 import UpdatePassword from './features/user/components/UpdatePassword';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Comments from './features/comment/components/Comment';
 
 const Layout = () => (
@@ -20,6 +22,7 @@ const Layout = () => (
 const App = () => {
   return (
     <>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>

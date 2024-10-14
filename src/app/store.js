@@ -16,4 +16,5 @@ const store = configureStore({
     getDefaultMiddleware().concat(thunk),
 });
 
+
 export default store;
