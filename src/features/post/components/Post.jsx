@@ -1,8 +1,10 @@
 import { HiDotsHorizontal } from 'react-icons/hi';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { deletePost, updatePost } from '../services/post';
+import { deletePost, updatePost, likePost, unlikePost, countLikes } from '../services/post'; // Import countLikes
 import { toast } from 'react-toastify';
+import { FaComments } from 'react-icons/fa';
+import Comment from '../../comment/components/Comment.jsx';
 
 const Post = ({ post }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -10,21 +12,45 @@ const Post = ({ post }) => {
   const [content, setContent] = useState(post.content);
   const [visibility, setVisibility] = useState(post.visibility);
   const [media, setMedia] = useState([]);
+  const [isLiked, setIsLiked] = useState(post.isLiked);
+  const [likeCount, setLikeCount] = useState(post.likeCount);
+  const [comments, setComments] = useState(post.comments || []);
+  const [newComment, setNewComment] = useState('');
+  const [showComments, setShowComments] = useState(false);
+
   const dispatch = useDispatch();
 
-  const toggleOptions = () => {
-    setShowOptions((prev) => !prev);
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      try {
+        const resultAction = await dispatch(countLikes(post.id)).unwrap();
+        setLikeCount(resultAction);
+      } catch (error) {
+        console.error('Failed to fetch like count:', error);
+        toast.error('Có lỗi xảy ra khi lấy số lượng thích.');
+      }
+    };
+
+    fetchLikeCount();
+  }, [dispatch, post.id]);
+
+  const handleLike = () => {
+    const action = isLiked ? unlikePost : likePost;
+    dispatch(action(post.id));
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    setIsLiked(!isLiked);
   };
 
+  const toggleOptions = () => setShowOptions((prev) => !prev);
+
   const formatDate = (dateString) => {
-    if (!dateString) return 'Invalid Date';
     const date = new Date(dateString);
     return isNaN(date) ? 'Invalid Date' : date.toLocaleString('vi-VN', {
       hour: '2-digit',
       minute: '2-digit',
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
@@ -41,7 +67,7 @@ const Post = ({ post }) => {
   };
 
   const handleEditPost = async () => {
-    if (content.trim() === '') {
+    if (!content.trim()) {
       toast.error('Nội dung không được để trống!');
       return;
     }
@@ -49,15 +75,15 @@ const Post = ({ post }) => {
     const formData = new FormData();
     formData.append('content', content);
     formData.append('visibility', visibility);
-
-    if (media && media.length > 0) {
-      media.forEach((file) => {
-        formData.append('file', file);
-      });
-    }
+    media.forEach((file) => formData.append('file', file));
 
     try {
-      await dispatch(updatePost({ id: post.id, formData })).unwrap();
+      await dispatch(updatePost({
+        postId: post.id, // Gán ID của bài viết vào đây
+        content,
+        visibility,
+        media
+      })).unwrap();
       toast.success('Bài đăng đã được cập nhật thành công!');
       setIsEditing(false);
     } catch (error) {
@@ -66,23 +92,37 @@ const Post = ({ post }) => {
     }
   };
 
+
   const getVisibilityText = (visibility) => {
-    switch (visibility) {
-      case 'PRIVATE':
-        return 'Riêng tư';
-      case 'FRIENDS_ONLY':
-        return 'Chỉ bạn bè';
-      case 'PUBLIC':
-        return 'Công khai';
-      default:
-        return 'Không xác định';
-    }
+    const visibilityTexts = {
+      PRIVATE: 'Riêng tư',
+      FRIENDS_ONLY: 'Chỉ bạn bè',
+      PUBLIC: 'Công khai',
+    };
+    return visibilityTexts[visibility] || 'Không xác định';
   };
 
   const handleMediaChange = (e) => {
     const files = Array.from(e.target.files);
     setMedia(files);
   };
+
+  const handleAddComment = (newComment) => {
+    setComments((prevComments) => [...prevComments, newComment]);
+  };
+
+  const renderMedia = () => (
+    <div className="mx-auto max-h-80 max-w-3xl cursor-pointer rounded-md bg-blue-100">
+      {post.media.map((mediaItem, index) => (
+        <img
+          key={mediaItem.id}
+          src={`/apihost${mediaItem.url}`}
+          className="mx-auto my-2 max-h-80 max-w-full rounded-md"
+          alt={`post media ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <div className="pb-5">
@@ -112,8 +152,7 @@ const Post = ({ post }) => {
             />
 
             {showOptions && (
-              <div
-                className="w-30 h-22 absolute right-7 top-0 z-20 rounded-xl border border-slate-300 bg-white px-1 font-semibold text-slate-600 shadow-xl">
+              <div className="w-30 h-22 absolute right-7 top-0 z-20 rounded-xl border border-slate-300 bg-white px-1 font-semibold text-slate-600 shadow-xl">
                 <ul className="cursor-pointer p-0.5 text-start">
                   <li
                     className="my-1 rounded p-1 hover:bg-slate-200"
@@ -180,29 +219,29 @@ const Post = ({ post }) => {
             </p>
           )}
 
-          {post.media && post.media.length > 0 && (
-            <div className="mx-auto max-h-80 max-w-3xl cursor-pointer rounded-md bg-blue-100">
-              {post.media.map((mediaItem, index) => (
-                <img
-                  key={mediaItem.id}
-                  src={`/apihost${mediaItem.url}`}
-                  className="mx-auto my-2 max-h-80 max-w-full rounded-md"
-                  alt={`post media ${index + 1}`}
-                />
-              ))}
-            </div>
-          )}
+          {post.media && post.media.length > 0 && renderMedia()}
 
           <p className="text-sm text-gray-600">{formatDate(post.createdAt) || 'Unknown Date'}</p>
 
-          <div className="flex justify-between pt-8">
-            <div className="flex">
-              <span className="pl-4 text-sm font-semibold">Like</span>
+          <div className="flex justify-between pt-2">
+            <div className="flex items-center">
+              <span className="text-lg cursor-pointer" onClick={handleLike}>
+                {isLiked ? '❤️' : '🤍'} {likeCount} Thích
+              </span>
             </div>
-            <div className="flex">
-              <span className="pl-4 text-sm font-semibold">Comment</span>
+
+            <div className="flex items-center">
+              <FaComments
+                className="cursor-pointer text-xl"
+                onClick={() => setShowComments((prev) => !prev)}
+              />
+              <span className="ml-1">{comments.length} Bình luận</span>
             </div>
           </div>
+
+          {showComments && (
+            <Comment comments={comments} onAddComment={handleAddComment} />
+          )}
         </div>
       </div>
     </div>
