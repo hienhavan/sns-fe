@@ -7,6 +7,7 @@ import PostForm from "./PostForm.jsx";
 const UserPost = () => {
   const dispatch = useDispatch();
 
+
   const { posts, isLoading, error } = useSelector((state) => state.post);
 
   const user = JSON.parse(localStorage.getItem('sns_user'));

@@ -7,9 +7,23 @@ export default {
         customGray: '#45546a',
         backgroundImage: {
           'login-img': "url('/public/login_bg.jpg')",
+
         }
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.hide-scrollbar': {
+          'scrollbar-width': 'none',
+          '-ms-overflow-style': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    },
+  ],
+
 };
