@@ -37,9 +37,9 @@ export const register = createAsyncThunk(
         position: 'top-center',
         autoClose: 3000,
       });
+
       return response.data;
     } catch (error) {
-      // console.log('Register error:  ', error);
       return rejectWithValue('bad credentials!');
     }
   },

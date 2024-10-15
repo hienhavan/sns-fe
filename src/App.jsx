@@ -1,14 +1,17 @@
 import { Outlet, Route, Routes, BrowserRouter } from 'react-router-dom';
 import LoginForm from './features/auth/components/LoginForm';
 import RegisterForm from './features/auth/components/RegisterForm';
-import Home from './features/home/Home';
+import Home from './components/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import UpdateProfile from './features/user/components/UpdateProfile';
 import UserProfile from './features/user/components/Profile';
-import UpdatePassword from './features/user/components/UpdatePassword';
-import { ToastContainer } from 'react-toastify';
+import AllListFriend from './features/friend/components/AllListFriend';
 import 'react-toastify/dist/ReactToastify.css';
+import AllListFollowers from './features/friend/components/AllListFollowers';
+import { ToastContainer } from 'react-toastify';
+import UpdatePassword from './features/user/components/UpdatePassword';
+
 import Comments from './features/comment/components/Comment';
 import Dashboard from './features/admin/components/Dashboard';
 
@@ -28,10 +31,10 @@ const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
-            {/* Bảo vệ các route sau bằng PrivateRoute */}
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/me" element={<UserProfile />} />
-
+            <Route path="/list-friend" element={<AllListFriend />} />
+            <Route path='/list-followers' element={<AllListFollowers />} />
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/posts/:postId/comments" element={<Comments />} />
           </Route>
@@ -40,6 +43,7 @@ const App = () => {
           <Route path="/admin" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 };

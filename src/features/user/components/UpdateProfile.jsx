@@ -21,15 +21,7 @@ const validationSchema = Yup.object({
   address: Yup.string().required('Address is required'),
 });
 
-const getUserFromLocalStorage = () => {
-  try {
-    const user = window.localStorage.getItem('sns_user');
-    return user ? JSON.parse(user) : null;
-  } catch (error) {
-    console.error('Failed to parse user from localStorage:', error);
-    return null;
-  }
-};
+
 
 const UpdateProfile = () => {
   const [user, setUser] = useState({
@@ -42,38 +34,46 @@ const UpdateProfile = () => {
     phone: '',
   });
   const [previewImage, setPreviewImage] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const navigate = useNavigate();
-  const storedUser = getUserFromLocalStorage();
-  const id = storedUser ? storedUser.id : null;
+  ;
 
   useEffect(() => {
     const fetchData = async () => {
-      if (id) {
-        try {
-          const response = await getUser(id);
-          setUser({
-            profilePicture: response.profilePicture || '',
-            name: response.name || '',
-            gender: response.gender || '',
-            birthday: response.birthday || '',
-            biography: response.biography || '',
-            address: response.address || '',
-            phone: response.phone || '',
-          });
-        } catch (err) {
-          console.error('Error fetching user:', err);
-        }
+      try {
+        const response = await getUser();
+        setUser({
+          profilePicture: response.profilePicture || '',
+          name: response.name || '',
+          gender: response.gender || '',
+          birthday: response.birthday || '',
+          biography: response.biography || '',
+          address: response.address || '',
+          phone: response.phone || '',
+        });
+      } catch (err) {
+        console.error('Error fetching user:', err);
       }
+
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
     const fileInput = document.querySelector('input[type="file"]');
-
-    // Thêm tất cả các trường vào formData
     formData.append('name', values.name);
     formData.append('phone', values.phone);
     formData.append('gender', values.gender);
@@ -85,9 +85,7 @@ const UpdateProfile = () => {
     }
 
     try {
-      await updateUser(id, formData);
-      alert('Profile updated successfully');
-      navigate('/me');
+      await updateUser(formData);
     } catch (error) {
       console.error('Error updating profile:', error);
     } finally {
@@ -133,7 +131,6 @@ const UpdateProfile = () => {
                     alt="Xem trước tạm thời"
                   />
                 ) : (
-                  // Nếu không có ảnh xem trước, hiển thị ảnh đã tải lên
                   <img
                     src={
                       user.profilePicture
@@ -149,13 +146,12 @@ const UpdateProfile = () => {
                   type="button"
                   className="my-3 ml-4 h-[30px] cursor-pointer rounded-lg border bg-slate-200 p-1 text-center text-xs font-semibold text-slate-600 hover:bg-slate-100"
                   onClick={() => {
-                    // Kích hoạt chọn file khi click vào button
                     document.getElementById('uploadImage').click();
                   }}
                 >
                   {/* Input file ẩn */}
                   <input
-                    id="uploadImage" // Đặt id để tham chiếu từ button
+                    id="uploadImage"
                     type="file"
                     accept="image/*"
                     onChange={(event) => {
@@ -163,15 +159,13 @@ const UpdateProfile = () => {
                       if (file) {
                         const reader = new FileReader();
                         reader.onloadend = () => {
-                          // Cập nhật URL xem trước tạm thời
                           setPreviewImage(reader.result);
                         };
-                        reader.readAsDataURL(file); // Đọc file để tạo URL
+                        reader.readAsDataURL(file);
                       }
                     }}
                     className="hidden"
                   />
-                  {/* Nút với chữ */}
                   Thay đổi ảnh
                 </button>
               </div>

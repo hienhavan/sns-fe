@@ -34,7 +34,7 @@ const postSlice = createSlice({
       // create post
       .addCase(createPost.pending, (state) => {
         state.isLoading = true;
-
+        state.error = '';
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.isLoading = false;

@@ -101,6 +101,7 @@ const PostForm = () => {
           <div className="flex justify-between">
             {content && (
               <button
+                  type="button"
                 className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
                 onClick={handlePostSubmit}
                 disabled={isLoading}
