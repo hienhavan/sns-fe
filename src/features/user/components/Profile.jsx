@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../../../../src/components/NavBar';
-import UserPost from '../../post/components/UserPost';
 import userService from '../services/user';
 import { Link } from 'react-router-dom';
 import ListFreind from '../../friend/components/ListFriend';
 import { getUserFromLocalStorage } from '../../../utils/axiosClient';
+import PostList from '../../post/components/PostList';
 
 const Profile = () => {
   const storedUser = getUserFromLocalStorage();
@@ -76,7 +76,7 @@ const Profile = () => {
               <span className="pl-1 text-slate-600">10 followers</span>
             </h3>
           </div>
-          <UserPost />
+          <PostList />
         </div>
       </div>
       <div className="w-[20%]">

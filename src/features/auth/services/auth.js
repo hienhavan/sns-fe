@@ -33,11 +33,6 @@ export const register = createAsyncThunk(
         birthday,
         phone,
       });
-      toast.success('Registration successful', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-
       return response.data;
     } catch (error) {
       return rejectWithValue('bad credentials!');
