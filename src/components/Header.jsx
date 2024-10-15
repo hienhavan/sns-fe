@@ -15,7 +15,6 @@ import { Link } from 'react-router-dom';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
-
   const dispatch = useDispatch();
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
@@ -52,18 +51,6 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex w-[150vh] items-center">
-          {/* <div className="top-search relative w-full">
-            <form method="post" className="flex">
-              <input
-                type="text"
-                placeholder="Search People, Pages, Groups etc"
-                className="w-[80%] border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
-              />
-              <button className="border-collapse rounded-r-[30px] bg-[#49586e] pl-3 pr-3 text-white hover:bg-slate-500">
-                <FontAwesomeIcon icon={faSearch} className="mr-2" />{' '}
-              </button>
-            </form>
-          </div> */}
           <SearchForm />
           <div className="user-img group relative flex h-16 w-[20%] cursor-pointer items-center justify-center leading-[65px]">
             <h5 className="mr-2 inline-block text-[14px] font-medium text-white">

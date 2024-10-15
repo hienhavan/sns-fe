@@ -70,38 +70,6 @@ const getUsers = async ({ name }) => {
 };
 
 
-const unFollowUser = createAsyncThunk("user/unfollow", async ({ followUserId, token }, { rejectWithValue }) => {
-    try {
-        const response = await axios.delete(`/api/v1/me/following/${followUserId}`, {
-            headers: { authorization: token }
-        });
-
-        if (response.status === 200) {
-            toast.success('Unfollowed successfully');
-            return response.data;
-        }
-    } catch (error) {
-        toast.error(error.response.data.errors[0]);
-        return rejectWithValue(error.response.data.errors[0]);
-    }
-});
-
-const followUser = createAsyncThunk("user/follow", async ({ followUserId, token }, { rejectWithValue }) => {
-    try {
-        const { status, data } = await axios.post(`/api/v1/me/following/${followUserId}`, {}, {
-            headers: { authorization: token }
-        });
-
-        if (status === 200) {
-            toast.success('Followed successfully');
-            return data;
-        }
-    } catch (error) {
-        toast.error(error.response.data.errors[0]);
-        return rejectWithValue(error.response.data.errors[0]);
-    }
-});
-
 const updatePassWord = createAsyncThunk("user/update-password", async ({ currentPassword, newPassword }, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     if (!token) {
@@ -132,4 +100,4 @@ const updatePassWord = createAsyncThunk("user/update-password", async ({ current
 
 
 
-export default { updateUser, getUser, getUsers, unFollowUser, followUser, updatePassWord };
+export default { updateUser, getUser, getUsers, updatePassWord };

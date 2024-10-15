@@ -10,9 +10,9 @@ const store = configureStore({
     auth: authReducer,
     user: userReducer,
     post: postReducer,
+    comment: commentReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk),
 });
-
 export default store;

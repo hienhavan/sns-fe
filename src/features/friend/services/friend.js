@@ -9,16 +9,21 @@ const getTokenFromLocalStorage = () => {
     }
     return null;
 };
-const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithValue }) => {
+
+const getFollowing = createAsyncThunk("user/following", async (arg, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     try {
-        const { status, data } = await axios.get(`/apihost/api/v1/me/following`, {
-            headers: { authorization: token }
-        });
+        const { status, data } = await axios.get(`/apihost/api/v1/me/friends`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }        });
 
         if (status === 200) {
             console.log(data);
             return data;
+        } else {
+            return rejectWithValue('Unexpected response status: ' + status);
         }
     } catch (error) {
         console.log(error);
@@ -26,13 +31,15 @@ const getFollowing = createAsyncThunk("user/following", async (_, { rejectWithVa
     }
 });
 
-const getWaiting = createAsyncThunk("user/waiting", async (_, { rejectWithValue }) => {
+const getWaiting = createAsyncThunk("user/waiting", async (arg, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
     try {
-        const { status, data } = await axios.get(`/apihost/api/v1/me/followers`, {
+        const { status, data } = await axios.get(`/apihost/api/v1/me/waiting-users`, {
 
-            headers: { authorization: token }
-        });
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }        });
 
         if (status === 200) {
             console.log(data);
