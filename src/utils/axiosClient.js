@@ -38,5 +38,14 @@ axios.interceptors.response.use(
     return Promise.reject(data);
   },
 );
+export const getUserFromLocalStorage = () => {
+  try {
+    const user = window.localStorage.getItem('sns_user');
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error('Failed to parse user from localStorage:', error);
+    return null;
+  }
+};
 
 export default axios;

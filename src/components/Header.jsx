@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../features/auth/store/authSlice';
 import userService from '../../src/features/user/services/user';
 import { useEffect, useState } from 'react';
-
+import { getUserFromLocalStorage } from '../utils/axiosClient';
+import SearchForm from '../features/user/components/SearchForm';
 import {
   faUser,
   faPencilAlt,
@@ -14,15 +15,7 @@ import { Link } from 'react-router-dom';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
-  const getUserFromLocalStorage = () => {
-    try {
-      const user = window.localStorage.getItem('sns_user');
-      return user ? JSON.parse(user) : null;
-    } catch (error) {
-      console.error('Failed to parse user from localStorage:', error);
-      return null;
-    }
-  };
+
   const dispatch = useDispatch();
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
@@ -59,7 +52,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex w-[150vh] items-center">
-          <div className="top-search relative w-full">
+          {/* <div className="top-search relative w-full">
             <form method="post" className="flex">
               <input
                 type="text"
@@ -70,8 +63,8 @@ const Header = () => {
                 <FontAwesomeIcon icon={faSearch} className="mr-2" />{' '}
               </button>
             </form>
-          </div>
-
+          </div> */}
+          <SearchForm />
           <div className="user-img group relative flex h-16 w-[20%] cursor-pointer items-center justify-center leading-[65px]">
             <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
               {user.name}
