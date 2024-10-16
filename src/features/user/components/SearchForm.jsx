@@ -27,14 +27,14 @@ const SearchForm = () => {
   };
 
   return (
-    <div className="w-full grid-cols-5">
-      <form onSubmit={handleSubmit} method="POST" className="flex">
+    <div className="col-span-3 col-start-1">
+      <form onSubmit={handleSubmit} method="POST" className="flex w-full">
         <input
           type="text"
           placeholder="Search people..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
+          className="w-full border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
         />
         <button
           type="submit"

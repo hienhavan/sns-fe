@@ -61,7 +61,7 @@ const DropdownList = () => {
 
 const UserInformation = ({ user }) => {
   return (
-    <div className="user-img group relative flex h-16 w-[20%] cursor-pointer items-center justify-center leading-[65px]">
+    <div className="flex h-16 cursor-pointer items-center justify-center leading-[65px]">
       <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
         {user.name}
       </h5>
@@ -82,12 +82,14 @@ const UserInformation = ({ user }) => {
 
 const LoginButton = () => {
   return (
-    <Link
-      className="hover:border-info-600 hover:text-info-600 focus:border-info-600 focus:text-info-600 active:border-info-700 active:text-info-700 rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-xs font-bold uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 focus:outline-none focus:ring-0 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-      to={'/login'}
-    >
-      Login
-    </Link>
+    <div className="col-span-1 col-end-6">
+      <Link
+        className="hover:border-info-600 hover:text-info-600 focus:border-info-600 focus:text-info-600 active:border-info-700 active:text-info-700 rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-center text-xs font-bold uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 focus:outline-none focus:ring-0 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+        to={'/login'}
+      >
+        Login
+      </Link>
+    </div>
   );
 };
 
@@ -95,19 +97,15 @@ const Header = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <header className="fix relative left-0 top-0 z-50 w-full">
-      <div className="fixed flex h-[66px] w-full items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)]">
-        <div className="relative max-h-[66px]">
-          <Link title="homepage" to="/" className="inline-block max-h-[66px]">
-            <img
-              className="max-h-[66px] object-cover"
-              src="/logo_img.png"
-              alt="logo"
-            />
+    <header className="fixed left-0 top-0 w-full">
+      <div className="fixed flex h-[66px] w-full items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)] sm:grid sm:grid-cols-12">
+        <div className="ml-0 max-h-[66px] sm:col-span-2 sm:col-start-2">
+          <Link title="homepage" to="/">
+            <img className="max-h-[66px]" src="/logo_img.png" alt="logo" />
           </Link>
         </div>
-        <div className="ml-[10%] flex w-full items-center">
-          <SearchForm className="ml-5" />
+        <div className="col-span-8 grid h-full w-full grid-cols-4 items-center">
+          <SearchForm />
           {user ? <UserInformation user={user} /> : <LoginButton />}
         </div>
       </div>
