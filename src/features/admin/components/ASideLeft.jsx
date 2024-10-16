@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom';
-import { faChartSimple, faTable } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChartSimple,
+  faTable,
+  faArrowLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ASideLeft = () => {
   const items = [
     { title: 'Chart', path: '/admin/charts', icon: faChartSimple },
     { title: 'User', path: '/admin/users', icon: faTable },
+    { title: 'Home', path: '/', icon: faArrowLeft },
   ];
 
   return (
@@ -20,7 +25,7 @@ const ASideLeft = () => {
           <Link
             to={i.path}
             key={i.title}
-            className="active-nav-link nav-item flex items-center py-4 pl-6 text-white"
+            className="active-nav-link nav-item flex items-center py-4 pl-6 text-white hover:bg-[#2554ff] hover:font-bold"
           >
             <FontAwesomeIcon icon={i.icon} className="pr-2" /> {i.title}
           </Link>
