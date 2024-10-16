@@ -1,8 +1,9 @@
 import UserTable from './UserTable';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import adminService from '../services/admin';
-import UserFilter from './UserFilter';
+import SearchBar from './SearchBar';
 import { useDebounce } from 'use-debounce';
+import TableSkeleton from './TableSkeleton';
 
 const UserSection = () => {
   const [filter, setFilter] = useState('');
@@ -23,13 +24,19 @@ const UserSection = () => {
   return (
     <div className="mt-12 w-full">
       <div className="flex items-center pb-3 text-xl">
-        <UserFilter filter={filter} onChange={onChange} />
+        <SearchBar
+          value={filter}
+          onChange={onChange}
+          placeholder={'Search users...'}
+        />
       </div>
-      {users.length > 0 ? (
-        <UserTable users={users} />
-      ) : (
-        <p>No available users</p>
-      )}
+      <Suspense fallback={<TableSkeleton />}>
+        {users.length > 0 ? (
+          <UserTable users={users} />
+        ) : (
+          <p>No available users</p>
+        )}
+      </Suspense>
     </div>
   );
 };
