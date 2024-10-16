@@ -29,7 +29,11 @@ const UserRow = ({ user }) => {
           <div className="h-10 w-10 flex-shrink-0">
             <img
               className="h-full w-full rounded-full"
-              src={user.profilePicture ? user.profilePicture : null}
+              src={
+                user.profilePicture
+                  ? `/apihost/image/${user.profilePicture}`
+                  : null
+              }
               alt={user.name}
             />
           </div>
