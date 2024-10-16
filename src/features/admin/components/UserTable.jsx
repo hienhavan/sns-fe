@@ -1,19 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
-import UserFilter from './UserFilter';
+import { useState } from 'react';
 import adminService from '../services/admin';
-import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
 
 const UserRow = ({ user }) => {
   const [active, setActive] = useState(user.active);
+  const [isDisable, setIsDisable] = useState(false);
 
   const onChange = (e) => {
     setActive(e.target.checked);
+    setIsDisable(true);
     adminService
       .blockUser(user)
       .then((updated) => {
         toast.success(`${active ? 'block' : 'unblock'} ${updated.username}`);
         setActive(updated.active);
+        setIsDisable(false);
       })
       .catch((err) => {
         console.log(err);
@@ -48,6 +49,7 @@ const UserRow = ({ user }) => {
               className="peer sr-only"
               checked={active}
               onChange={onChange}
+              disabled={isDisable}
             />
             <div className="peer flex h-6 w-11 items-center rounded-full bg-gray-300 after:absolute after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all peer-checked:bg-[#007bff] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
           </label>
@@ -57,67 +59,30 @@ const UserRow = ({ user }) => {
   );
 };
 
-const UserTable = () => {
-  const [filter, setFilter] = useState('');
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const data = await adminService.filterUser();
-      setUsers(data);
-    })();
-  }, []);
-
-  const filterDebounce = useCallback(
-    () => debounce(adminService.filterUser, 500),
-    [],
-  );
-
-  const handleOnFilterChange = (e) => {
-    setFilter(e.target.value);
-    const filteredUsers = filterDebounce(filter);
-    setUsers(filteredUsers);
-  };
-
-  const theads = ['Username', 'Email', 'Status'];
-
-  const NoUser = () => {
-    return <p>No avilable users</p>;
-  };
+const UserTable = ({ users }) => {
+  const theads = ['User', 'Email', 'Status'];
 
   return (
-    <div className="mt-12 w-full">
-      <div className="flex items-center pb-3 text-xl">
-        <UserFilter
-          filter={filter}
-          handleOnFilterChange={handleOnFilterChange}
-        />
-      </div>
-      <div className="overflow-auto bg-white">
-        {users.length > 0 ? (
-          <table className="min-w-full leading-normal">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                {theads.map((el) => (
-                  <th
-                    key={el}
-                    className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
-                  >
-                    {el}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="text-gray-700">
-              {users.map((user) => (
-                <UserRow key={user.id} user={user} />
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <NoUser />
-        )}
-      </div>
+    <div className="overflow-auto bg-white">
+      <table className="min-w-full leading-normal">
+        <thead className="bg-gray-800 text-white">
+          <tr>
+            {theads.map((thead) => (
+              <th
+                key={thead}
+                className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+              >
+                {thead}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="text-gray-700">
+          {users.map((user) => (
+            <UserRow key={user.id} user={user} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

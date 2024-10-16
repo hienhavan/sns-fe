@@ -1,7 +1,7 @@
 import ASideLeft from './ASideLeft';
 import AdminBarchart from './AdminBarChart';
 import { useState, useEffect } from 'react';
-import UserTable from './UserTable';
+import UserSection from './UserSection';
 import adminService from '../services/admin';
 
 const Dashboard = () => {
@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div className="flex w-full flex-col overflow-x-hidden border-t">
           <main className="w-full flex-grow p-6">
             <AdminBarchart data={data} />
-            <UserTable />
+            <UserSection />
           </main>
         </div>
       </div>
