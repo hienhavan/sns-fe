@@ -18,11 +18,13 @@ const filterUser = async (filter) => {
   let q = '';
   if (filter) q += `?name=${filter}`;
   const response = await axios.get(`/apihost/api/v1/users${q}`);
+  console.log('USERLIST FROM AXIOS: ', response.data);
   return response.data;
 };
 
 const blockUser = async (user) => {
   const response = await axios.put(`/apihost/api/v1/users/${user.id}/block`);
+  console.log('AXIOS DATA: ', response.data);
   return response.data;
 };
 
