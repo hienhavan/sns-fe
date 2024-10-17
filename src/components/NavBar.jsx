@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { MdOutlineExplore, MdExplore } from 'react-icons/md';
-import { FaRegUser, FaUser } from 'react-icons/fa';
+import { FaList, FaRegUser, FaUser } from 'react-icons/fa';
+import { FaHouse } from 'react-icons/fa6';
 
 const NavBar = () => {
   const location = useLocation();
@@ -19,15 +19,15 @@ const NavBar = () => {
             >
               {location.pathname === '/' ? (
                 <>
-                  <MdExplore className="text-[1.6rem] font-bold" />
+                  <FaHouse className="text-[1.6rem] font-bold" />
                   <h2 className="hidden px-1 text-xl font-bold xl:block">
-                    Explore
+                    Trang chủ
                   </h2>
                 </>
               ) : (
                 <>
-                  <MdOutlineExplore className="text-[1.6rem]" />
-                  <h2 className="hidden px-1 text-xl xl:block">Explore</h2>
+                  <FaHouse className="text-[1.6rem]" />
+                  <h2 className="hidden px-1 text-xl xl:block">Trang chủ</h2>
                 </>
               )}
             </Link>
@@ -45,13 +45,37 @@ const NavBar = () => {
                 <>
                   <FaUser className="text-[1.6rem] font-bold" />
                   <h2 className="hidden px-1 text-xl font-bold xl:block">
-                    Profile
+                    Hồ sơ
                   </h2>
                 </>
               ) : (
                 <>
                   <FaRegUser className="text-[1.6rem]" />
-                  <h2 className="hidden px-1 text-xl xl:block">Profile</h2>
+                  <h2 className="hidden px-1 text-xl xl:block">Hồ sơ</h2>
+                </>
+              )}
+            </Link>
+          </li>
+
+
+          <li>
+            <Link
+              to="/posts"
+              className={`flex cursor-pointer gap-3 rounded-[15rem] px-3 py-4 hover:bg-slate-200 active:bg-slate-100 ${
+                location.pathname === '/posts' ? 'font-bold' : ''
+              }`}
+            >
+              {location.pathname === '/posts' ? (
+                <>
+                  <FaList className="text-[1.6rem] font-bold" />
+                  <h2 className="hidden px-1 text-xl font-bold xl:block">
+                    Bài đăng
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <FaList icon="fa-solid fa-list" className="text-[1.6rem]" />
+                  <h2 className="hidden px-1 text-xl xl:block">Bài đăng</h2>
                 </>
               )}
             </Link>

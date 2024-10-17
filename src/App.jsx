@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import AllListFollowers from './features/friend/components/AllListFollowers';
 import { ToastContainer } from 'react-toastify';
 import UpdatePassword from './features/user/components/UpdatePassword';
+import SearchForm from './features/post/components/SearchForm'
+
 
 import Comments from './features/comment/components/Comment';
 
@@ -28,6 +30,7 @@ const App = () => {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
+          <Route path="/posts" element={<SearchForm/>}/>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
@@ -36,6 +39,7 @@ const App = () => {
             <Route path='/list-followers' element={<AllListFollowers />} />
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/posts/:postId/comments" element={<Comments/>}/>
+
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

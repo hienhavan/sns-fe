@@ -1,79 +1,140 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchComments, addComment, deleteComment, updateComment } from '../services/comment'; // Nhập đúng tên các hàm
+import {
+  fetchComments,
+  addComment,
+  addReply,
+  updateComment,
+  deleteComment,
+  countComments,
+  toggleLikeComment
+} from '../services/comment.js';
 
 const initialState = {
-  isLoading: false,
-  error: '',
   comments: [],
+  commentCount: 0,
+  loading: false,
+  error: null,
 };
 
 const commentSlice = createSlice({
   name: 'comment',
   initialState,
-  reducers: {
-    clearMessage: (state) => {
-      state.error = '';
-    },
-    resetComment: (state) => {
-      state.comments = [];
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    // Lấy tất cả bình luận
+    // Fetch comments
     builder
       .addCase(fetchComments.pending, (state) => {
-        state.isLoading = true;
-        state.error = '';
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchComments.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.comments = payload; // Gán bình luận nhận được vào state
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        state.comments = action.payload;
+        state.loading = false;
       })
-      .addCase(fetchComments.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload; // Lưu lỗi
-      })
-      // Thêm bình luận
+      .addCase(fetchComments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    // Add comment
+    builder
       .addCase(addComment.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(addComment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.comments.push(action.payload); // Thêm bình luận mới vào danh sách
+        state.comments.push(action.payload);
+        state.loading = false;
       })
-      .addCase(addComment.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload; // Lưu lỗi
+      .addCase(addComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    // Add reply
+    builder
+      .addCase(addReply.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
-      // Xóa bình luận
-      .addCase(deleteComment.pending, (state) => {
-        state.isLoading = true;
+      .addCase(addReply.fulfilled, (state, action) => {
+        const index = state.comments.findIndex(comment => comment.id === action.payload.parentId);
+        if (index >= 0) {
+          state.comments[index].replies.push(action.payload);
+        }
+        state.loading = false;
       })
-      .addCase(deleteComment.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.comments = state.comments.filter(comment => comment.id !== action.payload); // Xóa bình luận
-      })
-      .addCase(deleteComment.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload; // Lưu lỗi
-      })
-      // Cập nhật bình luận
+      .addCase(addReply.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    // Update comment
+    builder
       .addCase(updateComment.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(updateComment.fulfilled, (state, action) => {
-        state.isLoading = false;
         const index = state.comments.findIndex(comment => comment.id === action.payload.id);
-        if (index !== -1) {
-          state.comments[index] = action.payload; // Cập nhật bình luận
+        if (index >= 0) {
+          state.comments[index] = action.payload;
         }
+        state.loading = false;
       })
-      .addCase(updateComment.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload; // Lưu lỗi
+      .addCase(updateComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
-  }
+
+    // Delete comment
+    builder
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(comment => comment.id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    // Count comments
+    builder
+      .addCase(countComments.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(countComments.fulfilled, (state, action) => {
+        state.commentCount = action.payload;
+        state.loading = false;
+      })
+      .addCase(countComments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    // Toggle like comment
+    builder
+      .addCase(toggleLikeComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(toggleLikeComment.fulfilled, (state, action) => {
+        const index = state.comments.findIndex(comment => comment.id === action.payload.id);
+        if (index >= 0) {
+          state.comments[index].isLiked = action.payload.isLiked;
+        }
+        state.loading = false;
+      })
+      .addCase(toggleLikeComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
-export const { clearMessage,resetComment } = commentSlice.actions;
 export default commentSlice.reducer;
