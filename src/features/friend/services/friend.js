@@ -71,27 +71,6 @@ const getWaitingFriend = async () => {
   }
 };
 
-const getFollowersFriend = async ({ id }) => {
-  if (!id) {
-    throw new Error('Id parameter is required');
-  }
-
-  const token = getTokenFromLocalStorage();
-  try {
-    const response = await axios.get(`/apihost/api/v1/user/${id}/waiting`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log('response.data', response.data);
-
-    return response.data;
-  } catch (error) {
-    console.error('Error during user fetch:', error);
-    throw error;
-  }
-};
-
 const getFriendsByFriendsId = async ({ id }) => {
   const token = getTokenFromLocalStorage();
   try {
@@ -159,13 +138,29 @@ const acceptFriends = async ({ id }) => {
   }
 };
 
+const mutualFriends = async ({ id }) => {
+  const token = getTokenFromLocalStorage();
+  try {
+    const response = await axios.get(`/apihost/api/v1/me/mutual/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error during user fetch:', error);
+    throw error;
+  }
+};
+
 export default {
   getFollowing,
   getWaiting,
-  getFollowersFriend,
   getFriendsByFriendsId,
   unFriend,
   addFriend,
   acceptFriends,
   getWaitingFriend,
+  mutualFriends,
 };

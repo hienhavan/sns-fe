@@ -3,7 +3,7 @@ import NavBar from '../../../../src/components/NavBar';
 import UserPost from '../../post/components/UserPost';
 import userService from '../services/user';
 import { Link } from 'react-router-dom';
-import ListFreind from '../../friend/components/ListFriend';
+import ListFollowerAndFriendUser from '../../friend/components/ListFollowerAndFriendUser';
 import { getUserFromLocalStorage } from '../../../utils/axiosClient';
 import friendService from '../../../features/friend/services/friend';
 import { useDispatch } from 'react-redux';
@@ -12,8 +12,7 @@ const Profile = () => {
   const storedUser = getUserFromLocalStorage();
   const id = storedUser ? storedUser.id : null;
   const { getUser } = userService;
-  const { getFollowing, getWaiting, acceptFriendRequest, rejectFriendRequest } =
-    friendService;
+  const { getFollowing, getWaiting } = friendService;
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -59,7 +58,9 @@ const Profile = () => {
             profilePicture: response.profilePicture || '',
             name: response.name || '',
             biography: response.biography || '',
+            email: response.email || '',
           });
+          console.log('user' + user.email);
         } catch (err) {
           console.error('Error fetching user:', err);
         }
@@ -77,7 +78,7 @@ const Profile = () => {
         <header className="m-4 hidden w-full justify-between sm:flex">
           <h1 className="text-xl">Profile</h1>
         </header>
-        <div className="hide-scrollbar mx-auto flex flex-1 flex-col items-center gap-8 overflow-y-auto">
+        <div className="hide-scrollbar mx-auto flex flex-1 flex-col items-center overflow-y-auto">
           {' '}
           <div className="flex items-center">
             <img
@@ -90,7 +91,8 @@ const Profile = () => {
               alt="profile_picture"
             />
             <div className="ml-8">
-              <h2 className="mb-4 ml-1 font-semibold">{user.name}</h2>
+              <h2 className="mb-1 ml-1 font-semibold">{user.name}</h2>
+              <h2 className="mb-3">{user.email}</h2>
               <Link
                 to="/update-profile"
                 className="text-x mt-4 cursor-pointer rounded-lg border bg-slate-200 p-1 text-center font-semibold text-slate-600 hover:bg-slate-100"
@@ -123,7 +125,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="w-[20%]">
-        <ListFreind />
+        <ListFollowerAndFriendUser />
       </div>
     </div>
   );

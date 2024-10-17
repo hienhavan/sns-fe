@@ -69,6 +69,25 @@ const getUsers = async ({ name }) => {
     }
 };
 
+const getUsersById = async ({ id }) => {
+    console.log('ID FROM GETUSERBYID: ', id);
+
+   
+    const token = getTokenFromLocalStorage();
+    try {
+        const response = await axios.get(`/apihost/api/v1/users/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+
+        return response.data;
+    } catch (error) {
+        toast.error('Error fetching user data');
+        throw error;
+    }
+};
 
 const updatePassWord = createAsyncThunk("user/update-password", async ({ currentPassword, newPassword }, { rejectWithValue }) => {
     const token = getTokenFromLocalStorage();
@@ -100,4 +119,4 @@ const updatePassWord = createAsyncThunk("user/update-password", async ({ current
 
 
 
-export default { updateUser, getUser, getUsers, updatePassWord };
+export default { updateUser, getUser, getUsers, updatePassWord, getUsersById };
