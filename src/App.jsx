@@ -15,6 +15,7 @@ import SearchForm from './features/post/components/SearchForm'
 
 
 import Comments from './features/comment/components/Comment';
+import Dashboard from './features/admin/components/Dashboard';
 
 const Layout = () => (
   <>
@@ -40,9 +41,11 @@ const App = () => {
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/posts/:postId/comments" element={<Comments/>}/>
 
+
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/admin" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

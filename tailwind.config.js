@@ -6,9 +6,8 @@ export default {
       colors: {
         customGray: '#45546a',
         backgroundImage: {
-          'login-img': "url('/public/login_bg.jpg')",
-
-        }
+          'login-img': "url('/login_bg.jpg')",
+        },
       },
     },
   },
@@ -25,5 +24,4 @@ export default {
       });
     },
   ],
-
 };

@@ -1,9 +1,4 @@
-import * as Yup from 'yup';
-import { ref } from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import userService from '../services/user';
+import React from 'react';
 
 const validationSchema = Yup.object({
     password: Yup.string()
@@ -108,6 +103,7 @@ const UpdatePassword = () => {
             </div>
         </div>
     );
+
 };
 
-export default UpdatePassword;
+export default UpdatePassWord;
