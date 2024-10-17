@@ -17,9 +17,9 @@ const SearchForm = () => {
     }
 
     try {
-      const response = await getUsers({ name: searchQuery });
+      const data = await getUsers({ name: searchQuery });
 
-      setListUser(response);
+      setListUser(data);
     } catch (error) {
       //   console.error('Lỗi khi tìm kiếm người dùng:', error);
       setListUser([]);
@@ -43,6 +43,7 @@ const SearchForm = () => {
           <FontAwesomeIcon icon={faSearch} className="mr-2" />
         </button>
       </form>
+
       {searchQuery && listUser.length > 0 && (
         <ul className="absolute z-10 mt-2 w-[80%] rounded border bg-white shadow-lg">
           {listUser.map((user) => (
@@ -52,9 +53,9 @@ const SearchForm = () => {
           ))}
         </ul>
       )}
-      {searchQuery && listUser.length === 0 && (
+      {/* {searchQuery && listUser.length === 0 && (
         <div className="text-gray-500">Không tìm thấy người dùng nào.</div>
-      )}
+      )} */}
     </div>
   );
 };
