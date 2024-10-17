@@ -61,7 +61,7 @@ const DropdownList = () => {
 
 const UserInformation = ({ user }) => {
   return (
-    <div className="flex h-16 cursor-pointer items-center justify-center leading-[65px]">
+    <div className="group flex h-16 cursor-pointer items-center justify-center leading-[65px]">
       <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
         {user.name}
       </h5>
