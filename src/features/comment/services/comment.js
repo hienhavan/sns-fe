@@ -11,10 +11,10 @@ export const fetchComments = createAsyncThunk(
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`/apihost/api/v1/posts/${postId}/comments`, {
+      const response = await axios.get(`/apihost/api/v1/comments`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return response.data || []; // Trả về tất cả bình luận cho bài viết
     } catch (error) {
@@ -28,23 +28,43 @@ export const fetchComments = createAsyncThunk(
 // Tạo bình luận
 export const addComment = createAsyncThunk(
   'comment/createComment',
-  async ({ postId, content }, { rejectWithValue }) => {
-    // if (!postId) {
-    //   return rejectWithValue('postId không được xác định.'); // Kiểm tra nếu postId không hợp lệ
-    // }
-    console.log('postId:', postId)
+  async ({ content }, { rejectWithValue }) => {
     if (!content) {
       return rejectWithValue('Nội dung bình luận không được để trống.');
     }
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`/apihost/api/v1/posts/${postId}/comments`, { content }, {
+      const response = await axios.post(`/apihost/api/v1/comments`, { content }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // Trả về bình luận vừa tạo
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
+
+// Tạo phản hồi cho bình luận
+export const addReply = createAsyncThunk(
+  'comment/createReply',
+  async ({ postId, commentId, content }, { rejectWithValue }) => {
+    if (!content) {
+      return rejectWithValue('Nội dung phản hồi không được để trống.');
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`/apihost/api/v1/comments/${commentId}/replies`, { content, postId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response ? error.response.data : error.message
@@ -58,7 +78,7 @@ export const updateComment = createAsyncThunk(
   'comment/updateComment',
   async ({ commentId, content }, { rejectWithValue }) => {
     if (!commentId) {
-      return rejectWithValue('commentId không được xác định.'); // Kiểm tra nếu commentId không hợp lệ
+      return rejectWithValue('commentId không được xác định.');
     }
 
     if (!content) {
@@ -72,7 +92,7 @@ export const updateComment = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // Trả về bình luận đã cập nhật
+      return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response ? error.response.data : error.message
@@ -81,12 +101,13 @@ export const updateComment = createAsyncThunk(
   }
 );
 
+
 // Xóa bình luận
 export const deleteComment = createAsyncThunk(
   'comment/deleteComment',
   async (commentId, { rejectWithValue }) => {
     if (!commentId) {
-      return rejectWithValue('commentId không được xác định.'); // Kiểm tra nếu commentId không hợp lệ
+      return rejectWithValue('commentId không được xác định.');
     }
 
     try {
@@ -96,7 +117,7 @@ export const deleteComment = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      return commentId; // Trả về ID bình luận đã xóa
+      return commentId;
     } catch (error) {
       return rejectWithValue(
         error.response ? error.response.data : error.message
@@ -110,7 +131,7 @@ export const countComments = createAsyncThunk(
   'comment/countComments',
   async (postId, { rejectWithValue }) => {
     if (!postId) {
-      return rejectWithValue('postId không được xác định.'); // Kiểm tra nếu postId không hợp lệ
+      return rejectWithValue('postId không được xác định.');
     }
 
     try {
@@ -120,7 +141,27 @@ export const countComments = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; // Giả sử backend trả về số lượng bình luận
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
+
+// Toggle like/unlike bình luận
+export const toggleLikeComment = createAsyncThunk(
+  'comment/toggleLikeComment',
+  async (commentId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`/apihost/api/v1/comments/${commentId}/likes`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response ? error.response.data : error.message

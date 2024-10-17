@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../services/post';
 import { BsFillImageFill } from 'react-icons/bs';
+import { FaEarthAmericas, FaLock, FaUserGroup } from 'react-icons/fa6';
+
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -12,6 +14,7 @@ const PostForm = () => {
   const { isLoading } = useSelector((state) => state.post);
 
   const [visibility, setVisibility] = useState('PUBLIC');
+  const [isDropdownOpen, setDropdownOpen] = useState(false); // Để điều khiển dropdown
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -35,7 +38,8 @@ const PostForm = () => {
           userId: user.id,
           visibility,
           file: postImage,
-        }),
+        })
+
       );
 
       setContent('');
@@ -44,6 +48,15 @@ const PostForm = () => {
     } catch {
       setError('Có lỗi xảy ra khi đăng bài. Vui lòng thử lại.');
     }
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleVisibilityChange = (value) => {
+    setVisibility(value);
+    setDropdownOpen(false); // Đóng dropdown khi chọn
   };
 
   return (
@@ -75,17 +88,41 @@ const PostForm = () => {
           </div>
           {error && <p className="text-red-500">{error}</p>}
 
-          <div className="my-3 flex items-center justify-between">
-            <select
-              id="visibility"
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value)}
-              className="rounded-md border border-gray-300 p-2"
-            >
-              <option value="PUBLIC">Công khai</option>
-              <option value="PRIVATE">Riêng tư</option>
-              <option value="FRIENDS">Bạn bè</option>
-            </select>
+          <div className="flex items-center justify-between my-3">
+            <div className="relative">
+              <button
+                className="flex items-center rounded-md border border-gray-300 p-2"
+                onClick={toggleDropdown}
+              >
+                {visibility === 'PUBLIC' && <FaEarthAmericas className="mr-2" />}
+                {visibility === 'PRIVATE' && <FaLock className="mr-2" />}
+                {visibility === 'FRIENDS' && <FaUserGroup className="mr-2" />}
+                <span>{visibility === 'PUBLIC' ? 'Công khai' : visibility === 'PRIVATE' ? 'Riêng tư' : 'Bạn bè'}</span>
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute mt-2 bg-white border border-gray-300 rounded-md w-full z-10">
+                  <div
+                    className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
+                    onClick={() => handleVisibilityChange('PUBLIC')}
+                  >
+                    <FaEarthAmericas className="mr-2" /> Công khai
+                  </div>
+                  <div
+                    className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
+                    onClick={() => handleVisibilityChange('PRIVATE')}
+                  >
+                    <FaLock className="mr-2" /> Riêng tư
+                  </div>
+                  <div
+                    className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
+                    onClick={() => handleVisibilityChange('FRIENDS')}
+                  >
+                    <FaUserGroup className="mr-2" /> Bạn bè
+                  </div>
+                </div>
+              )}
+            </div>
 
             <label className="m-2 flex items-center">
               <input
