@@ -6,9 +6,9 @@ const NavBar = () => {
   const location = useLocation();
 
   return (
-    <aside className="mt-[40px] hidden basis-1/6 sm:block lg:basis-1/5">
+    <aside className="mt-[40px] hidden sm:block">
       <nav>
-        <ul className="mr-1 px-2">
+        <ul className="px-2">
           {/* Explore Link */}
           <li>
             <Link
@@ -20,14 +20,14 @@ const NavBar = () => {
               {location.pathname === '/' ? (
                 <>
                   <MdExplore className="text-[1.6rem] font-bold" />
-                  <h2 className="hidden px-1 text-xl font-bold xl:block">
+                  <h2 className="hidden px-1 text-xl font-bold lg:block">
                     Explore
                   </h2>
                 </>
               ) : (
                 <>
                   <MdOutlineExplore className="text-[1.6rem]" />
-                  <h2 className="hidden px-1 text-xl xl:block">Explore</h2>
+                  <h2 className="hidden px-1 text-xl lg:block">Explore</h2>
                 </>
               )}
             </Link>
@@ -44,14 +44,14 @@ const NavBar = () => {
               {location.pathname === '/me' ? (
                 <>
                   <FaUser className="text-[1.6rem] font-bold" />
-                  <h2 className="hidden px-1 text-xl font-bold xl:block">
+                  <h2 className="hidden px-1 text-xl font-bold lg:block">
                     Profile
                   </h2>
                 </>
               ) : (
                 <>
                   <FaRegUser className="text-[1.6rem]" />
-                  <h2 className="hidden px-1 text-xl xl:block">Profile</h2>
+                  <h2 className="hidden px-1 text-xl lg:block">Profile</h2>
                 </>
               )}
             </Link>

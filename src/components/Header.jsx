@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/store/authSlice';
 import userService from '../../src/features/user/services/user';
 import { useEffect, useState } from 'react';
@@ -12,118 +12,101 @@ import {
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const Header = () => {
-
+const DropdownList = () => {
   const dispatch = useDispatch();
-  const storedUser = getUserFromLocalStorage();
-  const id = storedUser ? storedUser.id : null;
-  const { getUser } = userService;
-  const [user, setUser] = useState({
-    name: '',
-    profile_picture: '',
-  });
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        try {
-          const response = await getUser(id);
-          setUser({
-            profilePicture: response.profilePicture || '',
-            name: response.name || '',
-          });
-        } catch (err) {
-          console.error('Error fetching user:', err);
-        }
-      }
-    };
-    fetchData();
-  }, []);
+
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
-    <header className="fix relative left-0 top-0 z-50 w-full">
-      <div className="fixed flex h-[66px] items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)]">
-        <div className="logo relative z-10 mr-9 w-[10%]">
-          <Link title="" to="/">
-            <img src="/public/logo_img.png" alt="logo" />
+    <div className="user-setting absolute right-14 top-[65px] z-10 hidden w-48 items-center rounded-lg bg-white text-center shadow-lg group-hover:block">
+      <ul className="log-out">
+        <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
+          <Link to="/me" className="flex h-8 items-center pl-5 text-gray-600">
+            <FontAwesomeIcon icon={faUser} className="mr-2" /> View Profile
+          </Link>
+        </li>
+        <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+          <Link
+            to="/update-profile"
+            className="flex h-8 items-center text-gray-600"
+          >
+            <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit Profile
+          </Link>
+        </li>
+        <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+          <Link
+            to="/update-password"
+            className="flex h-8 items-center text-gray-600"
+          >
+            <FontAwesomeIcon icon={faCog} className="mr-2" />
+            Update Password
+          </Link>
+        </li>
+        <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
+          <Link
+            to="/login"
+            className="flex h-8 items-center text-gray-600"
+            onClick={handleLogout}
+          >
+            <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log out
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+const UserInformation = ({ user }) => {
+  return (
+    <div className="flex h-16 cursor-pointer items-center justify-center leading-[65px]">
+      <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
+        {user.name}
+      </h5>
+
+      <img
+        src={
+          user.profilePicture ? `/apihost/image/${user.profilePicture}` : null
+        }
+        className="h-[50px] w-[50px] rounded-full border-2 border-white border-opacity-80 object-cover"
+        alt="profile"
+        style={{ transform: 'scale(0.8)' }}
+      />
+      <span className="status f-online absolute bottom-2 right-1"></span>
+      <DropdownList />
+    </div>
+  );
+};
+
+const LoginButton = () => {
+  return (
+    <div className="col-span-1 col-end-6">
+      <Link
+        className="hover:border-info-600 hover:text-info-600 focus:border-info-600 focus:text-info-600 active:border-info-700 active:text-info-700 rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-center text-xs font-bold uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-neutral-500 hover:bg-opacity-10 focus:outline-none focus:ring-0 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+        to={'/login'}
+      >
+        Login
+      </Link>
+    </div>
+  );
+};
+
+const Header = () => {
+  const { user } = useSelector((state) => state.auth);
+
+  return (
+    <header className="fixed left-0 top-0 w-full">
+      <div className="fixed flex h-[66px] w-full items-center bg-[#34465d] px-4 shadow-[0px_0px_5px_rgba(0,0,0,0.2)] sm:grid sm:grid-cols-12">
+        <div className="ml-0 max-h-[66px] sm:col-span-2 sm:col-start-2">
+          <Link title="homepage" to="/">
+            <img className="max-h-[66px]" src="/logo_img.png" alt="logo" />
           </Link>
         </div>
-        <div className="flex w-[150vh] items-center">
-          {/* <div className="top-search relative w-full">
-            <form method="post" className="flex">
-              <input
-                type="text"
-                placeholder="Search People, Pages, Groups etc"
-                className="w-[80%] border-collapse rounded-l-[30px] border-gray-400 bg-[#49586e] p-[9px_18px] text-[15px] text-white placeholder-gray-400 focus:border-transparent focus:outline-none"
-              />
-              <button className="border-collapse rounded-r-[30px] bg-[#49586e] pl-3 pr-3 text-white hover:bg-slate-500">
-                <FontAwesomeIcon icon={faSearch} className="mr-2" />{' '}
-              </button>
-            </form>
-          </div> */}
+        <div className="col-span-8 grid h-full w-full grid-cols-4 items-center">
           <SearchForm />
-          <div className="user-img group relative flex h-16 w-[20%] cursor-pointer items-center justify-center leading-[65px]">
-            <h5 className="mr-2 inline-block text-[14px] font-medium text-white">
-              {user.name}
-            </h5>
-
-            <img
-              src={
-                user.profilePicture
-                  ? `/apihost/image/${user.profilePicture}`
-                  : ''
-              }
-              className="h-[50px] w-[50px] rounded-full border-2 border-white border-opacity-80 object-cover"
-              alt="Ảnh đại diện"
-              style={{ transform: 'scale(0.8)' }}
-            />
-            <span className="status f-online absolute bottom-2 right-1"></span>
-
-            <div className="user-setting absolute right-14 top-[65px] z-10 hidden w-48 items-center rounded-lg bg-white text-center shadow-lg group-hover:block">
-              <ul className="log-out">
-                <li className="w-[100%] rounded-lg py-1 hover:bg-gray-200">
-                  <Link
-                    to="/me"
-                    className="flex h-8 items-center pl-5 text-gray-600"
-                  >
-                    <FontAwesomeIcon icon={faUser} className="mr-2" /> View
-                    Profile
-                  </Link>
-                </li>
-                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link
-                    to="/update-profile"
-                    className="flex h-8 items-center text-gray-600"
-                  >
-                    <FontAwesomeIcon icon={faPencilAlt} className="mr-2" /> Edit
-                    Profile
-                  </Link>
-                </li>
-                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link
-                    to="/update-password"
-                    className="flex h-8 items-center text-gray-600"
-                  >
-                    <FontAwesomeIcon icon={faCog} className="mr-2" />
-                    Update Password
-                  </Link>
-                </li>
-                <li className="rounded-lg py-1 pl-5 hover:bg-gray-200">
-                  <Link
-                    to="/login"
-                    className="flex h-8 items-center text-gray-600"
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon icon={faPowerOff} className="mr-2" /> Log
-                    out
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {user ? <UserInformation user={user} /> : <LoginButton />}
         </div>
       </div>
     </header>

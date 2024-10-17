@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../services/post';
 import { BsFillImageFill } from 'react-icons/bs';
 
-
 const PostForm = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -30,12 +29,14 @@ const PostForm = () => {
     setError(null);
 
     try {
-      await dispatch(createPost({
-        content,
-        userId: user.id,
-        visibility,
-        file: postImage,
-      }));
+      await dispatch(
+        createPost({
+          content,
+          userId: user.id,
+          visibility,
+          file: postImage,
+        }),
+      );
 
       setContent('');
       setPostImage(null);
@@ -50,7 +51,7 @@ const PostForm = () => {
       <div className="flex py-3">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
-            src="/public/logo_img.png"
+            src="/logo_img.png"
             className="h-12 w-12 flex-none rounded-full"
             alt="avatar"
           />
@@ -74,7 +75,7 @@ const PostForm = () => {
           </div>
           {error && <p className="text-red-500">{error}</p>}
 
-          <div className="flex items-center justify-between my-3">
+          <div className="my-3 flex items-center justify-between">
             <select
               id="visibility"
               value={visibility}
@@ -87,7 +88,6 @@ const PostForm = () => {
             </select>
 
             <label className="m-2 flex items-center">
-
               <input
                 className="hidden"
                 type="file"
@@ -101,7 +101,7 @@ const PostForm = () => {
           <div className="flex justify-between">
             {content && (
               <button
-                  type="button"
+                type="button"
                 className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
                 onClick={handlePostSubmit}
                 disabled={isLoading}

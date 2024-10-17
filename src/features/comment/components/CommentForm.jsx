@@ -22,7 +22,9 @@ const CommentForm = ({ postId }) => {
 
     try {
       // Gọi hàm addComment từ Redux để gửi bình luận
-      await dispatch(addComment({ content, postId, file: commentImage })).unwrap();
+      await dispatch(
+        addComment({ content, postId, file: commentImage }),
+      ).unwrap();
 
       // Reset các trường sau khi gửi thành công
       setContent('');
@@ -39,7 +41,7 @@ const CommentForm = ({ postId }) => {
       <form onSubmit={handleCommentSubmit} className="flex py-3">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
-            src="/public/logo_img.png" // Đảm bảo đường dẫn tới hình ảnh avatar là chính xác
+            src="/logo_img.png" // Đảm bảo đường dẫn tới hình ảnh avatar là chính xác
             className="h-12 w-12 flex-none rounded-full"
             alt="avatar"
           />
