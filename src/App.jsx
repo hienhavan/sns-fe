@@ -12,6 +12,7 @@ import AllListFollowers from './features/friend/components/AllListFollowers';
 import { ToastContainer } from 'react-toastify';
 import UpdatePassword from './features/user/components/UpdatePassword';
 import FriendProfile from './features/friend/components/FriendProfile';
+import UserList from './features/user/components/UserSearchList';
 
 import Comments from './features/comment/components/Comment';
 import Dashboard from './features/admin/components/Dashboard';
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/posts/:postId/comments" element={<Comments />} />
             <Route path="/users/:id" element={<FriendProfile />} />
+            <Route path="/search-users" element={<UserList />} />
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

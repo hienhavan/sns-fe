@@ -6,8 +6,9 @@ import { getUserFromLocalStorage } from '../../../utils/axiosClient';
 
 const ListFriendByFriend = () => {
   const dispatch = useDispatch();
-  const { getFriendsByFriendsId } = friendService;
+  const { getFriendsByFriendsId, mutualFriends } = friendService;
   const [suggestionList, setSuggestionList] = useState([]);
+  const [mutualFriendsList, setMutualFriendsList] = useState([]);
   const { id } = useParams();
   const storedUser = getUserFromLocalStorage();
   const meId = storedUser ? storedUser.id : null;
@@ -23,11 +24,27 @@ const ListFriendByFriend = () => {
 
     fetchFollowing();
   }, [dispatch, getFriendsByFriendsId]);
+
+  useEffect(() => {
+    const fetchMutual = async (id) => {
+      try {
+        const response = await mutualFriends({ id });
+        setMutualFriendsList(response);
+      } catch {
+        setMutualFriendsList([]);
+      }
+    };
+
+    fetchMutual();
+  }, []);
   return (
     <div>
-      <h1 className="mb-4 mt-6 text-center text-xl font-bold">
-        Danh sách bạn bè
-      </h1>
+      <div className="mb-4 mt-6 flex items-center">
+        <h1 className="mr-2 text-center text-xl font-bold">Danh sách bạn bè</h1>
+        {mutualFriendsList.length > 0 && (
+          <div className="mt-[1px]">({mutualFriendsList.length} bạn chung)</div>
+        )}
+      </div>
       {suggestionList.length > 0 ? (
         <div className="flex-1">
           <ul>

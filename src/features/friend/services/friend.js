@@ -138,21 +138,24 @@ const acceptFriends = async ({ id }) => {
   }
 };
 
-const mutualFriends = async ({ id }) => {
-  const token = getTokenFromLocalStorage();
-  try {
-    const response = await axios.get(`/apihost/api/v1/me/mutual/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+export const mutualFriends = createAsyncThunk(
+  'friend/fetchMutualFriends',
+  async ({ id }, { rejectWithValue }) => {
+    const token = getTokenFromLocalStorage();
 
-    return response.data;
-  } catch (error) {
-    console.error('Error during user fetch:', error);
-    throw error;
-  }
-};
+    try {
+      const response = await axios.get(`/apihost/api/v1/me/mutual/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({ id, mutualFriends: 0 });
+    }
+  },
+);
 
 export default {
   getFollowing,

@@ -16,7 +16,6 @@ const FriendProfile = () => {
   const useId = storedUser ? storedUser.id : null;
   const {
     getFollowing,
-    getFollowersFriend,
     getFriendsByFriendsId,
     unFriend,
     addFriend,
@@ -37,7 +36,6 @@ const FriendProfile = () => {
   const [followers, setFollowers] = useState([]);
   const [listUpdated, setListUpdated] = useState([]);
   const [isHovered, setIsHovered] = useState(false);
-  const [friendRequests, setFriendRequests] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -60,7 +58,7 @@ const FriendProfile = () => {
     };
 
     fetchFriendUser();
-  }, [dispatch, getFollowing]);
+  }, [dispatch, getFollowing, listWaiting]);
 
   useEffect(() => {
     const fetchFollowers = async () => {
@@ -79,9 +77,9 @@ const FriendProfile = () => {
     const fetchFollowers = async () => {
       try {
         const response = await getWaitingFriend();
-        setFollowers(response);
+        setListWaiting(response);
       } catch {
-        setFollowers([]);
+        setListWaiting([]);
       }
     };
 
@@ -111,21 +109,6 @@ const FriendProfile = () => {
   }, []);
 
   useEffect(() => {
-    const fetchWaiting = async () => {
-      try {
-        const response = await getFollowersFriend({ id });
-        setListWaiting(response);
-        console.log('listWaiting', listWaiting);
-        console.log('response', response);
-      } catch (err) {
-        console.error('Error fetching user:', err);
-      }
-    };
-
-    fetchWaiting();
-  }, []);
-
-  useEffect(() => {
     const fetchFollowing = async () => {
       try {
         const response = await getFriendsByFriendsId({ id });
@@ -136,7 +119,7 @@ const FriendProfile = () => {
     };
 
     fetchFollowing();
-  }, [dispatch, getFriendsByFriendsId, listUpdated, listFriendUser]);
+  }, [listUpdated, listFriendUser]);
 
   // handle
   const handleUnFriend = async () => {
@@ -163,7 +146,12 @@ const FriendProfile = () => {
   const handleAccept = async (userId) => {
     try {
       await acceptFriends({ id: userId });
-      setFriendRequests(friendRequests.filter((user) => user.id !== userId));
+
+      setListWaiting((prevList) =>
+        prevList.filter((user) => user.id !== userId),
+      );
+
+      setListUpdated((prevState) => !prevState);
       toast.success('Đã xác nhận yêu cầu kết bạn thành công!');
     } catch {
       toast.error('Có lỗi xảy ra, vui lòng thử lại.');

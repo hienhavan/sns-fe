@@ -79,7 +79,6 @@ const Profile = () => {
           <h1 className="text-xl">Profile</h1>
         </header>
         <div className="hide-scrollbar mx-auto flex flex-1 flex-col items-center overflow-y-auto">
-          {' '}
           <div className="flex items-center">
             <img
               src={
