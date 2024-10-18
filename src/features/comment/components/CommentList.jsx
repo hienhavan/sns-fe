@@ -1,37 +1,25 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchComments } from '../services/comment.js';
-import Comment from './Comment';
+import { List, Avatar } from 'antd';
 
-const CommentList = ({ postId }) => {
-  const dispatch = useDispatch();
-  const { comments, isLoading, error } = useSelector((state) => state.comment);
-
-  useEffect(() => {
-    // Dispatch action để lấy tất cả bình luận
-    dispatch(fetchComments(postId));
-  }, [dispatch, postId]);
-
-  if (isLoading) {
-    return <p>Loading comments...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading comments: {error}</p>;
-  }
-
+const CommentList = ({ comments }) => {
   return (
-    <div>
-      {comments.length === 0 ? (
-        <p>No comments available</p>
-      ) : (
-        <div>
-          {comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} />
-          ))}
-        </div>
-      )}
-    </div>
+    <List
+      itemLayout="horizontal"
+      dataSource={comments}
+      renderItem={comment => {
+        const avatarSrc = comment.createdBy?.profilePicture;
+        const userName = comment.createdBy ? comment.createdBy.name : 'Unknown User';
+        return (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar src={avatarSrc} />}
+              title={userName}
+              description={comment.content}
+            />
+            <div>{comment.createdAt}</div>
+          </List.Item>
+        );
+      }}
+    />
   );
 };
 
