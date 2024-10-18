@@ -60,8 +60,8 @@ const PostForm = () => {
   };
 
   return (
-    <div className="modal-class">
-      <div className="flex py-3">
+    <div className="modal-class py-5">
+      <div className="flex px-5 py-3 border rounded-xl overflow-hidden border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
             src="/logo_img.png"
@@ -75,8 +75,9 @@ const PostForm = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Bạn đang nghĩ gì?"
-            className="mt-3 h-28 w-full resize-none rounded-xl bg-slate-100 p-2 pb-3 focus:outline-none"
+            className="mt-3 h-14 w-full resize-none rounded-xl bg-slate-100 p-2 pb-3 focus:outline-none"
           ></textarea>
+
           <div className="mx-auto max-h-80 max-w-xl rounded-md">
             {postImage && (
               <img
@@ -90,26 +91,28 @@ const PostForm = () => {
 
           <div className="flex items-center justify-between my-3">
             <div className="relative">
-              <button
-                className="flex items-center rounded-md border border-gray-300 p-2"
-                onClick={toggleDropdown}
-              >
-                {visibility === 'PUBLIC' && <FaEarthAmericas className="mr-2" />}
-                {visibility === 'PRIVATE' && <FaLock className="mr-2" />}
-                {visibility === 'FRIENDS' && <FaUserGroup className="mr-2" />}
-                <span>{visibility === 'PUBLIC' ? 'Công khai' : visibility === 'PRIVATE' ? 'Riêng tư' : 'Bạn bè'}</span>
-              </button>
+              {content && (
+                  <button
+                      className="flex items-center rounded-md border border-gray-300 p-2"
+                      onClick={toggleDropdown}
+                  >
+                    {visibility === 'PUBLIC' && <FaEarthAmericas className="mr-2"/>}
+                    {visibility === 'PRIVATE' && <FaLock className="mr-2"/>}
+                    {visibility === 'FRIENDS' && <FaUserGroup className="mr-2"/>}
+                    <span>{visibility === 'PUBLIC' ? 'Công khai' : visibility === 'PRIVATE' ? 'Riêng tư' : 'Bạn bè'}</span>
+                  </button>
+              )}
 
               {isDropdownOpen && (
-                <div className="absolute mt-2 bg-white border border-gray-300 rounded-md w-full z-10">
-                  <div
-                    className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
-                    onClick={() => handleVisibilityChange('PUBLIC')}
-                  >
-                    <FaEarthAmericas className="mr-2" /> Công khai
-                  </div>
-                  <div
-                    className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
+                  <div className="absolute mt-2 bg-white border border-gray-300 rounded-md w-full z-10">
+                    <div
+                        className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
+                        onClick={() => handleVisibilityChange('PUBLIC')}
+                    >
+                      <FaEarthAmericas className="mr-2"/> Công khai
+                    </div>
+                    <div
+                        className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
                     onClick={() => handleVisibilityChange('PRIVATE')}
                   >
                     <FaLock className="mr-2" /> Riêng tư
@@ -124,22 +127,24 @@ const PostForm = () => {
               )}
             </div>
 
-            <label className="m-2 flex items-center">
-              <input
-                className="hidden"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-              <BsFillImageFill className="mt-1 cursor-pointer text-2xl text-blue-700" />
-            </label>
+            {content && (
+                <label className="m-2 flex items-center">
+                  <input
+                      className="hidden"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                  />
+                  <BsFillImageFill className="mt-1 cursor-pointer text-2xl text-blue-700"/>
+                </label>
+            )}
           </div>
 
           <div className="flex justify-between">
             {content && (
-              <button
-                type="button"
-                className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
+                <button
+                    type="button"
+                    className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
                 onClick={handlePostSubmit}
                 disabled={isLoading}
               >
