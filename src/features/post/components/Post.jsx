@@ -7,6 +7,7 @@ import { FaComments } from 'react-icons/fa';
 import CommentList from '../../comment/components/CommentList'; // Import CommentList
 import { FaEarthAmericas, FaLock, FaUserGroup } from 'react-icons/fa6';
 import { Carousel } from 'antd';
+import CommentForm from '../../comment/components/CommentForm.jsx';
 
 const Post = ({ post }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -17,10 +18,11 @@ const Post = ({ post }) => {
   const [isLiked, setIsLiked] = useState(post.likes.likeByUsers.includes(post.userId));
   const [likeCount, setLikeCount] = useState(post.likes.likeCount);
   const [comments, setComments] = useState(post.comments || []);
-  const [newComment, setNewComment] = useState('');
-  const [showComments, setShowComments] = useState(false);
+  const [updatePosts, setUpdatedPosts] = useState(post);
+  const [showComments, setShowComments] = useState({});
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const userId = user ? user.id : null;
 
   useEffect(() => {
     setIsLiked(post.likes.likeByUsers.includes(user.id));
@@ -41,15 +43,11 @@ const Post = ({ post }) => {
 
   const toggleOptions = () => setShowOptions((prev) => !prev);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return isNaN(date) ? 'Invalid Date' : date.toLocaleString('vi-VN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
+  const toggleComments = (postId) => {
+    setShowComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId], // Chuyển đổi trạng thái hiển thị bình luận cho bài viết tương ứng
+    }));
   };
 
   const handleDeletePost = async () => {
@@ -94,14 +92,18 @@ const Post = ({ post }) => {
     return visibilityIcons[visibility] || <span className="text-gray-500">Không xác định</span>;
   };
 
+  if (post.visibility === "PRIVATE" && post.userId !== user.id) {
+    return null; // Trả về null nếu bài viết riêng tư và người xem không phải người tạo
+  }
+
   const handleMediaChange = (e) => {
     const files = Array.from(e.target.files);
     setMedia(files);
   };
 
-  const handleAddComment = (newComment) => {
+  const handleCommentSubmit = (postId, newComment) => {
     setComments((prevComments) => [...prevComments, newComment]);
-    setNewComment('');
+
   };
 
   const renderMedia = () => (
@@ -195,7 +197,7 @@ const Post = ({ post }) => {
               <form className="flex items-center justify-between mt-3">
                 <div className="flex items-center">
                   {renderLike(post)}
-                  <span className="ml-4 cursor-pointer text-lg" onClick={() => setShowComments(prev => !prev)}>
+                  <span className="ml-4 cursor-pointer text-lg" onClick={() => toggleComments(post.id)}>
                     <FaComments className="inline-block" /> Bình luận ({comments.length})
                   </span>
                 </div>
@@ -208,21 +210,16 @@ const Post = ({ post }) => {
                 )}
               </form>
 
-              {/* Render Comment List when clicked */}
-              {showComments && (
-                <div className="mt-4">
-                  <CommentList comments={comments} />
-                  <input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Nhập bình luận..."
-                    className="mt-2 w-full rounded border px-2 py-1"
-                  />
-                  <button onClick={() => handleAddComment(newComment)} className="mt-2 rounded bg-green-500 py-1 px-3 text-white hover:bg-green-600">
-                    Gửi
-                  </button>
-                </div>
+               {/*Render Comment List when clicked*/}
+              {showComments[post.id] && (
+                  <div className="mt-4">
+                    <CommentList comments={comments} />
+                    <CommentForm
+                      postId={post.id}
+                      userId={userId}
+                      onCommentAdded={handleCommentSubmit}
+                    />
+                  </div>
               )}
             </div>
           )}

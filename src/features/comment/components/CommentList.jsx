@@ -6,9 +6,6 @@ const CommentList = ({ comments }) => {
       itemLayout="horizontal"
       dataSource={comments}
       renderItem={comment => {
-        // In ra comment để kiểm tra
-        console.log(comment);
-
         const avatarSrc = comment.createdBy?.profilePicture;
         const userName = comment.createdBy ? comment.createdBy.name : 'Unknown User';
         return (

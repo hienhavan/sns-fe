@@ -1,16 +1,14 @@
-const Comment = ({ comment, onReply, onDelete, onLike }) => {
-  return (
-    <div className="comment">
-      <p>{comment.content}</p>
-      <div className="comment-actions">
-        <button onClick={() => onReply(comment.id)}>Reply</button>
-        <button onClick={() => onLike(comment.id)}>
-          {comment.isLiked ? 'Unlike' : 'Like'}
-        </button>
-        <button onClick={() => onDelete(comment.id)}>Delete</button>
-      </div>
-    </div>
-  );
-};
-
-export default Comment;
+// import React from 'react';
+//
+// const Comment = ({ comment }) => {
+//   return (
+//     <div>
+//       <img src={comment.createdBy.profilePicture} alt={comment.createdBy.name} width={50} />
+//       <strong>{comment.createdBy.name}</strong>
+//       <p>{comment.content}</p>
+//       <span>{comment.createdAt}</span>
+//     </div>
+//   );
+// };
+//
+// export default Comment;
