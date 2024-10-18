@@ -20,7 +20,7 @@ const Post = ({ post }) => {
   );
   const [likeCount, setLikeCount] = useState(post.likes.likeCount);
   const [comments, setComments] = useState(post.comments || []);
-  const [updatePosts, setUpdatedPosts] = useState(post);
+  // const [updatePosts, setUpdatedPosts] = useState(post);
   const [showComments, setShowComments] = useState({});
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -265,10 +265,8 @@ const Post = ({ post }) => {
                   </div>
               )}
             </div>
-          )}
         </div>
       </div>
-    </div>
   );
 };
 
