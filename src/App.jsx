@@ -13,10 +13,6 @@ import { ToastContainer } from 'react-toastify';
 import UpdatePassword from './features/user/components/UpdatePassword';
 import SearchForm from './features/post/components/SearchForm'
 
-
-import Comments from './features/comment/components/Comment';
-import Dashboard from './features/admin/components/Dashboard';
-
 const Layout = () => (
   <>
     <Header />
@@ -39,7 +35,6 @@ const App = () => {
             <Route path="/list-friend" element={<AllListFriend />} />
             <Route path='/list-followers' element={<AllListFollowers />} />
             <Route path="/update-password" element={<UpdatePassword />} />
-            <Route path="/posts/:postId/comments" element={<Comments/>}/>
 
 
           </Route>
