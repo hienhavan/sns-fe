@@ -4,6 +4,7 @@ import { createPost } from '../services/post';
 import { BsFillImageFill } from 'react-icons/bs';
 import { FaEarthAmericas, FaLock, FaUserGroup } from 'react-icons/fa6';
 
+
 const PostForm = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -38,6 +39,7 @@ const PostForm = () => {
           visibility,
           file: postImage,
         })
+
       );
 
       setContent('');
@@ -62,7 +64,7 @@ const PostForm = () => {
       <div className="flex px-5 py-3 border rounded-xl overflow-hidden border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
-            src="/public/logo_img.png"
+            src="/logo_img.png"
             className="h-12 w-12 flex-none rounded-full"
             alt="avatar"
           />

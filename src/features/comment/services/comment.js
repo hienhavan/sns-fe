@@ -10,7 +10,7 @@ export const fetchComments = createAsyncThunk(
     }
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('sns_user');
       const response = await axios.get(`/apihost/api/v1/comments`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -26,28 +26,41 @@ export const fetchComments = createAsyncThunk(
 );
 
 // Tạo bình luận
+
 export const addComment = createAsyncThunk(
   'comment/createComment',
-  async ({ content }, { rejectWithValue }) => {
-    if (!content) {
-      return rejectWithValue('Nội dung bình luận không được để trống.');
-    }
-
+  async ({ content, userId, postId }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`/apihost/api/v1/comments`, { content }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log('userId', userId);
+      // Kiểm tra nếu có đủ dữ liệu
+      if (!postId) {
+        return rejectWithValue('ID bài viết không được để trống.');
+      }
+
+      // Tạo payload
+      const payload = {
+        content,
+        userId,
+        postId,
+      };
+
+      // Gửi yêu cầu tạo bình luận
+      const response = await axios.post(`/apihost/api/v1/comments`, payload);
+
       return response.data;
+
     } catch (error) {
+      console.log(error);
       return rejectWithValue(
         error.response ? error.response.data : error.message
       );
     }
   }
 );
+
+
+
+
 
 // Tạo phản hồi cho bình luận
 export const addReply = createAsyncThunk(
@@ -61,8 +74,8 @@ export const addReply = createAsyncThunk(
       const token = localStorage.getItem('token');
       const response = await axios.post(`/apihost/api/v1/comments/${commentId}/replies`, { content, postId }, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return response.data;
     } catch (error) {
@@ -89,8 +102,8 @@ export const updateComment = createAsyncThunk(
       const token = localStorage.getItem('token');
       const response = await axios.put(`/apihost/api/v1/comments/${commentId}`, { content }, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return response.data;
     } catch (error) {
@@ -114,8 +127,8 @@ export const deleteComment = createAsyncThunk(
       const token = localStorage.getItem('token');
       await axios.delete(`/apihost/api/v1/comments/${commentId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return commentId;
     } catch (error) {
@@ -138,8 +151,8 @@ export const countComments = createAsyncThunk(
       const token = localStorage.getItem('token');
       const response = await axios.get(`/apihost/api/v1/posts/${postId}/comments/count`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return response.data;
     } catch (error) {
@@ -158,8 +171,8 @@ export const toggleLikeComment = createAsyncThunk(
       const token = localStorage.getItem('token');
       const response = await axios.put(`/apihost/api/v1/comments/${commentId}/likes`, {}, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       return response.data;
     } catch (error) {

@@ -7,6 +7,7 @@ import { FaComments } from 'react-icons/fa';
 import CommentList from '../../comment/components/CommentList'; // Import CommentList
 import { FaEarthAmericas, FaLock, FaUserGroup } from 'react-icons/fa6';
 import { Carousel } from 'antd';
+import CommentForm from '../../comment/components/CommentForm.jsx';
 
 const Post = ({ post }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -14,13 +15,16 @@ const Post = ({ post }) => {
   const [content, setContent] = useState(post.content);
   const [visibility, setVisibility] = useState(post.visibility);
   const [media, setMedia] = useState([]);
-  const [isLiked, setIsLiked] = useState(post.likes.likeByUsers.includes(post.userId));
+  const [isLiked, setIsLiked] = useState(
+    post.likes.likeByUsers.includes(post.userId),
+  );
   const [likeCount, setLikeCount] = useState(post.likes.likeCount);
   const [comments, setComments] = useState(post.comments || []);
-  const [newComment, setNewComment] = useState('');
-  const [showComments, setShowComments] = useState(false);
+  const [updatePosts, setUpdatedPosts] = useState(post);
+  const [showComments, setShowComments] = useState({});
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const userId = user ? user.id : null;
 
   useEffect(() => {
     setIsLiked(post.likes.likeByUsers.includes(user.id));
@@ -41,15 +45,11 @@ const Post = ({ post }) => {
 
   const toggleOptions = () => setShowOptions((prev) => !prev);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return isNaN(date) ? 'Invalid Date' : date.toLocaleString('vi-VN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
+  const toggleComments = (postId) => {
+    setShowComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId], 
+    }));
   };
 
   const handleDeletePost = async () => {
@@ -76,7 +76,9 @@ const Post = ({ post }) => {
     media.forEach((file) => formData.append('file', file));
 
     try {
-      await dispatch(updatePost({ postId: post.id, content, visibility, media })).unwrap();
+      await dispatch(
+        updatePost({ postId: post.id, content, visibility, media }),
+      ).unwrap();
       toast.success('Bài đăng đã được cập nhật thành công!');
       setIsEditing(false);
     } catch (error) {
@@ -89,19 +91,27 @@ const Post = ({ post }) => {
     const visibilityIcons = {
       PRIVATE: <FaLock className="text-gray-500" />,
       FRIENDS_ONLY: <FaUserGroup className="text-gray-500" />,
-      PUBLIC: <FaEarthAmericas className="text-gray-500" />
+      PUBLIC: <FaEarthAmericas className="text-gray-500" />,
     };
-    return visibilityIcons[visibility] || <span className="text-gray-500">Không xác định</span>;
+    return (
+      visibilityIcons[visibility] || (
+        <span className="text-gray-500">Không xác định</span>
+      )
+    );
   };
+
+  if (post.visibility === "PRIVATE" && post.userId !== user.id) {
+    return null; // Trả về null nếu bài viết riêng tư và người xem không phải người tạo
+  }
 
   const handleMediaChange = (e) => {
     const files = Array.from(e.target.files);
     setMedia(files);
   };
 
-  const handleAddComment = (newComment) => {
+  const handleCommentSubmit = (postId, newComment) => {
     setComments((prevComments) => [...prevComments, newComment]);
-    setNewComment('');
+
   };
 
   const renderMedia = () => (
@@ -119,16 +129,18 @@ const Post = ({ post }) => {
   );
 
   const renderLike = (post) => {
-    const postLiked = post.likes.likeByUsers.filter(item => item.id === user.id);
+    const postLiked = post.likes.likeByUsers.filter(
+      (item) => item.id === user.id,
+    );
     if (postLiked && postLiked.length > 0) {
       return (
-        <span className="text-lg cursor-pointer" onClick={handleLike}>
+        <span className="cursor-pointer text-lg" onClick={handleLike}>
           ❤️ {likeCount} Thích
         </span>
       );
     } else {
       return (
-        <span className="text-lg cursor-pointer" onClick={handleLike}>
+        <span className="cursor-pointer text-lg" onClick={handleLike}>
           🤍 {likeCount} Thích
         </span>
       );
@@ -177,6 +189,7 @@ const Post = ({ post }) => {
                   </div>
               )}
             </div>
+
 
             {isEditing ? (
                 <div>
@@ -234,28 +247,24 @@ const Post = ({ post }) => {
             <form className="flex items-center justify-between mt-3">
               <div className="flex items-center">
                 {renderLike(post)}
-                <span className="ml-4 cursor-pointer text-lg" onClick={() => setShowComments(prev => !prev)}>
+                <span className="ml-4 cursor-pointer text-lg" onClick={() => toggleComments(post.id)}>
                     <FaComments className="inline-block"/> Bình luận ({comments.length})
                   </span>
               </div>
             </form>
           </div>
           {/* Render Comment List when clicked */}
-          {showComments && (
-              <div className="mt-4">
-                <CommentList comments={comments}/>
-                <input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Nhập bình luận..."
-                    className="mt-2 w-full rounded border px-2 py-1"
-                />
-                <button onClick={() => handleAddComment(newComment)}
-                        className="mt-2 rounded bg-green-500 py-1 px-3 text-white hover:bg-green-600">
-                  Gửi
-                </button>
-              </div>
+              {showComments[post.id] && (
+                  <div className="mt-4">
+                    <CommentList comments={comments} />
+                    <CommentForm
+                      postId={post.id}
+                      userId={userId}
+                      onCommentAdded={handleCommentSubmit}
+                    />
+                  </div>
+              )}
+            </div>
           )}
         </div>
       </div>
