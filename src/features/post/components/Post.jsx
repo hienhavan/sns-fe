@@ -150,7 +150,7 @@ const Post = ({ post }) => {
   return (
     <div className="pb-5">
       <div className="border rounded-xl overflow-hidden border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
-        <div className="ml-0 flex  py-3 pl-2 pr-1 hover:bg-slate-100 sm:mx-3 sm:mr-0 sm:px-5 sm:pr-0">
+        <div className="ml-0 flex py-3 pl-2 pr-1 sm:mr-0 sm:px-5 sm:pr-0">
           <div className="mt-3 h-12 w-12 flex-none text-lg">
             <img
                 src="/logo_img.png"
@@ -171,16 +171,19 @@ const Post = ({ post }) => {
               <HiDotsHorizontal className="mr-3 cursor-pointer" onClick={toggleOptions}/>
               {showOptions && (
                   <div
-                      className="w-30 h-22 absolute right-7 top-0 z-20 rounded-xl border border-slate-300 bg-white px-1 font-semibold text-slate-600 shadow-xl">
-                    <ul className="cursor-pointer p-0.5 text-start">
+                      className="absolute right-7 top-0 z-20 rounded-xl border border-slate-300 bg-white font-semibold text-slate-600 shadow-xl">
+                    <ul className="cursor-pointer text-start">
                       <li
-                          className="my-1 rounded p-1 hover:bg-slate-200"
-                          onClick={() => setIsEditing(true)}
+                          className="rounded-xl px-5 py-2 hover:bg-slate-200"
+                          onClick={() => {
+                            setIsEditing(true);
+                            setShowOptions(false)
+                          }}
                       >
                         Cập nhật
                       </li>
                       <li
-                          className="my-1 rounded p-1 hover:bg-slate-200"
+                          className="rounded-xl px-5 py-2 hover:bg-slate-200"
                           onClick={handleDeletePost}
                       >
                         Xoá
@@ -237,7 +240,7 @@ const Post = ({ post }) => {
 
         {post.media && post.media.length > 0 && renderMedia()}
 
-        <div className="ml-0 flex  py-3 pl-2 pr-1 hover:bg-slate-100 sm:mx-3 sm:mr-0 sm:px-5 sm:pr-0">
+        <div className="ml-0 flex  py-3 pl-2 pr-1 sm:mr-0 sm:px-5 sm:pr-0">
           <p className="text-sm text-gray-600">{post.createdAt || 'Unknown Date'}</p>
         </div>
 

@@ -61,7 +61,7 @@ const PostForm = () => {
 
   return (
     <div className="modal-class py-5">
-      <div className="flex px-5 py-3 border rounded-xl overflow-hidden border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
+      <div className="flex px-5 py-3 border border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
         <div className="mt-3 h-12 w-12 flex-none text-lg">
           <img
             src="/logo_img.png"
@@ -104,7 +104,7 @@ const PostForm = () => {
               )}
 
               {isDropdownOpen && (
-                  <div className="absolute mt-2 bg-white border border-gray-300 rounded-md w-full z-10">
+                  <div className="absolute mt-2 bg-white border border-gray-300 rounded-md w-full z-[1000]">
                     <div
                         className="p-2 cursor-pointer flex items-center hover:bg-gray-100"
                         onClick={() => handleVisibilityChange('PUBLIC')}
@@ -128,7 +128,7 @@ const PostForm = () => {
             </div>
 
             {content && (
-                <label className="m-2 flex items-center">
+                <label className="m-2 flex items-center" title="Chọn ảnh">
                   <input
                       className="hidden"
                       type="file"
@@ -144,7 +144,7 @@ const PostForm = () => {
             {content && (
                 <button
                     type="button"
-                    className="rounded-xl bg-blue-600 p-2.5 pt-3 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
+                    className="rounded bg-blue-600 px-4 py-2 text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg disabled:cursor-not-allowed"
                 onClick={handlePostSubmit}
                 disabled={isLoading}
               >
