@@ -40,7 +40,7 @@ const App = () => {
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/admin" element={<Dashboard />} />
+          {/*<Route path="/admin" element={<Dashboard />} />*/}
         </Routes>
       </BrowserRouter>
       <ToastContainer />
