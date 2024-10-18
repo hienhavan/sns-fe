@@ -6,9 +6,9 @@ const NavBar = () => {
   const location = useLocation();
 
   return (
-    <aside className="mt-[40px] hidden basis-1/6 sm:block lg:basis-1/5">
+    <aside className="mt-[40px] hidden sm:block">
       <nav>
-        <ul className="mr-1 px-2">
+        <ul className="px-2">
           {/* Explore Link */}
           <li>
             <Link
@@ -22,13 +22,14 @@ const NavBar = () => {
                   <FaHouse className="text-[1.6rem] font-bold" />
                   <h2 className="hidden px-1 text-xl font-bold xl:block">
                     Trang chủ
+
                   </h2>
                 </>
               ) : (
                 <>
                   <FaHouse className="text-[1.6rem]" />
                   <h2 className="hidden px-1 text-xl xl:block">Trang chủ</h2>
-                </>
+   </>
               )}
             </Link>
           </li>
@@ -46,6 +47,7 @@ const NavBar = () => {
                   <FaUser className="text-[1.6rem] font-bold" />
                   <h2 className="hidden px-1 text-xl font-bold xl:block">
                     Hồ sơ
+
                   </h2>
                 </>
               ) : (

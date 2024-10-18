@@ -36,9 +36,11 @@ const App = () => {
             <Route path='/list-followers' element={<AllListFollowers />} />
             <Route path="/update-password" element={<UpdatePassword />} />
 
+
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/admin" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

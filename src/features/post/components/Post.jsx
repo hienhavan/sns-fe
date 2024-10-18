@@ -15,7 +15,9 @@ const Post = ({ post }) => {
   const [content, setContent] = useState(post.content);
   const [visibility, setVisibility] = useState(post.visibility);
   const [media, setMedia] = useState([]);
-  const [isLiked, setIsLiked] = useState(post.likes.likeByUsers.includes(post.userId));
+  const [isLiked, setIsLiked] = useState(
+    post.likes.likeByUsers.includes(post.userId),
+  );
   const [likeCount, setLikeCount] = useState(post.likes.likeCount);
   const [comments, setComments] = useState(post.comments || []);
   const [updatePosts, setUpdatedPosts] = useState(post);
@@ -46,7 +48,7 @@ const Post = ({ post }) => {
   const toggleComments = (postId) => {
     setShowComments((prev) => ({
       ...prev,
-      [postId]: !prev[postId], // Chuyển đổi trạng thái hiển thị bình luận cho bài viết tương ứng
+      [postId]: !prev[postId], 
     }));
   };
 
@@ -74,7 +76,9 @@ const Post = ({ post }) => {
     media.forEach((file) => formData.append('file', file));
 
     try {
-      await dispatch(updatePost({ postId: post.id, content, visibility, media })).unwrap();
+      await dispatch(
+        updatePost({ postId: post.id, content, visibility, media }),
+      ).unwrap();
       toast.success('Bài đăng đã được cập nhật thành công!');
       setIsEditing(false);
     } catch (error) {
@@ -87,9 +91,13 @@ const Post = ({ post }) => {
     const visibilityIcons = {
       PRIVATE: <FaLock className="text-gray-500" />,
       FRIENDS_ONLY: <FaUserGroup className="text-gray-500" />,
-      PUBLIC: <FaEarthAmericas className="text-gray-500" />
+      PUBLIC: <FaEarthAmericas className="text-gray-500" />,
     };
-    return visibilityIcons[visibility] || <span className="text-gray-500">Không xác định</span>;
+    return (
+      visibilityIcons[visibility] || (
+        <span className="text-gray-500">Không xác định</span>
+      )
+    );
   };
 
   if (post.visibility === "PRIVATE" && post.userId !== user.id) {
@@ -121,16 +129,18 @@ const Post = ({ post }) => {
   );
 
   const renderLike = (post) => {
-    const postLiked = post.likes.likeByUsers.filter(item => item.id === user.id);
+    const postLiked = post.likes.likeByUsers.filter(
+      (item) => item.id === user.id,
+    );
     if (postLiked && postLiked.length > 0) {
       return (
-        <span className="text-lg cursor-pointer" onClick={handleLike}>
+        <span className="cursor-pointer text-lg" onClick={handleLike}>
           ❤️ {likeCount} Thích
         </span>
       );
     } else {
       return (
-        <span className="text-lg cursor-pointer" onClick={handleLike}>
+        <span className="cursor-pointer text-lg" onClick={handleLike}>
           🤍 {likeCount} Thích
         </span>
       );
@@ -150,14 +160,36 @@ const Post = ({ post }) => {
 
         <div className="w-full px-4 py-3">
           <div className="relative flex w-full justify-between">
-            <h2 className="cursor-pointer font-semibold flex items-center">
-              <span className="pl-1.5 font-normal text-slate-500">User {post.userId}</span>
-              <span className="ml-2 text-sm text-gray-500 flex items-center">
-              {getVisibilityText(post.visibility)}
-            </span>
+            <h2 className="flex cursor-pointer items-center font-semibold">
+              <span className="pl-1.5 font-normal text-slate-500">
+                User {post.userId}
+              </span>
+              <span className="ml-2 flex items-center text-sm text-gray-500">
+                {getVisibilityText(post.visibility)}
+              </span>
             </h2>
 
-            <HiDotsHorizontal className="mr-3 cursor-pointer" onClick={toggleOptions} />
+            <HiDotsHorizontal
+              className="mr-3 cursor-pointer"
+              onClick={toggleOptions}
+            />
+            {/* Action button */}
+            {showOptions && (
+              <div className="absolute right-0 top-6 rounded border bg-white shadow-md">
+                <button
+                  onClick={handleDeletePost}
+                  className="px-4 py-2 hover:bg-red-500 hover:text-white"
+                >
+                  Xóa
+                </button>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 hover:bg-yellow-500 hover:text-white"
+                >
+                  Chỉnh sửa
+                </button>
+              </div>
+            )}
           </div>
 
           {isEditing ? (
@@ -169,7 +201,7 @@ const Post = ({ post }) => {
                 placeholder="Nội dung bài đăng..."
                 rows={4}
               />
-              <div className="flex mt-2">
+              <div className="mt-2 flex">
                 <select
                   value={visibility}
                   onChange={(e) => setVisibility(e.target.value)}
@@ -182,7 +214,7 @@ const Post = ({ post }) => {
                 <input type="file" onChange={handleMediaChange} multiple />
               </div>
               <button
-                className="mt-3 rounded bg-blue-500 py-1 px-3 text-white hover:bg-blue-600"
+                className="mt-3 rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
                 onClick={handleEditPost}
               >
                 Cập nhật bài viết
@@ -190,24 +222,17 @@ const Post = ({ post }) => {
             </div>
           ) : (
             <div>
-              <div className="text-lg mt-3">{content}</div>
+              <div className="mt-3 bg-red-500 text-lg">{content}</div>
               {post.media && post.media.length > 0 && renderMedia()}
 
               {/* Combined Like and Comment Section */}
-              <form className="flex items-center justify-between mt-3">
+              <form className="mt-3 flex items-center justify-between">
                 <div className="flex items-center">
                   {renderLike(post)}
                   <span className="ml-4 cursor-pointer text-lg" onClick={() => toggleComments(post.id)}>
                     <FaComments className="inline-block" /> Bình luận ({comments.length})
                   </span>
                 </div>
-
-                {showOptions && (
-                  <div className="absolute right-0 bg-white border rounded shadow-md">
-                    <button onClick={handleDeletePost} className="px-4 py-2 hover:bg-red-500 hover:text-white">Xóa</button>
-                    <button onClick={() => setIsEditing(true)} className="px-4 py-2 hover:bg-yellow-500 hover:text-white">Chỉnh sửa</button>
-                  </div>
-                )}
               </form>
 
                {/*Render Comment List when clicked*/}
@@ -220,6 +245,7 @@ const Post = ({ post }) => {
                       onCommentAdded={handleCommentSubmit}
                     />
                   </div>
+
               )}
             </div>
           )}
