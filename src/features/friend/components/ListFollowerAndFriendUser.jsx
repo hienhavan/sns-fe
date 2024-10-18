@@ -45,9 +45,9 @@ const ListFriend = () => {
     fetchWaitingRequests();
   }, [getWaiting, listFriendUser]);
 
-  const handleAccept = async (userId) => {
+  const handleAccept = (userId) => {
     try {
-      await acceptFriends({ id: userId });
+      acceptFriends({ id: userId });
       setFriendRequests(friendRequests.filter((user) => user.id !== userId));
       toast.success('Đã xác nhận yêu cầu kết bạn thành công!');
     } catch {
@@ -55,9 +55,9 @@ const ListFriend = () => {
     }
   };
 
-  const handleReject = async (id) => {
+  const handleReject = (id) => {
     try {
-      await unFriend({ id });
+      unFriend({ id });
       setListFriendUser((prevList) =>
         prevList.filter((friend) => friend.id !== Number(id)),
       );

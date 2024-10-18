@@ -14,9 +14,9 @@ import UpdatePassword from './features/user/components/EditPassword.jsx';
 import FriendProfile from './features/friend/components/FriendProfile';
 import UserList from './features/user/components/UserSearchList';
 
-import Comments from './features/comment/components/Comment';
-import Dashboard from './features/admin/components/Dashboard';
-import SearchForm from './features/post/components/SearchForm'
+// import Comments from './features/comment/components/Comment';
+// import Dashboard from './features/admin/components/Dashboard';
+// import SearchForm from './features/post/components/SearchForm'
 
 const Layout = () => (
   <>
@@ -41,8 +41,6 @@ const App = () => {
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/users/:id" element={<FriendProfile />} />
             <Route path="/search-users" element={<UserList />} />
-
-
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />

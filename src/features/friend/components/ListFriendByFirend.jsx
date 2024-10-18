@@ -11,7 +11,7 @@ const ListFriendByFriend = () => {
   const [mutualFriendsList, setMutualFriendsList] = useState([]);
   const { id } = useParams();
   const storedUser = getUserFromLocalStorage();
-  const meId = storedUser ? storedUser.id : null;
+  const meId = storedUser.id;
   useEffect(() => {
     const fetchFollowing = async () => {
       try {

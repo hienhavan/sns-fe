@@ -11,7 +11,6 @@ const AllListFriend = () => {
     const fetchFollowing = async () => {
       try {
         const response = await dispatch(getFollowing());
-        console.log('hgjhgjgjhgjhgjg' + response);
         if (response && response.payload) {
           setSuggestionList(response.payload);
         } else {

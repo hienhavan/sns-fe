@@ -18,7 +18,7 @@ const SearchForm = () => {
   const [isSearching, setIsSearching] = useState(false);
 
   const storedUser = getUserFromLocalStorage();
-  const meId = storedUser ? storedUser.id : null;
+  const meId = storedUser.id;
 
   const searchRef = useRef(null);
 
@@ -82,9 +82,9 @@ const SearchForm = () => {
         </button>
       </form>
 
-      {isSearching && searchQuery && listUser.length > 0 && (
+      {isSearching && listUser.length > 0 && (
         <div>
-          <ul className="absolute z-10 mt-2 w-[80%] rounded border bg-white shadow-lg">
+          <ul className="absolute mt-2 w-[80%] rounded border bg-white shadow-lg">
             {listUser.slice(0, 5).map((user) => (
               <li key={user.id} className="p-2 hover:bg-gray-200">
                 {user.id === meId ? (
@@ -136,7 +136,7 @@ const SearchForm = () => {
         </div>
       )}
 
-      {isSearching && searchQuery && listUser.length === 0 && (
+      {isSearching && listUser.length === 0 && (
         <div className="absolute z-10 mt-2 w-[80%] rounded border bg-white p-2 text-gray-500 shadow-lg">
           Không tìm thấy người dùng nào.
         </div>

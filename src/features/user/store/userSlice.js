@@ -5,7 +5,7 @@ const initialState = {
   listUser: [],
   isLoading: false,
   error: '',
-  mutualFriendsList: {},
+  mutualFriendsList: [],
 };
 
 const userSlice = createSlice({

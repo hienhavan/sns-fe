@@ -4,7 +4,6 @@ import UserPost from '../../post/components/UserPost';
 import userService from '../../user/services/user';
 import { Link, useParams } from 'react-router-dom';
 import ListFriendByFriend from './ListFriendByFirend';
-import { getUserFromLocalStorage } from '../../../utils/axiosClient';
 import friendService from '../services/friend';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -12,8 +11,7 @@ import { toast } from 'react-toastify';
 const FriendProfile = () => {
   const { id } = useParams();
   const { getUsersById } = userService;
-  const storedUser = getUserFromLocalStorage();
-  const useId = storedUser ? storedUser.id : null;
+
   const {
     getFollowing,
     getFriendsByFriendsId,
