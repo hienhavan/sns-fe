@@ -137,94 +137,125 @@ const Post = ({ post }) => {
 
   return (
     <div className="pb-5">
-      <div className="ml-0 flex border py-3 pl-2 pr-1 hover:bg-slate-100 sm:mx-3 sm:mr-0 sm:px-5 sm:pr-0">
-        <div className="mt-3 h-12 w-12 flex-none text-lg">
-          <img
-            src="/logo_img.png"
-            className="h-12 w-12 flex-none cursor-pointer rounded-full object-cover"
-            alt="avatar"
-          />
-        </div>
-
-        <div className="w-full px-4 py-3">
-          <div className="relative flex w-full justify-between">
-            <h2 className="cursor-pointer font-semibold flex items-center">
-              <span className="pl-1.5 font-normal text-slate-500">User {post.userId}</span>
-              <span className="ml-2 text-sm text-gray-500 flex items-center">
-              {getVisibilityText(post.visibility)}
-            </span>
-            </h2>
-
-            <HiDotsHorizontal className="mr-3 cursor-pointer" onClick={toggleOptions} />
+      <div className="border rounded-xl overflow-hidden border-l border-solid border-zinc-300 bg-white shadow-md rounded-lg">
+        <div className="ml-0 flex  py-3 pl-2 pr-1 hover:bg-slate-100 sm:mx-3 sm:mr-0 sm:px-5 sm:pr-0">
+          <div className="mt-3 h-12 w-12 flex-none text-lg">
+            <img
+                src="/logo_img.png"
+                className="h-12 w-12 flex-none cursor-pointer rounded-full object-cover"
+                alt="avatar"
+            />
           </div>
 
-          {isEditing ? (
-            <div>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="mt-3 w-full resize-none rounded-xl bg-slate-100 p-2 pb-3 focus:outline-none"
-                placeholder="Nội dung bài đăng..."
-                rows={4}
-              />
-              <div className="flex mt-2">
-                <select
-                  value={visibility}
-                  onChange={(e) => setVisibility(e.target.value)}
-                  className="ml-0.5 mr-2 rounded bg-slate-200 px-2 py-1 text-slate-600"
-                >
-                  <option value="PRIVATE">Riêng tư</option>
-                  <option value="FRIENDS_ONLY">Bạn bè</option>
-                  <option value="PUBLIC">Công khai</option>
-                </select>
-                <input type="file" onChange={handleMediaChange} multiple />
-              </div>
-              <button
-                className="mt-3 rounded bg-blue-500 py-1 px-3 text-white hover:bg-blue-600"
-                onClick={handleEditPost}
-              >
-                Cập nhật bài viết
-              </button>
-            </div>
-          ) : (
-            <div>
-              <div className="text-lg mt-3">{content}</div>
-              {post.media && post.media.length > 0 && renderMedia()}
+          <div className="w-full px-4 py-3">
+            <div className="relative flex w-full justify-between">
+              <h2 className="cursor-pointer font-semibold flex items-center">
+                <span className="pl-1.5 font-normal text-slate-500">User {post.userId}</span>
+                <span className="ml-2 text-sm text-gray-500 flex items-center">
+              {getVisibilityText(post.visibility)}
+            </span>
+              </h2>
 
-              {/* Combined Like and Comment Section */}
-              <form className="flex items-center justify-between mt-3">
-                <div className="flex items-center">
-                  {renderLike(post)}
-                  <span className="ml-4 cursor-pointer text-lg" onClick={() => setShowComments(prev => !prev)}>
-                    <FaComments className="inline-block" /> Bình luận ({comments.length})
-                  </span>
-                </div>
-
-                {showOptions && (
-                  <div className="absolute right-0 bg-white border rounded shadow-md">
-                    <button onClick={handleDeletePost} className="px-4 py-2 hover:bg-red-500 hover:text-white">Xóa</button>
-                    <button onClick={() => setIsEditing(true)} className="px-4 py-2 hover:bg-yellow-500 hover:text-white">Chỉnh sửa</button>
+              <HiDotsHorizontal className="mr-3 cursor-pointer" onClick={toggleOptions}/>
+              {showOptions && (
+                  <div
+                      className="w-30 h-22 absolute right-7 top-0 z-20 rounded-xl border border-slate-300 bg-white px-1 font-semibold text-slate-600 shadow-xl">
+                    <ul className="cursor-pointer p-0.5 text-start">
+                      <li
+                          className="my-1 rounded p-1 hover:bg-slate-200"
+                          onClick={() => setIsEditing(true)}
+                      >
+                        Cập nhật
+                      </li>
+                      <li
+                          className="my-1 rounded p-1 hover:bg-slate-200"
+                          onClick={handleDeletePost}
+                      >
+                        Xoá
+                      </li>
+                    </ul>
                   </div>
-                )}
-              </form>
+              )}
+            </div>
 
-              {/* Render Comment List when clicked */}
-              {showComments && (
-                <div className="mt-4">
-                  <CommentList comments={comments} />
-                  <input
+            {isEditing ? (
+                <div>
+              <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className="mt-3 w-full resize-none rounded-xl bg-slate-100 p-2 pb-3 focus:outline-none"
+                  placeholder="Nội dung bài đăng..."
+                  rows={4}
+              />
+                  <div className="flex mt-2">
+                    <select
+                        value={visibility}
+                        onChange={(e) => setVisibility(e.target.value)}
+                        className="ml-0.5 mr-2 rounded bg-slate-200 px-2 py-1 text-slate-600"
+                    >
+                      <option value="PRIVATE">Riêng tư</option>
+                      <option value="FRIENDS_ONLY">Bạn bè</option>
+                      <option value="PUBLIC">Công khai</option>
+                    </select>
+                  </div>
+                  <div className="flex mt-2">
+                    <input type="file" onChange={handleMediaChange} multiple/>
+                  </div>
+                  <button
+                      className="mt-3 rounded bg-blue-500 py-1 px-3 text-white hover:bg-blue-600"
+                      onClick={handleEditPost}
+                  >
+                    Cập nhật bài viết
+                  </button>
+                  <button
+                      className="mt-3 ml-2 rounded bg-red-500 py-1 px-3 text-white hover:bg-red-600"
+                      onClick={() => setIsEditing(false)}
+                  >
+                    Hủy
+                  </button>
+                </div>
+            ) : (
+                <p className="max-w-lg cursor-pointer break-words py-3">
+                  {post.content}
+                </p>
+            )}
+          </div>
+        </div>
+
+        {post.media && post.media.length > 0 && renderMedia()}
+
+        <div className="ml-0 flex  py-3 pl-2 pr-1 hover:bg-slate-100 sm:mx-3 sm:mr-0 sm:px-5 sm:pr-0">
+          <p className="text-sm text-gray-600">{post.createdAt || 'Unknown Date'}</p>
+        </div>
+
+        <div className="px-5 pb-5">
+          <div>
+            {/* Combined Like and Comment Section */}
+            <form className="flex items-center justify-between mt-3">
+              <div className="flex items-center">
+                {renderLike(post)}
+                <span className="ml-4 cursor-pointer text-lg" onClick={() => setShowComments(prev => !prev)}>
+                    <FaComments className="inline-block"/> Bình luận ({comments.length})
+                  </span>
+              </div>
+            </form>
+          </div>
+          {/* Render Comment List when clicked */}
+          {showComments && (
+              <div className="mt-4">
+                <CommentList comments={comments}/>
+                <input
                     type="text"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Nhập bình luận..."
                     className="mt-2 w-full rounded border px-2 py-1"
-                  />
-                  <button onClick={() => handleAddComment(newComment)} className="mt-2 rounded bg-green-500 py-1 px-3 text-white hover:bg-green-600">
-                    Gửi
-                  </button>
-                </div>
-              )}
-            </div>
+                />
+                <button onClick={() => handleAddComment(newComment)}
+                        className="mt-2 rounded bg-green-500 py-1 px-3 text-white hover:bg-green-600">
+                  Gửi
+                </button>
+              </div>
           )}
         </div>
       </div>
