@@ -1,37 +1,40 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchComments } from '../services/comment.js';
-import Comment from './Comment';
 
-const CommentList = ({ postId }) => {
-  const dispatch = useDispatch();
-  const { comments, isLoading, error } = useSelector((state) => state.comment);
+import { List, Avatar } from 'antd';
+import Comment from './Comment';
+import { useEffect, useState } from 'react';
+
+const CommentList = ({ comments, onUpdate }) => {
+  const [updatedComments, setUpdatedComments] = useState(comments);
 
   useEffect(() => {
-    // Dispatch action để lấy tất cả bình luận
-    dispatch(fetchComments(postId));
-  }, [dispatch, postId]);
-
-  if (isLoading) {
-    return <p>Loading comments...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading comments: {error}</p>;
-  }
+    setUpdatedComments(comments);
+  }, [comments]);
 
   return (
-    <div>
-      {comments.length === 0 ? (
-        <p>No comments available</p>
-      ) : (
-        <div>
-          {comments.map((comment) => (
-            <Comment key={comment.id} comment={comment} />
-          ))}
-        </div>
-      )}
-    </div>
+    <List
+      itemLayout="horizontal"
+      dataSource={updatedComments}
+      renderItem={comment => {
+        const avatarSrc = comment.createdBy?.profilePicture
+          ? `http://localhost:3002${comment.createdBy.profilePicture}`
+          : '/default-avatar.png';
+
+        return (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<Avatar src={avatarSrc} />}
+              title={
+                <div>
+                  <span>{comment.createdBy?.name || 'Unknown User'}</span>
+                  <Comment comment={comment} showOptions={true} onUpdate={onUpdate} />
+                </div>
+              }
+              description={comment.createdAt || 'Unknown Date'}
+            />
+          </List.Item>
+        );
+      }}
+    />
   );
 };
 

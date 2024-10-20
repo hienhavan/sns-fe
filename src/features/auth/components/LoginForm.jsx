@@ -1,3 +1,4 @@
+
 import { login } from '../services/auth';
 import Footer from '../../../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
@@ -60,8 +61,8 @@ export default function Login() {
               name="email"
               placeholder="Email"
               className={`mb-4 w-full border p-3 ${formik.errors.email && formik.touched.email
-                ? 'border-red-500'
-                : 'border-gray-300'
+                  ? 'border-red-500'
+                  : 'border-gray-300'
                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.email}
               onChange={formik.handleChange}
@@ -76,8 +77,8 @@ export default function Login() {
               name="password"
               placeholder="Mật khẩu"
               className={`mb-4 w-full border p-3 ${formik.errors.password && formik.touched.password
-                ? 'border-red-500'
-                : 'border-gray-300'
+                  ? 'border-red-500'
+                  : 'border-gray-300'
                 } rounded focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formik.values.password}
               onChange={formik.handleChange}

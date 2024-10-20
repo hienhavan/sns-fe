@@ -13,6 +13,8 @@ import { ToastContainer } from 'react-toastify';
 import UpdatePassword from './features/user/components/UpdatePassword';
 import ChatApp from './features/chat/components/messger';
 import Comments from './features/comment/components/Comment';
+import SearchForm from './features/post/components/SearchForm'
+import Notifications from './features/notifications/components/Notifications.jsx';
 
 const Layout = () => (
   <>
@@ -28,18 +30,24 @@ const App = () => {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
+          <Route path="/posts" element={<SearchForm />} />
+
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/me" element={<UserProfile />} />
             <Route path="/list-friend" element={<AllListFriend />} />
-            <Route path='/list-followers' element={<AllListFollowers />} />
+            <Route path="/list-followers" element={<AllListFollowers />} />
             <Route path="/update-password" element={<UpdatePassword />} />
             <Route path="/posts/:postId/comments" element={<Comments />} />
             <Route path='/messager' element={<ChatApp />} />
+            <Route path="/users/:id" element={<FriendProfile />} />
+            <Route path="/search-users" element={<UserList />} />
           </Route>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          {/*<Route path="/admin" element={<Dashboard />} />*/}
         </Routes>
       </BrowserRouter>
       <ToastContainer />

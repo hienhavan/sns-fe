@@ -38,6 +38,7 @@ export const register = createAsyncThunk(
         birthday,
         phone,
       });
+
       return response.data;
     } catch (error) {
       return rejectWithValue('bad credentials!');
