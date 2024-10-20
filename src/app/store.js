@@ -11,7 +11,7 @@ const store = configureStore({
     user: userReducer,
     post: postReducer,
     notifications: notificationsReducer,
+
   },
 });
-
 export default store;
