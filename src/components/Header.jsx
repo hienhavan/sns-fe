@@ -9,9 +9,10 @@ import {
   faUser,
   faPencilAlt,
   faPowerOff,
-  faCog,
+  faCog, faBell
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import Notifications from '../features/notifications/components/Notifications.jsx';
 
 const DropdownList = () => {
   const dispatch = useDispatch();
@@ -106,6 +107,19 @@ const Header = () => {
         </div>
         <div className="col-span-8 grid h-full w-full grid-cols-4 items-center">
           <SearchForm />
+
+          {/*/!* Thêm phần nút thông báo *!/*/}
+          {/*<div className="relative">*/}
+          {/*  <button onClick={toggleNotifications} className="flex justify-center text-white ml-2">*/}
+          {/*    <FontAwesomeIcon icon={faBell} className="text-xl" />*/}
+          {/*  </button>*/}
+
+          {/*  {showNotifications && (*/}
+          {/*    <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg p-4 z-10">*/}
+          {/*      <Notifications userId={user.id} /> /!* Hiển thị danh sách thông báo *!/*/}
+          {/*    </div>*/}
+          {/*  )}*/}
+          {/*</div>*/}
           {user ? <UserInformation user={user} /> : <LoginButton />}
         </div>
       </div>
