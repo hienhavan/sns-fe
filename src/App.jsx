@@ -10,13 +10,9 @@ import AllListFriend from './features/friend/components/AllListFriend';
 import 'react-toastify/dist/ReactToastify.css';
 import AllListFollowers from './features/friend/components/AllListFollowers';
 import { ToastContainer } from 'react-toastify';
-import UpdatePassword from './features/user/components/EditPassword.jsx';
-import FriendProfile from './features/friend/components/FriendProfile';
-import UserList from './features/user/components/UserSearchList';
-
-// import Comments from './features/comment/components/Comment';
-// import Dashboard from './features/admin/components/Dashboard';
-// import SearchForm from './features/post/components/SearchForm'
+import UpdatePassword from './features/user/components/UpdatePassword';
+import SearchForm from './features/post/components/SearchForm'
+import Notifications from './features/notifications/components/Notifications.jsx';
 
 const Layout = () => (
   <>
@@ -32,8 +28,11 @@ const App = () => {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
+          <Route path="/posts" element={<SearchForm />} />
+
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/me" element={<UserProfile />} />
             <Route path="/list-friend" element={<AllListFriend />} />
